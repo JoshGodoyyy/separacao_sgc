@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:separacao_sgc/app/ui/styles/colors_app.dart';
+import '/app/ui/styles/colors_app.dart';
 
 class STextField extends StatefulWidget {
   final String label;

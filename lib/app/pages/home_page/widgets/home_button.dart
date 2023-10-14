@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:separacao_sgc/app/pages/home_page/widgets/gradient_icon.dart';
-import 'package:separacao_sgc/app/ui/styles/colors_app.dart';
+import '/app/pages/home_page/widgets/gradient_icon.dart';
+import '/app/ui/styles/colors_app.dart';
 
 class HomeButton extends StatefulWidget {
   final String title;
