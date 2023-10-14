@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '/app/ui/styles/colors_app.dart';
+
 class ThemeConfig {
   ThemeConfig._();
 
   static final theme = ThemeData(
-    scaffoldBackgroundColor: const Color(0xFFf6f7f9),
+    scaffoldBackgroundColor: ColorsApp.backgroundColor,
   );
 }

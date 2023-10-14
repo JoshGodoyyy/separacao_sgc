@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:separacao_sgc/app/pages/loading_screen.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '/app/pages/login_page/widgets/button.dart';
 import '/app/pages/login_page/widgets/textfield.dart';
+import '/app/data/login_dao.dart';
+import '/app/models/login_model.dart';
+import '/app/pages/loading_screen.dart';
+import '/app/ui/styles/colors_app.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,17 +26,23 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() {
-    if (usuarioController.text != 'Sr. Rafinha') {
+    var user = LoginModel(user: usuarioController.text);
+
+    try {
+      var response = LoginDAO().auth(user);
+
+      if (response) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (builder) => const LoadingScreen(),
+          ),
+        );
+      }
+    } catch (e) {
       showTopSnackBar(
         Overlay.of(context),
-        const CustomSnackBar.error(
-            message:
-                'Usuário inválido. Tente utilizar \'Sr. Rafinha\' para realizar o login'),
-      );
-    } else {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (builder) => const LoadingScreen(),
+        CustomSnackBar.error(
+          message: e.toString(),
         ),
       );
     }
@@ -44,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff12111F),
+      backgroundColor: ColorsApp.primaryColor,
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Center(
@@ -57,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Hero(
                   tag: 'logo',
                   child: Image.asset(
-                    'assets/images/logo.png',
+                    'assets/images/logo_light.png',
                     width: MediaQuery.of(context).size.width / 3,
                   ),
                 ),
@@ -72,26 +81,22 @@ class _LoginPageState extends State<LoginPage> {
                 label: 'Senha',
                 usePasswordChar: true,
               ),
-              Row(
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      showTopSnackBar(
-                        Overlay.of(context),
-                        const CustomSnackBar.info(
-                          message: 'Feature em desenvolvimento!',
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      'Esqueci minha senha',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 14,
-                      ),
+              TextButton(
+                onPressed: () {
+                  showTopSnackBar(
+                    Overlay.of(context),
+                    const CustomSnackBar.info(
+                      message: 'Feature em desenvolvimento!',
                     ),
+                  );
+                },
+                child: const Text(
+                  'Esqueci minha senha',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
                   ),
-                ],
+                ),
               ),
               Button(
                 onPressed: login,

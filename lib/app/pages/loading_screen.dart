@@ -50,7 +50,7 @@ class _LoadingScreenState extends State<LoadingScreen>
             Hero(
               tag: 'logo',
               child: Image.asset(
-                'assets/images/logo.png',
+                'assets/images/logo_light.png',
                 width: MediaQuery.of(context).size.width / 2,
               ),
             ),
