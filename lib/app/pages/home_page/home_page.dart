@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/data/user.dart';
+import 'package:sgc/app/pages/home_page/widgets/home_header.dart';
+import 'package:sgc/app/pages/main_page/main_page.dart';
 
 import '/app/pages/home_page/widgets/home_button.dart';
-import '/app/pages/login_page/login_page.dart';
 import '/app/ui/styles/colors_app.dart';
-import 'widgets/gradient_icon.dart';
+import 'widgets/settings_button.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,29 +15,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var data = User();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (builder) => const LoginPage(),
-                ),
-              );
-            },
-            icon: const Icon(
-              Icons.logout,
-              color: Colors.black,
-            ),
-          ),
-        ],
-        title: const Text(
-          'Osmose',
-          style: TextStyle(
+        title: Text(
+          data.companyName,
+          style: const TextStyle(
             fontFamily: 'Poppins',
             color: ColorsApp.primaryColor,
           ),
@@ -45,49 +34,27 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              color: ColorsApp.elementColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 5,
-                  spreadRadius: 3,
-                )
-              ],
-            ),
-            child: const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Olá, Sr. Rafinha',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 18,
-                ),
-              ),
-            ),
-          ),
+          const HomeHeader(),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(8),
-              children: [
+              children: const [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     HomeButton(
                       title: 'Separar',
                       icon: Icons.account_tree_rounded,
-                      onTap: () {},
+                      page: MainPage(
+                        title: 'Separar',
+                      ),
                     ),
                     HomeButton(
                       title: 'Separando',
                       icon: Icons.alt_route_outlined,
-                      onTap: () {},
+                      page: MainPage(
+                        title: 'Separando',
+                      ),
                     ),
                   ],
                 ),
@@ -97,12 +64,16 @@ class _HomePageState extends State<HomePage> {
                     HomeButton(
                       title: 'Embalagem',
                       icon: Icons.bento,
-                      onTap: () {},
+                      page: MainPage(
+                        title: 'Embalagem',
+                      ),
                     ),
                     HomeButton(
                       title: 'Conferência',
                       icon: Icons.app_registration_outlined,
-                      onTap: () {},
+                      page: MainPage(
+                        title: 'Conferência',
+                      ),
                     ),
                   ],
                 ),
@@ -112,85 +83,24 @@ class _HomePageState extends State<HomePage> {
                     HomeButton(
                       title: 'Faturar',
                       icon: Icons.request_page_outlined,
-                      onTap: () {},
+                      page: MainPage(
+                        title: 'Faturar',
+                      ),
                     ),
                     HomeButton(
                       title: 'Logística',
                       icon: Icons.rv_hookup_outlined,
-                      onTap: () {},
+                      page: MainPage(
+                        title: 'Logística',
+                      ),
                     ),
                   ],
                 ),
-                const SettingsButton()
+                SettingsButton()
               ],
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class SettingsButton extends StatelessWidget {
-  const SettingsButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Material(
-          elevation: 5,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
-          ),
-          color: ColorsApp.elementColor,
-          child: InkWell(
-            onTap: () {},
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
-            ),
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    GradientIcon(
-                      icon: Icons.settings,
-                      size: 54,
-                      gradient: LinearGradient(
-                        colors: [
-                          ColorsApp.primaryColor,
-                          ColorsApp.secondaryColor,
-                        ],
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'Configurações',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: ColorsApp.primaryColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }

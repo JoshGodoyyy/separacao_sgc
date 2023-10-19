@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
-import '/app/pages/home_page/widgets/gradient_icon.dart';
-import '/app/ui/styles/colors_app.dart';
+import 'package:sgc/app/pages/settings_page/settings.dart';
 
-class HomeButton extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final Widget page;
+import '../../../ui/styles/colors_app.dart';
+import 'gradient_icon.dart';
 
-  const HomeButton({
+class SettingsButton extends StatelessWidget {
+  const SettingsButton({
     super.key,
-    required this.title,
-    required this.icon,
-    required this.page,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
         child: Material(
           elevation: 5,
           borderRadius: const BorderRadius.all(
@@ -26,8 +22,13 @@ class HomeButton extends StatelessWidget {
           ),
           color: Colors.white,
           child: InkWell(
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (builder) => page)),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (builder) => const Settings(),
+                ),
+              );
+            },
             borderRadius: const BorderRadius.all(
               Radius.circular(10),
             ),
@@ -37,14 +38,14 @@ class HomeButton extends StatelessWidget {
                   Radius.circular(10),
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Column(
                   children: [
                     GradientIcon(
-                      icon: icon,
+                      icon: Icons.settings,
                       size: 54,
-                      gradient: const LinearGradient(
+                      gradient: LinearGradient(
                         colors: [
                           ColorsApp.primaryColor,
                           ColorsApp.secondaryColor,
@@ -53,10 +54,10 @@ class HomeButton extends StatelessWidget {
                         end: Alignment.bottomLeft,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     Text(
-                      title,
-                      style: const TextStyle(
+                      'Configurações',
+                      style: TextStyle(
                         fontFamily: 'Poppins',
                         color: ColorsApp.primaryColor,
                         fontSize: 18,

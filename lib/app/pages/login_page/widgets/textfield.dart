@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '/app/ui/styles/colors_app.dart';
 
 class STextField extends StatefulWidget {
@@ -64,7 +65,7 @@ class _STextFieldState extends State<STextField> {
                         _ocultarSenha
                             ? Icons.remove_red_eye
                             : Icons.remove_red_eye_outlined,
-                        color: ColorsApp.primaryColor,
+                        color: ColorsApp.backgroundColor,
                       ),
                     )
                   : null,

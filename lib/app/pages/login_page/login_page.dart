@@ -39,10 +39,12 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     } catch (e) {
+      String message = e.toString().substring(11);
+
       showTopSnackBar(
         Overlay.of(context),
         CustomSnackBar.error(
-          message: e.toString(),
+          message: message,
         ),
       );
     }
