@@ -50,21 +50,18 @@ class ListItem extends StatelessWidget {
                       Text(
                         'Pedido: ${pedido.idPedido}',
                         style: const TextStyle(
-                          fontFamily: 'Poppins',
                           fontSize: 18,
                         ),
                       ),
                       Text(
                         'Cliente: ${pedido.cliente.fantasia}',
                         style: const TextStyle(
-                          fontFamily: 'Poppins',
                           fontSize: 15,
                         ),
                       ),
                       Text(
                         'Entrega: ${pedido.dataHoraEntrega}',
                         style: const TextStyle(
-                          fontFamily: 'Poppins',
                           fontSize: 12,
                         ),
                       ),

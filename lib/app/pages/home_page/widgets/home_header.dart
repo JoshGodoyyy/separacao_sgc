@@ -35,7 +35,6 @@ class HomeHeader extends StatelessWidget {
             Text(
               'Olá, ${data.userName}',
               style: const TextStyle(
-                fontFamily: 'Poppins',
                 fontSize: 18,
               ),
             ),
@@ -47,11 +46,9 @@ class HomeHeader extends StatelessWidget {
                     return AlertDialog(
                       title: const Text(
                         'SGC',
-                        style: TextStyle(fontFamily: 'Poppins'),
                       ),
                       content: const Text(
                         'Deseja mesmo sair?',
-                        style: TextStyle(fontFamily: 'Poppins'),
                       ),
                       actions: [
                         TextButton(
@@ -64,14 +61,12 @@ class HomeHeader extends StatelessWidget {
                           },
                           child: const Text(
                             'Sim',
-                            style: TextStyle(fontFamily: 'Poppins'),
                           ),
                         ),
                         TextButton(
                           onPressed: () => Navigator.pop(context),
                           child: const Text(
                             'Não',
-                            style: TextStyle(fontFamily: 'Poppins'),
                           ),
                         ),
                       ],

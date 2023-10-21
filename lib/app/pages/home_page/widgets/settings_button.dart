@@ -58,7 +58,6 @@ class SettingsButton extends StatelessWidget {
                     Text(
                       'Configurações',
                       style: TextStyle(
-                        fontFamily: 'Poppins',
                         color: ColorsApp.primaryColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w500,

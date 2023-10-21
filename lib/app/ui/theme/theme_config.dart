@@ -6,6 +6,6 @@ class ThemeConfig {
   ThemeConfig._();
 
   static final theme = ThemeData(
-    scaffoldBackgroundColor: ColorsApp.backgroundColor,
-  );
+      scaffoldBackgroundColor: ColorsApp.backgroundColor,
+      fontFamily: 'Poppins');
 }

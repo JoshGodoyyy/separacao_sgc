@@ -18,7 +18,7 @@ class _SettingsState extends State<Settings> {
         backgroundColor: ColorsApp.backgroundColor,
         title: const Text(
           'Configurações',
-          style: TextStyle(fontFamily: 'Poppins', color: Colors.black),
+          style: TextStyle(color: Colors.black),
         ),
         iconTheme: const IconThemeData(
           color: Colors.black,

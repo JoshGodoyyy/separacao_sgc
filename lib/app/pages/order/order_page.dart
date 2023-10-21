@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/pages/order/pages/general_info.dart';
+import 'package:sgc/app/pages/order/pages/observations.dart';
+import 'package:sgc/app/pages/order/pages/packaging.dart';
+import 'package:sgc/app/pages/order/pages/products.dart';
+import 'package:sgc/app/pages/order/pages/separation.dart';
 import 'package:sgc/app/pages/order/widgets/item.dart';
 
 import '../../ui/styles/colors_app.dart';
@@ -16,15 +21,32 @@ class Order extends StatefulWidget {
 }
 
 class _OrderState extends State<Order> {
+  int currentPage = 0;
+
   @override
   Widget build(BuildContext context) {
+    final List<Widget> screens = [
+      GeneralInfo(pedido: widget.pedido),
+      Products(pedido: widget.pedido),
+      Separation(pedido: widget.pedido),
+      Packaging(pedido: widget.pedido),
+      Observations(pedido: widget.pedido),
+    ];
+
+    final List<String> titles = [
+      'Dados Gerais',
+      'Produtos',
+      'Separação/Grupos',
+      'Embalagens',
+      'Observações Separador',
+    ];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ColorsApp.elementColor,
         title: Text(
-          '${widget.pedido.idPedido}',
+          titles[currentPage],
           style: const TextStyle(
-            fontFamily: 'Poppins',
             color: Colors.black,
           ),
         ),
@@ -33,26 +55,82 @@ class _OrderState extends State<Order> {
         ),
         centerTitle: true,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          const Item(label: 'Data de criação:'),
-          const Item(label: 'Fantasia:'),
-          const Item(label: 'Id orçamento:'),
-          const Item(label: 'Pedido cliente:'),
-          const Item(label: 'Observações:'),
-          const Item(label: 'Data de entrega:'),
-          const Item(label: 'Tipo de entrega:'),
-          const Item(label: 'Peso:'),
-          const Item(label: 'Tratamento:'),
-          const Item(label: 'Cidade:'),
-          const Item(label: 'Setor de entrega:'),
-          const Item(label: 'Vendedor:'),
-          const Item(label: 'Data de liberação:'),
-          const Item(label: 'Financeiro:'),
-          const Item(label: 'Status:'),
-        ],
+      drawer: Drawer(
+        child: Column(
+          children: [
+            DrawerHeader(
+              child: Center(
+                child: Image.asset('assets/images/logo.png'),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.info,
+              ),
+              title: const Text('Dados Gerais'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() => currentPage = 0);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.amp_stories_rounded,
+              ),
+              title: const Text('Produtos'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() => currentPage = 1);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.group_work_rounded,
+              ),
+              title: const Text('Separação/Grupos'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() => currentPage = 2);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.archive,
+              ),
+              title: const Text('Embalagens'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() => currentPage = 3);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.app_registration_outlined,
+              ),
+              title: const Text('Observações Separador'),
+              onTap: () {
+                Navigator.pop(context);
+                setState(() => currentPage = 4);
+              },
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Divider(),
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.arrow_back,
+              ),
+              title: const Text('Voltar'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
+      body: screens[currentPage],
     );
   }
 }

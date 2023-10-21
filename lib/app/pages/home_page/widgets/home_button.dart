@@ -57,7 +57,6 @@ class HomeButton extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        fontFamily: 'Poppins',
                         color: ColorsApp.primaryColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w500,

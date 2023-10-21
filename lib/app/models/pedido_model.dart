@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../models/cliente_model.dart';
+import '../models/vendedor_model.dart';
 
 class Pedido {
   final IconData icone;
   final int idPedido;
   final String tipo;
   final String tipoVenda;
+  final VendedorModel vendedor;
   final DateTime dataCriacao;
   final int idUsuario;
   final String nomeUsuario;
@@ -22,6 +24,7 @@ class Pedido {
     this.idPedido,
     this.tipo,
     this.tipoVenda,
+    this.vendedor,
     this.dataCriacao,
     this.idUsuario,
     this.nomeUsuario,

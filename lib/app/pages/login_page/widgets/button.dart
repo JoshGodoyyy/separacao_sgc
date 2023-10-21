@@ -26,7 +26,6 @@ class _ButtonState extends State<Button> {
         child: const Text(
           'Entrar',
           style: TextStyle(
-            fontFamily: 'Poppins',
             fontSize: 16,
           ),
         ),

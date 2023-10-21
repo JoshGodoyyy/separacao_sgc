@@ -95,7 +95,6 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text(
                   'Esqueci minha senha',
                   style: TextStyle(
-                    fontFamily: 'Poppins',
                     fontSize: 14,
                   ),
                 ),

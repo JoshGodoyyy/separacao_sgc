@@ -25,7 +25,6 @@ class _HomePageState extends State<HomePage> {
         title: Text(
           data.companyName,
           style: const TextStyle(
-            fontFamily: 'Poppins',
             color: ColorsApp.primaryColor,
           ),
         ),

@@ -39,7 +39,6 @@ class _STextFieldState extends State<STextField> {
           child: Text(
             widget.label,
             style: const TextStyle(
-              fontFamily: 'Poppins',
               color: Colors.white,
               fontSize: 14,
             ),
