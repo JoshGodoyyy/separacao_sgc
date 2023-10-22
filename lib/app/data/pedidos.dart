@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/models/product.dart';
 import 'package:sgc/app/models/vendedor_model.dart';
 
 import '/app/models/cliente_model.dart';
@@ -35,6 +36,49 @@ class Pedidos {
       'Retira',
       0,
       0,
+      [
+        Product(
+          'Perfil',
+          'ALG-1001CHA',
+          'Perfil Natural 6000mm',
+          'PC',
+          100,
+          3,
+        ),
+        Product(
+          'Perfil',
+          'ALG-1038CHA',
+          'Perfil Branco 6000mm',
+          'KG',
+          200,
+          6,
+        ),
+        Product(
+          'Perfil',
+          'ALG-1038C',
+          'Perfil Branco 6000mm',
+          'KG',
+          500,
+          6,
+        ),
+        Product(
+          'Acessório',
+          '+PAB42X16IN',
+          'Parafuso 4,2X16mm Cabeça Chata PHS Brocante Inox',
+          'PC',
+          50,
+          0,
+        ),
+        Product(
+          'Acessório',
+          '+PC42X16IN',
+          'Parafuso 4,2X16mm Cabeça Chata PHS',
+          'PC',
+          50,
+          0,
+        ),
+      ],
+      [],
     ),
   ];
   static List<Pedido> pedidosSeparando = [];

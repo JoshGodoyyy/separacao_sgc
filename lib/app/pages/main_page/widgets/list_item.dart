@@ -24,7 +24,7 @@ class ListItem extends StatelessWidget {
         child: InkWell(
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (builder) => Order(
+              builder: (builder) => OrderPage(
                 pedido: pedido,
               ),
             ),

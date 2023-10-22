@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/pages/order/widgets/save_button.dart';
+import 'package:sgc/app/pages/order/widgets/search_text.dart';
 
 import '../../../models/pedido_model.dart';
 import '../../../ui/styles/colors_app.dart';
@@ -100,7 +102,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       children: [
         // Tipo
         item(
@@ -184,6 +186,11 @@ class _GeneralInfoState extends State<GeneralInfo> {
           true,
         ),
         // Id Cliente
+        SearchText(
+          label: 'ID Cliente:',
+          controller: idClienteController,
+          onTap: () {},
+        ),
         // Fantasia Cliente
         item(
           'Fantasia:',
@@ -197,6 +204,11 @@ class _GeneralInfoState extends State<GeneralInfo> {
           true,
         ),
         // CEP Cliente
+        item(
+          'CEP:',
+          cepController,
+          true,
+        ),
         // Endereço Cliente
         item(
           'Endereço:',
@@ -265,6 +277,8 @@ class _GeneralInfoState extends State<GeneralInfo> {
           nfeRemessaController,
           true,
         ),
+        const SizedBox(height: 8),
+        saveButton(() {}),
       ],
     );
   }

@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:sgc/app/pages/order/pages/general_info.dart';
-import 'package:sgc/app/pages/order/pages/observations.dart';
-import 'package:sgc/app/pages/order/pages/packaging.dart';
-import 'package:sgc/app/pages/order/pages/products.dart';
-import 'package:sgc/app/pages/order/pages/separation.dart';
 
 import '../../ui/styles/colors_app.dart';
+import '/app/pages/order/pages/observations.dart';
+import 'pages/general_info.dart';
+import '/app/pages/order/pages/packaging.dart';
+import '/app/pages/order/pages/products.dart';
+import '/app/pages/order/pages/separation.dart';
 import '/app/models/pedido_model.dart';
 
-class Order extends StatefulWidget {
+class OrderPage extends StatefulWidget {
   final Pedido pedido;
-  const Order({
+  const OrderPage({
     super.key,
     required this.pedido,
   });
 
   @override
-  State<Order> createState() => _OrderState();
+  State<OrderPage> createState() => _OrderPageState();
 }
 
-class _OrderState extends State<Order> {
+class _OrderPageState extends State<OrderPage> {
   int currentPage = 0;
 
   @override
@@ -79,7 +79,11 @@ class _OrderState extends State<Order> {
               title: const Text('Produtos'),
               onTap: () {
                 Navigator.pop(context);
-                setState(() => currentPage = 1);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (builder) => Products(pedido: widget.pedido),
+                  ),
+                );
               },
             ),
             ListTile(
@@ -130,6 +134,13 @@ class _OrderState extends State<Order> {
         ),
       ),
       body: screens[currentPage],
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: ColorsApp.primaryColor,
+        onPressed: () {},
+        child: const Icon(
+          Icons.send,
+        ),
+      ),
     );
   }
 }

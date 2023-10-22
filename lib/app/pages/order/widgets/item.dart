@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../ui/styles/colors_app.dart';
 
 Padding item(String label, TextEditingController controller,
-    [bool readOnly = false]) {
+    [bool readOnly = false, TextInputType keyboardType = TextInputType.text]) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
     child: Column(
@@ -37,6 +37,7 @@ Padding item(String label, TextEditingController controller,
           child: TextField(
             controller: controller,
             readOnly: readOnly,
+            keyboardType: keyboardType,
             style: TextStyle(
               color: readOnly ? Colors.black45 : Colors.black,
             ),

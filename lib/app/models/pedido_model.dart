@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/models/product.dart';
 
 import '../models/cliente_model.dart';
 import '../models/vendedor_model.dart';
+import 'pack.dart';
 
 class Pedido {
   final IconData icone;
@@ -18,6 +20,8 @@ class Pedido {
   final String tipoEntrega;
   final int nfeVenda;
   final int nfeRemessa;
+  final List<Product> produtos;
+  final List<Pack> embalagens;
 
   Pedido(
     this.icone,
@@ -34,5 +38,7 @@ class Pedido {
     this.tipoEntrega,
     this.nfeVenda,
     this.nfeRemessa,
+    this.produtos,
+    this.embalagens,
   );
 }
