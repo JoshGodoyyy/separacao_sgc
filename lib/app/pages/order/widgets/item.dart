@@ -5,14 +5,17 @@ import '../../../ui/styles/colors_app.dart';
 Padding item(String label, TextEditingController controller,
     [bool readOnly = false]) {
   return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 14,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+            ),
           ),
         ),
         const SizedBox(height: 4),
@@ -34,13 +37,16 @@ Padding item(String label, TextEditingController controller,
           child: TextField(
             controller: controller,
             readOnly: readOnly,
+            style: TextStyle(
+              color: readOnly ? Colors.black45 : Colors.black,
+            ),
             decoration: const InputDecoration(
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
               ),
             ),
           ),
-        )
+        ),
       ],
     ),
   );

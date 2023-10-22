@@ -4,7 +4,6 @@ import 'package:sgc/app/pages/order/pages/observations.dart';
 import 'package:sgc/app/pages/order/pages/packaging.dart';
 import 'package:sgc/app/pages/order/pages/products.dart';
 import 'package:sgc/app/pages/order/pages/separation.dart';
-import 'package:sgc/app/pages/order/widgets/item.dart';
 
 import '../../ui/styles/colors_app.dart';
 import '/app/models/pedido_model.dart';
