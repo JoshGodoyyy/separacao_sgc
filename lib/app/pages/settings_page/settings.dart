@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '/app/ui/styles/colors_app.dart';
+import '../../config/theme_provider.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -12,18 +13,35 @@ class Settings extends StatefulWidget {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: ColorsApp.backgroundColor,
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text(
           'Configurações',
-          style: TextStyle(color: Colors.black),
-        ),
-        iconTheme: const IconThemeData(
-          color: Colors.black,
         ),
         centerTitle: true,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Modo escuro:',
+                style: TextStyle(fontSize: 16),
+              ),
+              Switch(
+                value: themeProvider.currentTheme == ThemeMode.dark,
+                onChanged: (value) {
+                  themeProvider.toggleTheme();
+                },
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

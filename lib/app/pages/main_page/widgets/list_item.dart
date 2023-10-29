@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sgc/app/pages/order/order_page.dart';
 
 import '/app/models/pedido_model.dart';
-import '/app/ui/styles/colors_app.dart';
 
 class ListItem extends StatelessWidget {
   final Pedido pedido;
@@ -20,7 +19,7 @@ class ListItem extends StatelessWidget {
           Radius.circular(10),
         ),
         elevation: 3,
-        color: ColorsApp.elementColor,
+        color: Theme.of(context).primaryColor,
         child: InkWell(
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(

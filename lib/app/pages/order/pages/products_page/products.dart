@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../ui/styles/colors_app.dart';
+import '../../../../ui/styles/colors_app.dart';
 import '/app/models/pedido_model.dart';
-import 'accessories.dart';
-import 'all_items.dart';
-import 'profiles.dart';
+import 'widgets/accessories.dart';
+import 'widgets/all_items.dart';
+import 'widgets/profiles.dart';
 
 class Products extends StatefulWidget {
   final Pedido pedido;
@@ -24,19 +24,12 @@ class _ProductsState extends State<Products> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: ColorsApp.elementColor,
+          backgroundColor: Theme.of(context).primaryColor,
           title: const Text(
             'Produtos',
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
-          iconTheme: const IconThemeData(
-            color: Colors.black,
           ),
           centerTitle: true,
           bottom: const TabBar(
-            labelColor: Colors.black,
             indicatorColor: ColorsApp.primaryColor,
             tabs: [
               Tab(

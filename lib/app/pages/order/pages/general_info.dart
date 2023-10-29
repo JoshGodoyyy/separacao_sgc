@@ -3,7 +3,6 @@ import 'package:sgc/app/pages/order/widgets/save_button.dart';
 import 'package:sgc/app/pages/order/widgets/search_text.dart';
 
 import '../../../models/pedido_model.dart';
-import '../../../ui/styles/colors_app.dart';
 import '../widgets/item.dart';
 import '/app/enums/sale_types.dart';
 
@@ -106,6 +105,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
       children: [
         // Tipo
         item(
+          context,
           'Tipo',
           tipoController,
           true,
@@ -126,20 +126,11 @@ class _GeneralInfoState extends State<GeneralInfo> {
                 ),
               ),
               const SizedBox(height: 4),
-              Container(
-                decoration: const BoxDecoration(
-                  color: ColorsApp.elementColor,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 5,
-                      spreadRadius: 1,
-                      offset: Offset(2, 2),
-                    )
-                  ],
+              Material(
+                elevation: 5,
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10),
                 ),
                 child: DropdownMenu<SaleTypes>(
                   inputDecorationTheme: const InputDecorationTheme(
@@ -163,24 +154,28 @@ class _GeneralInfoState extends State<GeneralInfo> {
         ),
         // Número do Pedido
         item(
+          context,
           'Pedido:',
           pedidoController,
           true,
         ),
         // Data de Criação
         item(
+          context,
           'Data de Criação:',
           dataCriacaoController,
           true,
         ),
         // Nome de Usuário de Criação
         item(
+          context,
           'Criado por:',
           nomeUsuarioController,
           true,
         ),
         // Status do Pedido
         item(
+          context,
           'Status Pedido:',
           statusPedidoController,
           true,
@@ -193,24 +188,28 @@ class _GeneralInfoState extends State<GeneralInfo> {
         ),
         // Fantasia Cliente
         item(
+          context,
           'Fantasia:',
           fantasiaController,
           true,
         ),
         // Razão Social Cliente
         item(
+          context,
           'Razão Social:',
           razaoSocialController,
           true,
         ),
         // CEP Cliente
         item(
+          context,
           'CEP:',
           cepController,
           true,
         ),
         // Endereço Cliente
         item(
+          context,
           'Endereço:',
           enderecoController,
           true,
@@ -220,6 +219,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
           children: [
             Expanded(
               child: item(
+                context,
                 'Número:',
                 numeroController,
                 true,
@@ -228,6 +228,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
             const SizedBox(width: 8),
             Expanded(
               child: item(
+                context,
                 'Complemento:',
                 complementoController,
                 true,
@@ -237,48 +238,59 @@ class _GeneralInfoState extends State<GeneralInfo> {
         ),
         // Bairro
         item(
+          context,
           'Bairro:',
           bairroController,
           true,
         ),
         // Cidade
         item(
+          context,
           'Cidade:',
           cidadeController,
           true,
         ),
         // Estado
         item(
+          context,
           'Estado:',
           estadoController,
           true,
         ),
         // Data e Hora de Entrega
         item(
+          context,
           'Data e Hora de Entrega:',
           dataHoraEntregaController,
           true,
         ),
         // Tipo de Entrega
         item(
+          context,
           'Tipo de Entrega:',
           tipoEntregaController,
           true,
         ),
         // NFe Venda
         item(
+          context,
           'NFe Venda:',
           nfeVendaController,
           true,
         ),
         // NFe Remessa
         item(
+          context,
           'NFe Remessa:',
           nfeRemessaController,
           true,
         ),
         const SizedBox(height: 8),
-        saveButton(() {}),
+        Padding(
+          padding: const EdgeInsets.only(right: 65),
+          child: saveButton(() {}),
+        ),
+        const SizedBox(height: 4),
       ],
     );
   }

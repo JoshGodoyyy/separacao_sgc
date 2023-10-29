@@ -7,7 +7,6 @@ import '/app/pages/login_page/widgets/textfield.dart';
 import '/app/data/login_dao.dart';
 import '/app/models/login_model.dart';
 import '/app/pages/loading_screen.dart';
-import '/app/ui/styles/colors_app.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -55,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorsApp.primaryColor,
+      backgroundColor: const Color(0xff12111F),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Center(

@@ -4,7 +4,6 @@ import 'package:sgc/app/pages/home_page/widgets/home_header.dart';
 import 'package:sgc/app/pages/main_page/main_page.dart';
 
 import '/app/pages/home_page/widgets/home_button.dart';
-import '/app/ui/styles/colors_app.dart';
 import 'widgets/settings_button.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,12 +23,9 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         title: Text(
           data.companyName,
-          style: const TextStyle(
-            color: ColorsApp.primaryColor,
-          ),
         ),
         centerTitle: true,
-        backgroundColor: ColorsApp.elementColor,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       body: Column(
         children: [

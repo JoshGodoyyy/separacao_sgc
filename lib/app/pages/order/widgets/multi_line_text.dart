@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../ui/styles/colors_app.dart';
-
 class MultiLineText extends StatelessWidget {
   final String label;
   final TextEditingController controller;
@@ -29,26 +27,14 @@ class MultiLineText extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          Container(
-            decoration: const BoxDecoration(
-              color: ColorsApp.elementColor,
-              borderRadius: BorderRadius.all(
-                Radius.circular(10),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  blurRadius: 5,
-                  spreadRadius: 1,
-                  offset: Offset(2, 2),
-                )
-              ],
+          Material(
+            elevation: 5,
+            color: Theme.of(context).primaryColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
             ),
             child: TextField(
               controller: controller,
-              style: const TextStyle(
-                color: Colors.black,
-              ),
               maxLines: 5,
               minLines: 5,
               decoration: const InputDecoration(

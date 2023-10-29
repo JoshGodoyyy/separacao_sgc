@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../models/product.dart';
-import '../../../models/pedido_model.dart';
-import '../widgets/modal.dart';
-import '../widgets/product_list_item.dart';
+import '../../../../../models/product.dart';
+import '../../../../../models/pedido_model.dart';
+import 'modal.dart';
+import 'product_list_item.dart';
 
 ListView profiles(BuildContext context, Pedido pedido) {
   return ListView(

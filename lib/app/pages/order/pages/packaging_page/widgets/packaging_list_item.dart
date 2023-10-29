@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../../ui/styles/colors_app.dart';
-import '../../../models/product.dart';
+import '/app/models/pack.dart';
 
-class ProductListItem extends StatelessWidget {
-  final Product product;
+class PackagingListItem extends StatelessWidget {
+  final Pack embalagem;
   final Function onTap;
-  const ProductListItem({
+
+  const PackagingListItem({
     super.key,
-    required this.product,
+    required this.embalagem,
     required this.onTap,
   });
 
@@ -21,7 +21,7 @@ class ProductListItem extends StatelessWidget {
           Radius.circular(10),
         ),
         elevation: 3,
-        color: ColorsApp.elementColor,
+        color: Theme.of(context).primaryColor,
         child: InkWell(
           onTap: () => onTap(),
           borderRadius: const BorderRadius.all(
@@ -34,28 +34,19 @@ class ProductListItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Código: ${product.codigo}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  Text(
-                    'Descrição: ${product.descricao}',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                  ),
-                  Text('Unidade: ${product.unidade}'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Qtd.: ${product.quantidade}'),
-                      Text('Peso Unit..: ${product.pesoUnit}'),
-                      Text(
-                        'Peso Tot.: ${product.quantidade * product.pesoUnit}',
-                      ),
+                      Text('Nº Caixa: ${embalagem.numeroCaixa}'),
+                      Text('Peso: ${embalagem.peso}'),
+                      Text('Quantidade: ${embalagem.quantidade}'),
                     ],
-                  )
+                  ),
+                  Text(
+                    'Observações: ${embalagem.observacoes}',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                  ),
                 ],
               ),
             ),

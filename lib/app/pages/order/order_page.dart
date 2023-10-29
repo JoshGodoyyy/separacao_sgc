@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:provider/provider.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
+import '../../config/theme_provider.dart';
 import '../../ui/styles/colors_app.dart';
 import '/app/pages/order/pages/observations.dart';
 import 'pages/general_info.dart';
-import '/app/pages/order/pages/packaging.dart';
-import '/app/pages/order/pages/products.dart';
-import '/app/pages/order/pages/separation.dart';
+import 'pages/packaging_page/packaging.dart';
+import 'pages/products_page/products.dart';
+import 'pages/separation_page/separation.dart';
 import '/app/models/pedido_model.dart';
 
 class OrderPage extends StatefulWidget {
@@ -21,6 +26,12 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPageState extends State<OrderPage> {
   int currentPage = 0;
+
+  final codigoVendedorController = TextEditingController();
+
+  void clear() {
+    codigoVendedorController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +51,19 @@ class _OrderPageState extends State<OrderPage> {
       'Observações Separador',
     ];
 
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    String drawerLogo() {
+      return themeProvider.currentTheme == ThemeMode.dark
+          ? 'assets/images/logo_light.png'
+          : 'assets/images/logo.png';
+    }
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorsApp.elementColor,
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           titles[currentPage],
-          style: const TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        iconTheme: const IconThemeData(
-          color: Colors.black,
         ),
         centerTitle: true,
       ),
@@ -59,9 +72,10 @@ class _OrderPageState extends State<OrderPage> {
           children: [
             DrawerHeader(
               child: Center(
-                child: Image.asset('assets/images/logo.png'),
+                child: Image.asset(drawerLogo()),
               ),
             ),
+            // Dados Gerais
             ListTile(
               leading: const Icon(
                 Icons.info,
@@ -72,6 +86,7 @@ class _OrderPageState extends State<OrderPage> {
                 setState(() => currentPage = 0);
               },
             ),
+            // Produtos
             ListTile(
               leading: const Icon(
                 Icons.amp_stories_rounded,
@@ -86,6 +101,7 @@ class _OrderPageState extends State<OrderPage> {
                 );
               },
             ),
+            // Separação/Grupos
             ListTile(
               leading: const Icon(
                 Icons.group_work_rounded,
@@ -93,9 +109,14 @@ class _OrderPageState extends State<OrderPage> {
               title: const Text('Separação/Grupos'),
               onTap: () {
                 Navigator.pop(context);
-                setState(() => currentPage = 2);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (builder) => Separation(pedido: widget.pedido),
+                  ),
+                );
               },
             ),
+            // Embalagens
             ListTile(
               leading: const Icon(
                 Icons.archive,
@@ -106,6 +127,7 @@ class _OrderPageState extends State<OrderPage> {
                 setState(() => currentPage = 3);
               },
             ),
+            // Observações Separador
             ListTile(
               leading: const Icon(
                 Icons.app_registration_outlined,
@@ -120,6 +142,7 @@ class _OrderPageState extends State<OrderPage> {
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: Divider(),
             ),
+            // Voltar
             ListTile(
               leading: const Icon(
                 Icons.arrow_back,
@@ -134,12 +157,80 @@ class _OrderPageState extends State<OrderPage> {
         ),
       ),
       body: screens[currentPage],
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: SpeedDial(
+        icon: Icons.menu,
+        iconTheme: const IconThemeData(color: Colors.white),
+        overlayOpacity: 0,
         backgroundColor: ColorsApp.primaryColor,
-        onPressed: () {},
-        child: const Icon(
-          Icons.send,
-        ),
+        children: [
+          SpeedDialChild(
+            child: const Icon(Icons.directions_walk_outlined),
+            label: 'Separação',
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Código do Vendedor:',
+                          style: TextStyle(fontSize: 14),
+                        ),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: codigoVendedorController,
+                          obscureText: true,
+                        ),
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          if (codigoVendedorController.text != '1234') {
+                            showTopSnackBar(
+                              Overlay.of(context),
+                              const CustomSnackBar.error(
+                                message: 'Senha inválida',
+                              ),
+                            );
+                            clear();
+                            return;
+                          } else {
+                            clear();
+                          }
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Ok'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          clear();
+                        },
+                        child: const Text('Cancelar'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.archive),
+            label: 'Embalagens',
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.checklist_rtl_rounded),
+            label: 'Conferência',
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.shopping_cart_outlined),
+            label: 'Finalização',
+          ),
+        ],
       ),
     );
   }

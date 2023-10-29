@@ -20,7 +20,7 @@ class SettingsButton extends StatelessWidget {
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
-          color: Colors.white,
+          color: Theme.of(context).primaryColor,
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
@@ -58,7 +58,6 @@ class SettingsButton extends StatelessWidget {
                     Text(
                       'Configurações',
                       style: TextStyle(
-                        color: ColorsApp.primaryColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),

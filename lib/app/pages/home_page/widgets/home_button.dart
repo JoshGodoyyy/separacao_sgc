@@ -24,7 +24,7 @@ class HomeButton extends StatelessWidget {
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
-          color: Colors.white,
+          color: Theme.of(context).primaryColor,
           child: InkWell(
             onTap: () => Navigator.of(context)
                 .push(MaterialPageRoute(builder: (builder) => page)),
@@ -57,7 +57,6 @@ class HomeButton extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                        color: ColorsApp.primaryColor,
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
                       ),

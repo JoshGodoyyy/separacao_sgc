@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../data/pedidos.dart';
 import '../../models/pedido_model.dart';
-import '/app/ui/styles/colors_app.dart';
 import 'widgets/list_item.dart';
 
 class MainPage extends StatefulWidget {
@@ -22,15 +21,9 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: ColorsApp.elementColor,
-        title: Text(
-          widget.title,
-          style: const TextStyle(
-            color: Colors.black,
-          ),
-        ),
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(widget.title),
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.black),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8),

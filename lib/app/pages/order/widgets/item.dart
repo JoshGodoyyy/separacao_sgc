@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../../../ui/styles/colors_app.dart';
+class Item extends StatelessWidget {
+  const Item({super.key});
 
-Padding item(String label, TextEditingController controller,
-    [bool readOnly = false, TextInputType keyboardType = TextInputType.text]) {
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+Padding item(
+  BuildContext context,
+  String label,
+  TextEditingController controller, [
+  bool readOnly = false,
+  TextInputType keyboardType = TextInputType.text,
+]) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
     child: Column(
@@ -19,28 +31,16 @@ Padding item(String label, TextEditingController controller,
           ),
         ),
         const SizedBox(height: 4),
-        Container(
-          decoration: const BoxDecoration(
-            color: ColorsApp.elementColor,
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                blurRadius: 5,
-                spreadRadius: 1,
-                offset: Offset(2, 2),
-              )
-            ],
+        Material(
+          elevation: 5,
+          color: Theme.of(context).primaryColor,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10),
           ),
           child: TextField(
             controller: controller,
             readOnly: readOnly,
             keyboardType: keyboardType,
-            style: TextStyle(
-              color: readOnly ? Colors.black45 : Colors.black,
-            ),
             decoration: const InputDecoration(
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,

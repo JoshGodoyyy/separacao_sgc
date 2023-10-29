@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '/app/pages/order/widgets/save_button.dart';
-import '../../../ui/styles/colors_app.dart';
-import 'multi_line_text.dart';
-import 'search_text.dart';
+import '../../../widgets/multi_line_text.dart';
+import '../../../widgets/search_text.dart';
 
 Future<dynamic> showModal(BuildContext context) {
   final searchController = TextEditingController();
@@ -19,9 +20,9 @@ Future<dynamic> showModal(BuildContext context) {
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
         child: Container(
-          decoration: const BoxDecoration(
-            color: ColorsApp.backgroundColor,
-            borderRadius: BorderRadius.only(
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             ),
@@ -34,7 +35,14 @@ Future<dynamic> showModal(BuildContext context) {
                 SearchText(
                   label: 'Tratamento:',
                   controller: searchController,
-                  onTap: () {},
+                  onTap: () {
+                    showTopSnackBar(
+                      Overlay.of(context),
+                      const CustomSnackBar.info(
+                        message: 'Feature em desenvolvimento!',
+                      ),
+                    );
+                  },
                 ),
                 MultiLineText(
                   label: 'Observações do Produto:',

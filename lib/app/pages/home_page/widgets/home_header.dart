@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/user.dart';
-import '../../../ui/styles/colors_app.dart';
 import '../../login_page/login_page.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -11,21 +10,12 @@ class HomeHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     var data = User();
 
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: const BoxDecoration(
-        color: ColorsApp.elementColor,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(10),
-          bottomRight: Radius.circular(10),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            blurRadius: 5,
-            spreadRadius: 3,
-          )
-        ],
+    return Material(
+      elevation: 5,
+      color: Theme.of(context).primaryColor,
+      borderRadius: const BorderRadius.only(
+        bottomLeft: Radius.circular(10),
+        bottomRight: Radius.circular(10),
       ),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -53,6 +43,7 @@ class HomeHeader extends StatelessWidget {
                       actions: [
                         TextButton(
                           onPressed: () {
+                            Navigator.pop(context);
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (builder) => const LoginPage(),
@@ -76,7 +67,6 @@ class HomeHeader extends StatelessWidget {
               },
               icon: const Icon(
                 Icons.logout,
-                color: Colors.black,
               ),
             ),
           ],
