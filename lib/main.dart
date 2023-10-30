@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '/app/config/widgets.dart';
 import '/app/config/theme_provider.dart';
 import '/app/pages/login_page/login_page.dart';
 import '/app/ui/theme/theme_config.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => Widgets(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ThemeProvider(),
+        ),
+      ],
       child: const MainApp(),
     ),
   );

@@ -6,10 +6,12 @@ import 'widgets/list_item.dart';
 
 class MainPage extends StatefulWidget {
   final String title;
+  final String status;
 
   const MainPage({
     super.key,
     required this.title,
+    required this.status,
   });
 
   @override
@@ -29,7 +31,7 @@ class _MainPageState extends State<MainPage> {
         padding: const EdgeInsets.symmetric(vertical: 8),
         children: [
           for (Pedido pedido in Pedidos.pedidosSeparar)
-            ListItem(pedido: pedido),
+            if (pedido.statusPedido == widget.status) ListItem(pedido: pedido),
         ],
       ),
     );
