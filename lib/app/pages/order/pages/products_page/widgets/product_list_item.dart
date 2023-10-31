@@ -14,7 +14,7 @@ class ProductListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Material(
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
@@ -44,11 +44,10 @@ class ProductListItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
                   ),
-                  Text('Unidade: ${product.unidade}'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Qtd.: ${product.quantidade}'),
+                      Text('Qtd.: ${product.quantidade} ${product.unidade}'),
                       Text('Peso Unit..: ${product.pesoUnit}'),
                       Text(
                         'Peso Tot.: ${product.quantidade * product.pesoUnit}',

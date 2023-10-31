@@ -4,12 +4,14 @@ import '/app/ui/styles/colors_app.dart';
 
 class HomeButton extends StatelessWidget {
   final String title;
+  final int count;
   final IconData icon;
   final Widget page;
 
   const HomeButton({
     super.key,
     required this.title,
+    required this.count,
     required this.icon,
     required this.page,
   });
@@ -39,26 +41,47 @@ class HomeButton extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
+                child: Stack(
                   children: [
-                    GradientIcon(
-                      icon: icon,
-                      size: 54,
-                      gradient: const LinearGradient(
-                        colors: [
-                          ColorsApp.primaryColor,
-                          ColorsApp.secondaryColor,
-                        ],
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).indicatorColor,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          '$count',
+                          style: const TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
+                    Center(
+                      child: Column(
+                        children: [
+                          GradientIcon(
+                            icon: icon,
+                            size: 54,
+                            gradient: const LinearGradient(
+                              colors: [
+                                ColorsApp.primaryColor,
+                                ColorsApp.secondaryColor,
+                              ],
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            title,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

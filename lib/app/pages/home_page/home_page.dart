@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/widgets.dart';
+import 'package:sgc/app/data/pedidos.dart';
 import 'package:sgc/app/data/user.dart';
 import 'package:sgc/app/pages/home_page/widgets/home_header.dart';
 import 'package:sgc/app/pages/main_page/main_page.dart';
@@ -18,6 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var data = User();
   var widgets = Widgets();
+
   @override
   Widget build(BuildContext context) {
     var separar = Provider.of<Widgets>(context);
@@ -43,10 +45,11 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Visibility(
                       visible: separar.separar,
-                      child: const HomeButton(
+                      child: HomeButton(
                         title: 'Separar',
+                        count: Pedidos.pedidosSeparar.length,
                         icon: Icons.account_tree_rounded,
-                        page: MainPage(
+                        page: const MainPage(
                           title: 'Separar',
                           status: 'Separar',
                         ),
@@ -54,10 +57,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Visibility(
                       visible: widgets.separando,
-                      child: const HomeButton(
+                      child: HomeButton(
                         title: 'Separando',
+                        count: Pedidos.pedidosSeparando.length,
                         icon: Icons.alt_route_outlined,
-                        page: MainPage(
+                        page: const MainPage(
                           title: 'Separando',
                           status: 'Separando',
                         ),
@@ -70,10 +74,11 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Visibility(
                       visible: widgets.embalagem,
-                      child: const HomeButton(
+                      child: HomeButton(
                         title: 'Embalagem',
+                        count: Pedidos.pedidosEmbalagem.length,
                         icon: Icons.bento,
-                        page: MainPage(
+                        page: const MainPage(
                           title: 'Embalagem',
                           status: 'Embalagem',
                         ),
@@ -81,10 +86,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Visibility(
                       visible: widgets.conferencia,
-                      child: const HomeButton(
+                      child: HomeButton(
                         title: 'Conferência',
+                        count: Pedidos.pedidosConferencia.length,
                         icon: Icons.app_registration_outlined,
-                        page: MainPage(
+                        page: const MainPage(
                           title: 'Conferência',
                           status: 'Conferencia',
                         ),
@@ -97,10 +103,11 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Visibility(
                       visible: widgets.faturar,
-                      child: const HomeButton(
+                      child: HomeButton(
                         title: 'Faturar',
+                        count: Pedidos.pedidosFaturar.length,
                         icon: Icons.request_page_outlined,
-                        page: MainPage(
+                        page: const MainPage(
                           title: 'Faturar',
                           status: 'Faturar',
                         ),
@@ -108,10 +115,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Visibility(
                       visible: widgets.logistica,
-                      child: const HomeButton(
+                      child: HomeButton(
                         title: 'Logística',
+                        count: Pedidos.pedidosLogistica.length,
                         icon: Icons.rv_hookup_outlined,
-                        page: MainPage(
+                        page: const MainPage(
                           title: 'Logística',
                           status: 'Logistica',
                         ),

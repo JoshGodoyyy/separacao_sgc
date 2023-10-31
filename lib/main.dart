@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sgc/app/config/worker_function.dart';
 
 import '/app/config/widgets.dart';
 import '/app/config/theme_provider.dart';
@@ -12,6 +13,9 @@ void main() {
       providers: [
         ChangeNotifierProvider(
           create: (_) => Widgets(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => WorkerFunction(),
         ),
         ChangeNotifierProvider(
           create: (_) => ThemeProvider(),

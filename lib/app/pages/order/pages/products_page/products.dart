@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sgc/app/config/worker_function.dart';
 
-import '../../../../ui/styles/colors_app.dart';
+import '../../../../models/product.dart';
 import '/app/models/pedido_model.dart';
 import 'widgets/accessories.dart';
 import 'widgets/all_items.dart';
-import 'widgets/profiles.dart';
+import 'widgets/modal.dart';
+import 'widgets/product_list_item.dart';
 
-class Products extends StatefulWidget {
+class Products extends StatelessWidget {
   final Pedido pedido;
   const Products({
     super.key,
@@ -14,53 +17,18 @@ class Products extends StatefulWidget {
   });
 
   @override
-  State<Products> createState() => _ProductsState();
-}
-
-class _ProductsState extends State<Products> {
-  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          title: const Text(
-            'Produtos',
+    final workerFunction = Provider.of<WorkerFunction>(context);
+
+    return ListView(
+      padding: const EdgeInsets.all(12),
+      children: [
+        for (Product produto in pedido.produtos)
+          ProductListItem(
+            product: produto,
+            onTap: () => showModal(context),
           ),
-          centerTitle: true,
-          bottom: const TabBar(
-            indicatorColor: ColorsApp.primaryColor,
-            tabs: [
-              Tab(
-                text: 'Acessórios',
-              ),
-              Tab(
-                text: 'Perfis',
-              ),
-              Tab(
-                text: 'Todos',
-              ),
-            ],
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            accessories(
-              context,
-              widget.pedido,
-            ),
-            profiles(
-              context,
-              widget.pedido,
-            ),
-            allItems(
-              context,
-              widget.pedido,
-            )
-          ],
-        ),
-      ),
+      ],
     );
   }
 }

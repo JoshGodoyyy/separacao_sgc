@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sgc/app/pages/order/widgets/save_button.dart';
-import 'package:sgc/app/pages/order/widgets/search_text.dart';
 
 import '../../../models/pedido_model.dart';
 import '../widgets/item.dart';
+import '../widgets/multi_line_text.dart';
 import '/app/enums/sale_types.dart';
 
 class GeneralInfo extends StatefulWidget {
@@ -18,8 +18,6 @@ class GeneralInfo extends StatefulWidget {
 }
 
 class _GeneralInfoState extends State<GeneralInfo> {
-  final tipoController = TextEditingController();
-  final pedidoController = TextEditingController();
   final dataCriacaoController = TextEditingController();
   final nomeUsuarioController = TextEditingController();
   final statusPedidoController = TextEditingController();
@@ -37,6 +35,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
   final tipoEntregaController = TextEditingController();
   final nfeVendaController = TextEditingController();
   final nfeRemessaController = TextEditingController();
+  final observacoesController = TextEditingController();
 
   SaleTypes saleType = SaleTypes.faturamento;
 
@@ -46,8 +45,6 @@ class _GeneralInfoState extends State<GeneralInfo> {
 
     var pedido = widget.pedido;
 
-    tipoController.text = pedido.tipo.toString();
-    pedidoController.text = pedido.idPedido.toString();
     dataCriacaoController.text = pedido.dataCriacao.toString();
     nomeUsuarioController.text = pedido.nomeUsuario.toString();
     saleType = SaleTypes.values.firstWhere(
@@ -74,138 +71,57 @@ class _GeneralInfoState extends State<GeneralInfo> {
     nfeRemessaController.text = pedido.nfeRemessa.toString();
   }
 
-  String formatType(SaleTypes type) {
-    String obj = type.toString().split('.').last;
-
-    if (obj == SaleTypes.venda.toString().split('.').last) {
-      return 'Venda';
-    } else if (obj == SaleTypes.faturamento.toString().split('.').last) {
-      return 'Faturamento';
-    } else if (obj == SaleTypes.remessa.toString().split('.').last) {
-      return 'Remessa';
-    } else if (obj == SaleTypes.amostra.toString().split('.').last) {
-      return 'Amostra';
-    } else if (obj == SaleTypes.troca.toString().split('.').last) {
-      return 'Troca';
-    } else if (obj == SaleTypes.futuraCompra.toString().split('.').last) {
-      return 'Futura Compra';
-    } else if (obj == SaleTypes.empresa.toString().split('.').last) {
-      return 'Empresa';
-    } else if (obj == SaleTypes.ncfe.toString().split('.').last) {
-      return 'NCF-e';
-    } else {
-      return 'NC-e';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(12),
       children: [
-        // Tipo
-        item(
-          context,
-          'Tipo',
-          tipoController,
-          true,
-        ),
-        // Tipo de Venda
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  'Tipo de Venda',
-                  style: TextStyle(
-                    fontSize: 14,
-                  ),
-                ),
+        // Nome de Usuário e Data de Criação
+        Row(
+          children: [
+            Flexible(
+              flex: 1,
+              child: item(
+                context,
+                'Criado por:',
+                nomeUsuarioController,
+                true,
               ),
-              const SizedBox(height: 4),
-              Material(
-                elevation: 5,
-                color: Theme.of(context).primaryColor,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
-                ),
-                child: DropdownMenu<SaleTypes>(
-                  inputDecorationTheme: const InputDecorationTheme(
-                    border: OutlineInputBorder(borderSide: BorderSide.none),
-                  ),
-                  width: MediaQuery.of(context).size.width - 32,
-                  initialSelection: saleType,
-                  onSelected: (value) => setState(() => saleType = value!),
-                  dropdownMenuEntries: SaleTypes.values.map(
-                    (tipo) {
-                      return DropdownMenuEntry(
-                        value: tipo,
-                        label: formatType(tipo),
-                      );
-                    },
-                  ).toList(),
-                ),
+            ),
+            Flexible(
+              flex: 2,
+              child: item(
+                context,
+                'Data de Criação:',
+                dataCriacaoController,
+                true,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        // Número do Pedido
-        item(
-          context,
-          'Pedido:',
-          pedidoController,
-          true,
-        ),
-        // Data de Criação
-        item(
-          context,
-          'Data de Criação:',
-          dataCriacaoController,
-          true,
-        ),
-        // Nome de Usuário de Criação
-        item(
-          context,
-          'Criado por:',
-          nomeUsuarioController,
-          true,
-        ),
-        // Status do Pedido
-        item(
-          context,
-          'Status Pedido:',
-          statusPedidoController,
-          true,
-        ),
-        // Id Cliente
-        SearchText(
-          label: 'ID Cliente:',
-          controller: idClienteController,
-          onTap: () {},
-        ),
-        // Fantasia Cliente
-        item(
-          context,
-          'Fantasia:',
-          fantasiaController,
-          true,
-        ),
-        // Razão Social Cliente
-        item(
-          context,
-          'Razão Social:',
-          razaoSocialController,
-          true,
-        ),
-        // CEP Cliente
-        item(
-          context,
-          'CEP:',
-          cepController,
-          true,
+        // Id Cliente e Razão Social
+        Row(
+          children: [
+            // Id Cliente
+            Flexible(
+              flex: 1,
+              child: item(
+                context,
+                'ID Cliente:',
+                idClienteController,
+                true,
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              child: item(
+                context,
+                'Razão Social:',
+                razaoSocialController,
+                true,
+              ),
+            ),
+          ],
         ),
         // Endereço Cliente
         item(
@@ -217,7 +133,8 @@ class _GeneralInfoState extends State<GeneralInfo> {
         // Numero e Complemento Cliente
         Row(
           children: [
-            Expanded(
+            Flexible(
+              flex: 1,
               child: item(
                 context,
                 'Número:',
@@ -225,8 +142,8 @@ class _GeneralInfoState extends State<GeneralInfo> {
                 true,
               ),
             ),
-            const SizedBox(width: 8),
-            Expanded(
+            Flexible(
+              flex: 2,
               child: item(
                 context,
                 'Complemento:',
@@ -250,12 +167,28 @@ class _GeneralInfoState extends State<GeneralInfo> {
           cidadeController,
           true,
         ),
-        // Estado
-        item(
-          context,
-          'Estado:',
-          estadoController,
-          true,
+        // Estado e CEP Cliente
+        Row(
+          children: [
+            Flexible(
+              flex: 1,
+              child: item(
+                context,
+                'Estado:',
+                estadoController,
+                true,
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              child: item(
+                context,
+                'CEP:',
+                cepController,
+                true,
+              ),
+            )
+          ],
         ),
         // Data e Hora de Entrega
         item(
@@ -284,6 +217,10 @@ class _GeneralInfoState extends State<GeneralInfo> {
           'NFe Remessa:',
           nfeRemessaController,
           true,
+        ),
+        MultiLineText(
+          label: 'Observações do Separador:',
+          controller: observacoesController,
         ),
         const SizedBox(height: 8),
         Padding(

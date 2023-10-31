@@ -14,20 +14,23 @@ class ToggleSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontSize: 16),
-        ),
-        Switch(
-          value: value,
-          onChanged: (value) {
-            onChanged();
-          },
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(fontSize: 16),
+          ),
+          Switch(
+            value: value,
+            onChanged: (value) {
+              onChanged();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

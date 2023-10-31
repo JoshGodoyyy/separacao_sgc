@@ -22,7 +22,7 @@ Column group(
           Radius.circular(10),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: child,
         ),
       ),
