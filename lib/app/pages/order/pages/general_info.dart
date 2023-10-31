@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sgc/app/pages/order/widgets/save_button.dart';
 
 import '../../../models/pedido_model.dart';
 import '../widgets/item.dart';
-import '../widgets/multi_line_text.dart';
 import '/app/enums/sale_types.dart';
 
 class GeneralInfo extends StatefulWidget {
@@ -35,7 +33,6 @@ class _GeneralInfoState extends State<GeneralInfo> {
   final tipoEntregaController = TextEditingController();
   final nfeVendaController = TextEditingController();
   final nfeRemessaController = TextEditingController();
-  final observacoesController = TextEditingController();
 
   SaleTypes saleType = SaleTypes.faturamento;
 
@@ -204,30 +201,27 @@ class _GeneralInfoState extends State<GeneralInfo> {
           tipoEntregaController,
           true,
         ),
-        // NFe Venda
-        item(
-          context,
-          'NFe Venda:',
-          nfeVendaController,
-          true,
+        // NFe Venda e NFe Remessa
+        Row(
+          children: [
+            Expanded(
+              child: item(
+                context,
+                'NFe Venda:',
+                nfeVendaController,
+                true,
+              ),
+            ),
+            Expanded(
+              child: item(
+                context,
+                'NFe Remessa:',
+                nfeRemessaController,
+                true,
+              ),
+            ),
+          ],
         ),
-        // NFe Remessa
-        item(
-          context,
-          'NFe Remessa:',
-          nfeRemessaController,
-          true,
-        ),
-        MultiLineText(
-          label: 'Observações do Separador:',
-          controller: observacoesController,
-        ),
-        const SizedBox(height: 8),
-        Padding(
-          padding: const EdgeInsets.only(right: 65),
-          child: saveButton(() {}),
-        ),
-        const SizedBox(height: 4),
       ],
     );
   }

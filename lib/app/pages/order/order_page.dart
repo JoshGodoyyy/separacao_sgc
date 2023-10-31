@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:sgc/app/pages/order/pages/packaging_page/packaging.dart';
 
 import '../../ui/styles/colors_app.dart';
 import 'pages/general_info.dart';
@@ -31,6 +32,7 @@ class _OrderPageState extends State<OrderPage> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
+      initialIndex: 1,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
@@ -42,7 +44,7 @@ class _OrderPageState extends State<OrderPage> {
                 '${widget.pedido.idPedido} - ${widget.pedido.cliente.fantasia}',
               ),
               const Text(
-                'Duração: 1:00:59',
+                'Duração: Não Iniciado',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
@@ -55,10 +57,10 @@ class _OrderPageState extends State<OrderPage> {
             indicatorColor: ColorsApp.primaryColor,
             tabs: [
               Tab(
-                text: 'Produtos',
+                text: 'Dados Gerais',
               ),
               Tab(
-                text: 'Dados Gerais',
+                text: 'Produtos',
               ),
               Tab(
                 text: 'Separação',
@@ -68,8 +70,8 @@ class _OrderPageState extends State<OrderPage> {
         ),
         body: TabBarView(
           children: [
-            Products(pedido: widget.pedido),
             GeneralInfo(pedido: widget.pedido),
+            Products(pedido: widget.pedido),
             Separation(pedido: widget.pedido),
           ],
         ),
@@ -80,21 +82,30 @@ class _OrderPageState extends State<OrderPage> {
           backgroundColor: ColorsApp.primaryColor,
           children: [
             SpeedDialChild(
-              child: const Icon(Icons.directions_walk_outlined),
-              label: 'Iniciar Separação',
-              onTap: () {},
-            ),
-            SpeedDialChild(
-              child: const Icon(Icons.archive),
-              label: 'Liberar para Embalagem',
+              child: const Icon(Icons.shopping_cart_outlined),
+              label: 'Finalizar Separação',
             ),
             SpeedDialChild(
               child: const Icon(Icons.checklist_rtl_rounded),
               label: 'Liberar para Conferência',
             ),
             SpeedDialChild(
-              child: const Icon(Icons.shopping_cart_outlined),
-              label: 'Finalizar Separação',
+              child: const Icon(Icons.archive),
+              label: 'Liberar para Embalagem',
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.directions_walk_outlined),
+              label: 'Iniciar Separação',
+              onTap: () {},
+            ),
+            SpeedDialChild(
+              child: const Icon(Icons.inbox),
+              label: 'Embalagens',
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (builder) => Packaging(pedido: widget.pedido),
+                ),
+              ),
             ),
           ],
         ),

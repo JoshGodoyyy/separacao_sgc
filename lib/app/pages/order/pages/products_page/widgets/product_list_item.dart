@@ -34,13 +34,13 @@ class ProductListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Código: ${product.codigo}',
+                    product.codigo,
                     style: const TextStyle(
                       fontSize: 18,
                     ),
                   ),
                   Text(
-                    'Descrição: ${product.descricao}',
+                    product.descricao,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
                   ),
