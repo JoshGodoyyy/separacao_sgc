@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Widgets with ChangeNotifier {
+class AppConfig with ChangeNotifier {
   late SharedPreferences preferences;
 
-  bool _separar = true;
-  bool _separando = true;
-  bool _embalagem = true;
-  bool _conferencia = true;
-  bool _faturar = true;
-  bool _logistica = true;
-
+  static const String _keyTheme = 'keyDarkMode';
+  static const String _keyAccessories = 'keyAccessories';
+  static const String _keyProfiles = 'keyProfiles';
   static const String _keySeparar = 'keySeparar';
   static const String _keySeparando = 'keySeparando';
   static const String _keyEmbalagem = 'keyEmbalagem';
@@ -18,16 +14,47 @@ class Widgets with ChangeNotifier {
   static const String _keyFaturar = 'keyFaturar';
   static const String _keyLogistica = 'keyLogistica';
 
-  Widgets() {
+  bool _isDarkMode = false;
+  bool _accessories = true;
+  bool _profiles = true;
+  bool _separar = true;
+  bool _separando = true;
+  bool _embalagem = true;
+  bool _conferencia = true;
+  bool _faturar = true;
+  bool _logistica = true;
+
+  AppConfig() {
     _loadData();
   }
 
+  bool get isDarkMode => _isDarkMode;
+  bool get accessories => _accessories;
+  bool get profiles => _profiles;
   bool get separar => _separar;
   bool get separando => _separando;
   bool get embalagem => _embalagem;
   bool get conferencia => _conferencia;
   bool get faturar => _faturar;
   bool get logistica => _logistica;
+
+  void toggleTheme() {
+    _isDarkMode = !_isDarkMode;
+    preferences.setBool(_keyTheme, _isDarkMode);
+    notifyListeners();
+  }
+
+  void setAccessories(bool value) {
+    _accessories = value;
+    preferences.setBool(_keyAccessories, value);
+    notifyListeners();
+  }
+
+  void setProfiles(bool value) {
+    _profiles = value;
+    preferences.setBool(_keyProfiles, value);
+    notifyListeners();
+  }
 
   void setSeparar(bool value) {
     _separar = value;
@@ -67,6 +94,9 @@ class Widgets with ChangeNotifier {
 
   Future<void> _loadData() async {
     preferences = await SharedPreferences.getInstance();
+    _isDarkMode = preferences.getBool(_keyTheme) ?? false;
+    _accessories = preferences.getBool(_keyAccessories) ?? true;
+    _profiles = preferences.getBool(_keyProfiles) ?? true;
     _separar = preferences.getBool(_keySeparar) ?? true;
     _separando = preferences.getBool(_keySeparando) ?? true;
     _embalagem = preferences.getBool(_keyEmbalagem) ?? true;

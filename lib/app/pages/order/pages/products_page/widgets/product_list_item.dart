@@ -33,11 +33,24 @@ class ProductListItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    product.codigo,
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        product.codigo,
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: product.cor,
+                        ),
+                        width: 18,
+                        height: 18,
+                      )
+                    ],
                   ),
                   Text(
                     product.descricao,

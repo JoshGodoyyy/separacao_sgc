@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Product {
   final String tipo;
   final String codigo;
@@ -5,6 +7,7 @@ class Product {
   final String unidade;
   final double quantidade;
   final double pesoUnit;
+  final Color cor;
 
   Product(
     this.tipo,
@@ -13,5 +16,6 @@ class Product {
     this.unidade,
     this.quantidade,
     this.pesoUnit,
+    this.cor,
   );
 }

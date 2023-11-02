@@ -44,6 +44,7 @@ class Pedidos {
           'PC',
           100,
           3,
+          Colors.orange,
         ),
         Product(
           'Perfil',
@@ -52,6 +53,7 @@ class Pedidos {
           'KG',
           200,
           6,
+          Colors.yellow,
         ),
         Product(
           'Perfil',
@@ -60,6 +62,7 @@ class Pedidos {
           'KG',
           500,
           6,
+          Colors.green,
         ),
         Product(
           'Acessório',
@@ -68,6 +71,7 @@ class Pedidos {
           'PC',
           50,
           0,
+          Colors.red,
         ),
         Product(
           'Acessório',
@@ -76,6 +80,7 @@ class Pedidos {
           'PC',
           50,
           0,
+          Colors.blue,
         ),
       ],
       [],

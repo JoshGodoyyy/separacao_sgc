@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/app/config/worker_function.dart';
-import '/app/config/widgets.dart';
-import '/app/config/theme_provider.dart';
+import 'app/config/app_config.dart';
 import '/app/pages/login_page/login_page.dart';
 import '/app/ui/theme/theme_config.dart';
 
@@ -12,14 +10,8 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => Widgets(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => WorkerFunction(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ThemeProvider(),
-        ),
+          create: (_) => AppConfig(),
+        )
       ],
       child: const MainApp(),
     ),
@@ -34,7 +26,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const LoginPage(),
-      theme: context.watch<ThemeProvider>().isDarkMode
+      theme: context.watch<AppConfig>().isDarkMode
           ? ThemeConfig.darkTheme
           : ThemeConfig.theme,
     );

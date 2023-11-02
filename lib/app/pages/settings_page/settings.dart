@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgc/app/config/widgets.dart';
-import 'package:sgc/app/config/worker_function.dart';
+import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/data/user.dart';
 import 'package:sgc/app/pages/settings_page/widgets/group.dart';
 
-import '../../config/theme_provider.dart';
 import 'widgets/toggle_switch.dart';
 
 class Settings extends StatefulWidget {
@@ -21,9 +19,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    final widgets = Provider.of<Widgets>(context);
-    final workerFunction = Provider.of<WorkerFunction>(context);
+    final config = Provider.of<AppConfig>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -82,17 +78,17 @@ class _SettingsState extends State<Settings> {
                 const Divider(),
                 ToggleSwitch(
                   label: 'Perfis',
-                  value: workerFunction.profiles,
+                  value: config.profiles,
                   onChanged: () {
-                    workerFunction.setProfiles(!workerFunction.profiles);
+                    config.setProfiles(!config.profiles);
                   },
                 ),
                 const Divider(),
                 ToggleSwitch(
                   label: 'Acessórios',
-                  value: workerFunction.accessories,
+                  value: config.accessories,
                   onChanged: () {
-                    workerFunction.setAccessories(!workerFunction.accessories);
+                    config.setAccessories(!config.accessories);
                   },
                 ),
               ],
@@ -105,49 +101,49 @@ class _SettingsState extends State<Settings> {
               children: [
                 ToggleSwitch(
                   label: 'Separar',
-                  value: widgets.separar,
+                  value: config.separar,
                   onChanged: () {
-                    widgets.setSeparar(!widgets.separar);
+                    config.setSeparar(!config.separar);
                   },
                 ),
                 const Divider(),
                 ToggleSwitch(
                   label: 'Separando',
-                  value: widgets.separando,
+                  value: config.separando,
                   onChanged: () {
-                    widgets.setSeparando(!widgets.separando);
+                    config.setSeparando(!config.separando);
                   },
                 ),
                 const Divider(),
                 ToggleSwitch(
                   label: 'Embalagem',
-                  value: widgets.embalagem,
+                  value: config.embalagem,
                   onChanged: () {
-                    widgets.setEmbalagem(!widgets.embalagem);
+                    config.setEmbalagem(!config.embalagem);
                   },
                 ),
                 const Divider(),
                 ToggleSwitch(
                   label: 'Conferencia',
-                  value: widgets.conferencia,
+                  value: config.conferencia,
                   onChanged: () {
-                    widgets.setConferencia(!widgets.conferencia);
+                    config.setConferencia(!config.conferencia);
                   },
                 ),
                 const Divider(),
                 ToggleSwitch(
                   label: 'Faturar',
-                  value: widgets.faturar,
+                  value: config.faturar,
                   onChanged: () {
-                    widgets.setFaturar(!widgets.faturar);
+                    config.setFaturar(!config.faturar);
                   },
                 ),
                 const Divider(),
                 ToggleSwitch(
                   label: 'Logística',
-                  value: widgets.logistica,
+                  value: config.logistica,
                   onChanged: () {
-                    widgets.setLogistica(!widgets.logistica);
+                    config.setLogistica(!config.logistica);
                   },
                 ),
               ],
@@ -158,9 +154,9 @@ class _SettingsState extends State<Settings> {
             'Tema',
             ToggleSwitch(
               label: 'Modo escuro:',
-              value: themeProvider.isDarkMode,
+              value: config.isDarkMode,
               onChanged: () {
-                themeProvider.toggleTheme();
+                config.toggleTheme();
               },
             ),
           ),

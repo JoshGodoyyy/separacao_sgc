@@ -5,6 +5,7 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '/app/pages/order/widgets/save_button.dart';
 import '../../../widgets/multi_line_text.dart';
 import '../../../widgets/search_text.dart';
+import 'product_image.dart';
 
 Future<dynamic> showModal(BuildContext context) {
   final searchController = TextEditingController();
@@ -47,6 +48,9 @@ Future<dynamic> showModal(BuildContext context) {
                 MultiLineText(
                   label: 'Observações do Produto:',
                   controller: observacoesController,
+                ),
+                const ProductImage(
+                  label: 'Imagem:',
                 ),
                 const SizedBox(height: 8),
                 SizedBox(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgc/app/config/widgets.dart';
+import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/data/pedidos.dart';
 import 'package:sgc/app/data/user.dart';
 import 'package:sgc/app/pages/home_page/widgets/home_header.dart';
@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var widgets = Provider.of<Widgets>(context);
+    var widgets = Provider.of<AppConfig>(context);
 
     return Scaffold(
       appBar: AppBar(

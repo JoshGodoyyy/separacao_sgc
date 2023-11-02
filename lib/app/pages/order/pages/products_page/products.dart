@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgc/app/config/worker_function.dart';
+import 'package:sgc/app/config/app_config.dart';
 
 import '../../../../models/product.dart';
 import '/app/models/pedido_model.dart';
@@ -16,7 +16,7 @@ class Products extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final workerFunction = Provider.of<WorkerFunction>(context);
+    final workerFunction = Provider.of<AppConfig>(context);
 
     List<Product> filteredList() {
       List<Product> items = [];
