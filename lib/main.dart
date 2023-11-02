@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgc/app/config/worker_function.dart';
 
+import '/app/config/worker_function.dart';
 import '/app/config/widgets.dart';
 import '/app/config/theme_provider.dart';
 import '/app/pages/login_page/login_page.dart';
@@ -34,9 +34,9 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const LoginPage(),
-      theme: ThemeConfig.theme,
-      darkTheme: ThemeConfig.darkTheme,
-      themeMode: Provider.of<ThemeProvider>(context).currentTheme,
+      theme: context.watch<ThemeProvider>().isDarkMode
+          ? ThemeConfig.darkTheme
+          : ThemeConfig.theme,
     );
   }
 }

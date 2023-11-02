@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:sgc/app/pages/order/pages/packaging_page/packaging.dart';
@@ -20,12 +22,51 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
-  int currentPage = 0;
-
   final codigoVendedorController = TextEditingController();
 
   void clear() {
     codigoVendedorController.clear();
+  }
+
+  int _seconds = 0;
+  int _minutes = 0;
+  int _hours = 0;
+
+  late Timer timer;
+
+  void startTimer() {
+    const oneSecond = Duration(seconds: 1);
+    timer = Timer.periodic(
+      oneSecond,
+      (timer) {
+        setState(
+          () {
+            _seconds++;
+            if (_seconds == 60) {
+              _seconds = 0;
+              _minutes++;
+              if (_minutes == 60) {
+                _minutes = 0;
+                _hours++;
+              }
+            }
+          },
+        );
+      },
+    );
+  }
+
+  String durationValue() {
+    String result;
+    String hours = _hours.toString().padLeft(2, '0');
+    String minutes = _minutes.toString().padLeft(2, '0');
+    String seconds = _seconds.toString().padLeft(2, '0');
+
+    _seconds == 0
+        ? result = 'Não Iniciado'
+        : result = '$hours:$minutes:$seconds';
+
+    return result;
   }
 
   @override
@@ -43,9 +84,9 @@ class _OrderPageState extends State<OrderPage> {
               Text(
                 '${widget.pedido.idPedido} - ${widget.pedido.cliente.fantasia}',
               ),
-              const Text(
-                'Duração: Não Iniciado',
-                style: TextStyle(
+              Text(
+                'Duração: ${durationValue()}',
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                 ),
@@ -96,7 +137,38 @@ class _OrderPageState extends State<OrderPage> {
             SpeedDialChild(
               child: const Icon(Icons.directions_walk_outlined),
               label: 'Iniciar Separação',
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text(
+                        'SGC',
+                      ),
+                      content: const Text(
+                        'Deseja iniciar separação?',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            startTimer();
+                          },
+                          child: const Text(
+                            'Sim',
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text(
+                            'Não',
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
             ),
             SpeedDialChild(
               child: const Icon(Icons.inbox),

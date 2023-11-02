@@ -18,11 +18,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   var data = User();
-  var widgets = Widgets();
 
   @override
   Widget build(BuildContext context) {
-    var separar = Provider.of<Widgets>(context);
+    var widgets = Provider.of<Widgets>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Visibility(
-                      visible: separar.separar,
+                      visible: widgets.separar,
                       child: HomeButton(
                         title: 'Separar',
                         count: Pedidos.pedidosSeparar.length,

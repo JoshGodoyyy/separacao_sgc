@@ -158,7 +158,7 @@ class _SettingsState extends State<Settings> {
             'Tema',
             ToggleSwitch(
               label: 'Modo escuro:',
-              value: themeProvider.currentTheme == ThemeMode.dark,
+              value: themeProvider.isDarkMode,
               onChanged: () {
                 themeProvider.toggleTheme();
               },
@@ -169,9 +169,14 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  Future<dynamic> showModal(BuildContext context, String label, String info,
-      TextEditingController controller, Function onTap,
-      [bool obscureText = false]) {
+  Future<dynamic> showModal(
+    BuildContext context,
+    String label,
+    String info,
+    TextEditingController controller,
+    Function onTap, [
+    bool obscureText = false,
+  ]) {
     return showModalBottomSheet(
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
