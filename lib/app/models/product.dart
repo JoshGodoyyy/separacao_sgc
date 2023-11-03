@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:sgc/app/models/colors.dart';
 
 class Product {
   final String tipo;
@@ -7,7 +7,8 @@ class Product {
   final String unidade;
   final double quantidade;
   final double pesoUnit;
-  final Color cor;
+  final Cor cor;
+  final String? observacoes;
 
   Product(
     this.tipo,
@@ -17,5 +18,6 @@ class Product {
     this.quantidade,
     this.pesoUnit,
     this.cor,
+    this.observacoes,
   );
 }

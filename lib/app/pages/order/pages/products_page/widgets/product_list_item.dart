@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/pages/order/pages/products_page/widgets/item_color.dart';
 
 import '../../../../../models/product.dart';
 
@@ -42,14 +43,7 @@ class ProductListItem extends StatelessWidget {
                           fontSize: 18,
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: product.cor,
-                        ),
-                        width: 18,
-                        height: 18,
-                      )
+                      ItemColor(cor: product.cor),
                     ],
                   ),
                   Text(

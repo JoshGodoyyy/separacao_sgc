@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/models/colors.dart';
 import 'package:sgc/app/models/product.dart';
+import 'package:sgc/app/models/tratamento.dart';
 import 'package:sgc/app/models/vendedor_model.dart';
 
 import '/app/models/cliente_model.dart';
@@ -12,6 +14,10 @@ class Pedidos {
       2491,
       'Pedido',
       'Venda',
+      Tratamento(
+        'NAT',
+        'NATURAL',
+      ),
       VendedorModel(
         1,
         'Matheus',
@@ -44,7 +50,11 @@ class Pedidos {
           'PC',
           100,
           3,
-          Colors.orange,
+          Cor(
+            'Laranja',
+            Colors.orange,
+          ),
+          null,
         ),
         Product(
           'Perfil',
@@ -53,7 +63,11 @@ class Pedidos {
           'KG',
           200,
           6,
-          Colors.yellow,
+          Cor(
+            'Amarelo',
+            Colors.yellow,
+          ),
+          null,
         ),
         Product(
           'Perfil',
@@ -62,7 +76,11 @@ class Pedidos {
           'KG',
           500,
           6,
-          Colors.green,
+          Cor(
+            'Verde',
+            Colors.green,
+          ),
+          null,
         ),
         Product(
           'Acessório',
@@ -71,7 +89,11 @@ class Pedidos {
           'PC',
           50,
           0,
-          Colors.red,
+          Cor(
+            'Vermelho',
+            Colors.red,
+          ),
+          null,
         ),
         Product(
           'Acessório',
@@ -80,7 +102,11 @@ class Pedidos {
           'PC',
           50,
           0,
-          Colors.blue,
+          Cor(
+            'Azul',
+            Colors.blue,
+          ),
+          null,
         ),
       ],
       [],

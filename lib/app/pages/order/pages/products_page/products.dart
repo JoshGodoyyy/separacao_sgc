@@ -7,12 +7,27 @@ import '/app/models/pedido_model.dart';
 import 'widgets/modal.dart';
 import 'widgets/product_list_item.dart';
 
-class Products extends StatelessWidget {
+class Products extends StatefulWidget {
   final Pedido pedido;
   const Products({
     super.key,
     required this.pedido,
   });
+
+  @override
+  State<Products> createState() => _ProductsState();
+}
+
+const List<String> list = <String>[
+  'ACESSÓRIO',
+  'BRANCO BRILHANTE',
+  'CEREJEIRA',
+  'CINZA',
+  'ESPECIAL',
+];
+
+class _ProductsState extends State<Products> {
+  String dropValue = list.first;
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +36,14 @@ class Products extends StatelessWidget {
     List<Product> filteredList() {
       List<Product> items = [];
       if (workerFunction.accessories && workerFunction.profiles) {
-        items = pedido.produtos;
+        items = widget.pedido.produtos;
       } else {
         if (workerFunction.accessories) {
-          items = pedido.produtos
+          items = widget.pedido.produtos
               .where((item) => item.tipo.toLowerCase() == 'acessório')
               .toList();
         } else if (workerFunction.profiles) {
-          items = pedido.produtos
+          items = widget.pedido.produtos
               .where((item) => item.tipo.toLowerCase() == 'perfil')
               .toList();
         } else {
@@ -39,14 +54,62 @@ class Products extends StatelessWidget {
       return items;
     }
 
-    return ListView(
-      padding: const EdgeInsets.all(12),
+    return Column(
       children: [
-        for (Product produto in filteredList())
-          ProductListItem(
-            product: produto,
-            onTap: () => showModal(context),
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  'Trat. quando utilizado Grupo Especial:',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Material(
+                elevation: 5,
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10),
+                ),
+                child: DropdownMenu<String>(
+                  inputDecorationTheme: const InputDecorationTheme(
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                  ),
+                  width: MediaQuery.of(context).size.width - 32,
+                  initialSelection: list.first,
+                  onSelected: (String? value) {
+                    setState(() => dropValue = value!);
+                  },
+                  dropdownMenuEntries: list.map((String value) {
+                    return DropdownMenuEntry(value: value, label: value);
+                  }).toList(),
+                ),
+              ),
+            ],
           ),
+        ),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(12),
+            children: [
+              for (Product produto in filteredList())
+                ProductListItem(
+                  product: produto,
+                  onTap: () => showModal(
+                    context,
+                    produto,
+                  ),
+                ),
+            ],
+          ),
+        ),
       ],
     );
   }

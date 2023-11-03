@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../models/pedido_model.dart';
 import '../widgets/item.dart';
-import '/app/enums/sale_types.dart';
 
 class GeneralInfo extends StatefulWidget {
   final Pedido pedido;
@@ -18,6 +17,8 @@ class GeneralInfo extends StatefulWidget {
 class _GeneralInfoState extends State<GeneralInfo> {
   final dataCriacaoController = TextEditingController();
   final nomeUsuarioController = TextEditingController();
+  final idVendedorCotroller = TextEditingController();
+  final nomeVendedorController = TextEditingController();
   final statusPedidoController = TextEditingController();
   final idClienteController = TextEditingController();
   final fantasiaController = TextEditingController();
@@ -34,8 +35,6 @@ class _GeneralInfoState extends State<GeneralInfo> {
   final nfeVendaController = TextEditingController();
   final nfeRemessaController = TextEditingController();
 
-  SaleTypes saleType = SaleTypes.faturamento;
-
   @override
   void initState() {
     super.initState();
@@ -44,21 +43,16 @@ class _GeneralInfoState extends State<GeneralInfo> {
 
     dataCriacaoController.text = pedido.dataCriacao.toString();
     nomeUsuarioController.text = pedido.nomeUsuario.toString();
-    saleType = SaleTypes.values.firstWhere(
-      (element) =>
-          element.toString().split('.').last == pedido.tipoVenda.toLowerCase(),
-    );
     statusPedidoController.text = pedido.statusPedido.toString();
+    idVendedorCotroller.text = pedido.vendedor.idVendedor.toString();
+    nomeVendedorController.text = pedido.vendedor.nomeVendedor.toString();
     idClienteController.text = pedido.cliente.id.toString();
     fantasiaController.text = pedido.cliente.fantasia.toString();
     razaoSocialController.text = pedido.cliente.razaoSocial.toString();
     enderecoController.text = pedido.cliente.endereco.toString();
     numeroController.text = pedido.cliente.numero.toString();
-    if (pedido.cliente.complemento == null) {
-      complementoController.text = '';
-    } else {
-      cepController.text = pedido.cliente.cep.toString();
-    }
+    complementoController.text = pedido.cliente.complemento.toString();
+    cepController.text = pedido.cliente.cep.toString();
     bairroController.text = pedido.cliente.bairro.toString();
     cidadeController.text = pedido.cliente.cidade.toString();
     estadoController.text = pedido.cliente.uf.toString();
@@ -118,6 +112,28 @@ class _GeneralInfoState extends State<GeneralInfo> {
                 true,
               ),
             ),
+          ],
+        ),
+        Row(
+          children: [
+            Flexible(
+              flex: 1,
+              child: item(
+                context,
+                'ID Vendedor:',
+                idVendedorCotroller,
+                true,
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              child: item(
+                context,
+                'Vendedor:',
+                nomeVendedorController,
+                true,
+              ),
+            )
           ],
         ),
         // Endereço Cliente

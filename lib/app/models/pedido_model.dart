@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sgc/app/models/product.dart';
+import 'package:sgc/app/models/tratamento.dart';
 
 import '../models/cliente_model.dart';
 import '../models/vendedor_model.dart';
@@ -10,6 +11,7 @@ class Pedido {
   final int idPedido;
   final String tipo;
   final String tipoVenda;
+  final Tratamento tratamento;
   final VendedorModel vendedor;
   final DateTime dataCriacao;
   final int idUsuario;
@@ -28,6 +30,7 @@ class Pedido {
     this.idPedido,
     this.tipo,
     this.tipoVenda,
+    this.tratamento,
     this.vendedor,
     this.dataCriacao,
     this.idUsuario,

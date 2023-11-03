@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
-class SearchText extends StatelessWidget {
+class IconText extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final Function onTap;
+  final IconData icon;
 
-  const SearchText({
+  const IconText({
     super.key,
     required this.label,
     required this.controller,
     required this.onTap,
+    required this.icon,
   });
 
   @override
@@ -49,7 +51,7 @@ class SearchText extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () => onTap(),
-                  icon: const Icon(Icons.search),
+                  icon: Icon(icon),
                 ),
               ],
             ),

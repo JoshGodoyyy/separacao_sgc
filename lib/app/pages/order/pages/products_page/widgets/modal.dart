@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:sgc/app/models/product.dart';
+import 'package:sgc/app/pages/order/pages/products_page/widgets/item_color.dart';
 
 import '/app/pages/order/widgets/save_button.dart';
 import '../../../widgets/multi_line_text.dart';
-import '../../../widgets/search_text.dart';
+import 'item_detail.dart';
 import 'product_image.dart';
 
-Future<dynamic> showModal(BuildContext context) {
-  final searchController = TextEditingController();
+Future<dynamic> showModal(
+  BuildContext context,
+  Product produto,
+) {
   final observacoesController = TextEditingController();
+
+  String observacoes;
+
+  produto.observacoes == null
+      ? observacoes = ''
+      : observacoes = produto.observacoes!;
+
+  observacoesController.text = observacoes;
 
   return showModalBottomSheet(
     backgroundColor: Colors.transparent,
@@ -33,30 +43,32 @@ Future<dynamic> showModal(BuildContext context) {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SearchText(
-                  label: 'Tratamento:',
-                  controller: searchController,
-                  onTap: () {
-                    showTopSnackBar(
-                      Overlay.of(context),
-                      const CustomSnackBar.info(
-                        message: 'Feature em desenvolvimento!',
-                      ),
-                    );
-                  },
-                ),
                 MultiLineText(
                   label: 'Observações do Produto:',
                   controller: observacoesController,
                 ),
+                ItemDetail(
+                  label: 'Cor',
+                  child: Row(
+                    children: [
+                      ItemColor(
+                        cor: produto.cor,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(produto.cor.nomeCor),
+                    ],
+                  ),
+                ),
                 const ProductImage(
-                  label: 'Imagem:',
+                  label: 'Produto:',
                 ),
                 const SizedBox(height: 8),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: saveButton(
-                    () => Navigator.pop(context),
+                    () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
               ],
