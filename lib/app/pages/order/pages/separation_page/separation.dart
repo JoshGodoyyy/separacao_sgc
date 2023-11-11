@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sgc/app/pages/order/widgets/save_button.dart';
 
-import '../../widgets/multi_line_text.dart';
-import '/app/models/pedido_model.dart';
+import '../../../../models/order_model.dart';
+import 'widgets/detailed_button.dart';
+import 'widgets/details.dart';
+import 'widgets/groups.dart';
 
 class Separation extends StatefulWidget {
   final Pedido pedido;
@@ -16,20 +17,68 @@ class Separation extends StatefulWidget {
 }
 
 class _SeparationState extends State<Separation> {
-  final observacoesController = TextEditingController();
+  final pesoAcessorioController = TextEditingController();
+  final setorSeparacaoController = TextEditingController();
+  final volumeAluminioController = TextEditingController();
+  final volumeAcessorioController = TextEditingController();
+  final volumeChapaController = TextEditingController();
+  final observacoesSeparacaoController = TextEditingController();
+  final observacoesSeparadorController = TextEditingController();
+
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(16),
-      children: [
-        MultiLineText(
-          label: 'Observações do Separador:',
-          controller: observacoesController,
+    List<Widget> pages = [
+      Groups(groups: widget.pedido.grupos, context: context),
+      Details(
+        setorSeparacao: setorSeparacaoController,
+        pesoAcessorio: pesoAcessorioController,
+        volumeAcessorio: volumeAcessorioController,
+        volumeAluminio: volumeAluminioController,
+        volumeChapas: volumeChapaController,
+        observacoesSeparacao: observacoesSeparacaoController,
+        observacoesSeparador: observacoesSeparadorController,
+      ),
+    ];
+
+    return Scaffold(
+      body: Column(
+        children: [
+          pages[_selectedIndex],
+        ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 90, 16),
+        child: Material(
+          color: Theme.of(context).primaryColor,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10),
+          ),
+          elevation: 5,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: DetailedButton(
+                  onTap: () => setState(() => _selectedIndex = 0),
+                  icon: Icons.group_work,
+                  label: 'Grupos',
+                  isActive: _selectedIndex == 0 ? true : false,
+                ),
+              ),
+              Expanded(
+                child: DetailedButton(
+                  onTap: () => setState(() => _selectedIndex = 1),
+                  icon: Icons.edit,
+                  label: 'Detalhes',
+                  isActive: _selectedIndex == 1 ? true : false,
+                ),
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 8),
-        saveButton(() {}),
-      ],
+      ),
     );
   }
 }

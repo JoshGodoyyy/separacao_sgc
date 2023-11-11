@@ -26,8 +26,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
-          data.companyName,
+        title: const Text(
+          'SGC Mobile',
         ),
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,

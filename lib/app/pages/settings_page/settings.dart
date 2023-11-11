@@ -153,7 +153,7 @@ class _SettingsState extends State<Settings> {
             context,
             'Tema',
             ToggleSwitch(
-              label: 'Modo escuro:',
+              label: 'Modo escuro',
               value: config.isDarkMode,
               onChanged: () {
                 config.toggleTheme();

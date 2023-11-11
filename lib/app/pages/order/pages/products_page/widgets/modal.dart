@@ -43,10 +43,11 @@ Future<dynamic> showModal(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                MultiLineText(
-                  label: 'Observações do Produto:',
-                  controller: observacoesController,
+                //* Imagem do Produto
+                const ProductImage(
+                  label: 'Produto:',
                 ),
+                //* Cor do Produto
                 ItemDetail(
                   label: 'Cor',
                   child: Row(
@@ -59,9 +60,12 @@ Future<dynamic> showModal(
                     ],
                   ),
                 ),
-                const ProductImage(
-                  label: 'Produto:',
+                //* Observações do Produto
+                MultiLineText(
+                  label: 'Observações do Produto:',
+                  controller: observacoesController,
                 ),
+                //* Botão Salvar
                 const SizedBox(height: 8),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,

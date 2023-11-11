@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../models/pedido_model.dart';
+import '../../../models/order_model.dart';
 import '../widgets/item.dart';
 
 class GeneralInfo extends StatefulWidget {

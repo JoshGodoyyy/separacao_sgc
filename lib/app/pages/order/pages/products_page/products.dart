@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
 
 import '../../../../models/product.dart';
-import '/app/models/pedido_model.dart';
+import '../../../../models/order_model.dart';
 import 'widgets/modal.dart';
 import 'widgets/product_list_item.dart';
 

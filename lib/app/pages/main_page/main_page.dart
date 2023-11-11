@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../data/pedidos.dart';
-import '../../models/pedido_model.dart';
+import '../../models/order_model.dart';
 import 'widgets/list_item.dart';
 
 class MainPage extends StatefulWidget {

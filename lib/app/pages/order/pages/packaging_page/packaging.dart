@@ -5,7 +5,7 @@ import 'package:sgc/app/pages/order/pages/packaging_page/widgets/packaging_list_
 import 'package:sgc/app/ui/styles/colors_app.dart';
 
 import 'widgets/show_packaging_modal.dart';
-import '/app/models/pedido_model.dart';
+import '../../../../models/order_model.dart';
 
 class Packaging extends StatefulWidget {
   final Pedido pedido;

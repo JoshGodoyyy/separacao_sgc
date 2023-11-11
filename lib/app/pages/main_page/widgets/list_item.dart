@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sgc/app/pages/order/order_page.dart';
 
-import '/app/models/pedido_model.dart';
+import '../../../models/order_model.dart';
 
 class ListItem extends StatelessWidget {
   final Pedido pedido;

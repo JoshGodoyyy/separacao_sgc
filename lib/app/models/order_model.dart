@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:sgc/app/models/product.dart';
-import 'package:sgc/app/models/tratamento.dart';
 
-import '../models/cliente_model.dart';
-import '../models/vendedor_model.dart';
+import 'client_model.dart';
+import 'group_model.dart';
+import 'product.dart';
+import 'vendedor_model.dart';
 import 'pack.dart';
+import 'tratamento.dart';
 
 class Pedido {
   final IconData icone;
@@ -24,6 +25,7 @@ class Pedido {
   final int nfeRemessa;
   final List<Product> produtos;
   final List<Pack> embalagens;
+  final List<GroupModel> grupos;
 
   Pedido(
     this.icone,
@@ -43,5 +45,6 @@ class Pedido {
     this.nfeRemessa,
     this.produtos,
     this.embalagens,
+    this.grupos,
   );
 }

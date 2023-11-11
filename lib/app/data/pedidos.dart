@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sgc/app/models/colors.dart';
+import 'package:sgc/app/models/group_model.dart';
 import 'package:sgc/app/models/product.dart';
 import 'package:sgc/app/models/tratamento.dart';
 import 'package:sgc/app/models/vendedor_model.dart';
 
-import '/app/models/cliente_model.dart';
-import '/app/models/pedido_model.dart';
+import '../models/client_model.dart';
+import '../models/order_model.dart';
 
 class Pedidos {
   static List<Pedido> pedidosSeparar = [
@@ -110,6 +111,15 @@ class Pedidos {
         ),
       ],
       [],
+      [
+        GroupModel(
+          1,
+          'Perfis de aluminio natural',
+          19.6720,
+          0,
+          false,
+        ),
+      ],
     ),
   ];
   static List<Pedido> pedidosSeparando = [];
