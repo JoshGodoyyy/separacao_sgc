@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() {
-    var user = LoginModel(user: usuarioController.text);
+    var user = LoginModel(user: usuarioController.text.trim());
 
     try {
       var response = LoginDAO().auth(user);

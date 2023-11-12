@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../widgets/item.dart';
 import '../../../widgets/multi_line_text.dart';
-import '../../../widgets/save_button.dart';
 
 class Details extends StatelessWidget {
   final TextEditingController setorSeparacao;
@@ -26,9 +25,9 @@ class Details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView(
-        padding: const EdgeInsets.all(16),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Column(
         children: [
           item(
             context,
@@ -86,9 +85,6 @@ class Details extends StatelessWidget {
           MultiLineText(
             label: 'Observações do Separador:',
             controller: observacoesSeparador,
-          ),
-          saveButton(
-            () {},
           ),
         ],
       ),

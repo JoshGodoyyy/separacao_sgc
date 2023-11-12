@@ -113,7 +113,10 @@ class _OrderPageState extends State<OrderPage> {
           children: [
             GeneralInfo(pedido: widget.pedido),
             Products(pedido: widget.pedido),
-            Separation(pedido: widget.pedido),
+            Separation(
+              pedido: widget.pedido,
+              context: context,
+            ),
           ],
         ),
         floatingActionButton: SpeedDial(
