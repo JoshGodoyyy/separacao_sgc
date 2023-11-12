@@ -29,45 +29,30 @@ class Details extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Column(
         children: [
-          item(
-            context,
-            'Setor de Separação:',
-            setorSeparacao,
-          ),
           Row(
             children: [
-              Expanded(
+              Flexible(
+                flex: 3,
                 child: item(
                   context,
-                  'Peso Acessório:',
-                  pesoAcessorio,
-                  false,
-                  TextInputType.number,
-                ),
-              ),
-              Expanded(
-                child: item(
-                  context,
-                  'Vol. Acessórios:',
+                  'Vol. Aces.:',
                   volumeAcessorio,
                   false,
                   TextInputType.number,
                 ),
               ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
+              Flexible(
+                flex: 3,
                 child: item(
                   context,
-                  'Vol. Alumínio:',
+                  'Vol. Alum.:',
                   volumeAluminio,
                   false,
                   TextInputType.number,
                 ),
               ),
-              Expanded(
+              Flexible(
+                flex: 3,
                 child: item(
                   context,
                   'Vol. Chapas:',
@@ -85,6 +70,18 @@ class Details extends StatelessWidget {
           MultiLineText(
             label: 'Observações do Separador:',
             controller: observacoesSeparador,
+          ),
+          item(
+            context,
+            'Setor de Separação:',
+            setorSeparacao,
+          ),
+          item(
+            context,
+            'Peso Acessório:',
+            pesoAcessorio,
+            false,
+            TextInputType.number,
           ),
         ],
       ),

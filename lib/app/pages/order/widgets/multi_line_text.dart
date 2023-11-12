@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class MultiLineText extends StatelessWidget {
   final String label;
   final TextEditingController controller;
-
   const MultiLineText({
     super.key,
     required this.label,
@@ -35,8 +34,8 @@ class MultiLineText extends StatelessWidget {
             ),
             child: TextField(
               controller: controller,
-              maxLines: 5,
-              minLines: 5,
+              maxLines: 3,
+              minLines: 3,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,

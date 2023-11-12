@@ -53,7 +53,7 @@ class _SeparationState extends State<Separation> {
             observacoesSeparador: observacoesSeparadorController,
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 8, 90, 12),
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
             child: saveButton(() {}),
           ),
         ],
