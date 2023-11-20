@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/pages/initial_setup_page/initial_setup.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-import '/app/pages/login_page/widgets/button.dart';
-import '/app/pages/login_page/widgets/textfield.dart';
+import '../../ui/widgets/button.dart';
+import '../../ui/widgets/textfield.dart';
 import '/app/data/login_dao.dart';
 import '/app/models/login_model.dart';
 import '/app/pages/loading_screen.dart';
@@ -24,14 +25,19 @@ class _LoginPageState extends State<LoginPage> {
     senhaController.clear();
   }
 
-  void login() {
-    var user = LoginModel(user: usuarioController.text.trim());
+  void login() async {
+    final navigator = Navigator.of(context);
+
+    var user = LoginModel(
+      user: usuarioController.text.trim(),
+      password: senhaController.text,
+    );
 
     try {
-      var response = LoginDAO().auth(user);
+      var response = await LoginDAO().auth(user);
 
       if (response) {
-        Navigator.of(context).pushReplacement(
+        navigator.pushReplacement(
           MaterialPageRoute(
             builder: (builder) => const LoadingScreen(),
           ),
@@ -39,7 +45,6 @@ class _LoginPageState extends State<LoginPage> {
       }
     } catch (e) {
       String message = e.toString().substring(11);
-
       showTopSnackBar(
         Overlay.of(context),
         CustomSnackBar.error(
@@ -83,23 +88,30 @@ class _LoginPageState extends State<LoginPage> {
                 usePasswordChar: true,
               ),
               TextButton(
-                onPressed: () {
-                  showTopSnackBar(
-                    Overlay.of(context),
-                    const CustomSnackBar.info(
-                      message: 'Feature em desenvolvimento!',
+                onPressed: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (builder) => const InitialSetup(),
+                      ),
+                    )
+                    .then(
+                      (value) => setState(
+                        () {},
+                      ),
                     ),
-                  );
-                },
                 child: const Text(
-                  'Esqueci minha senha',
+                  'Configurar acesso',
                   style: TextStyle(
                     fontSize: 14,
                   ),
                 ),
               ),
-              Button(
-                onPressed: login,
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Button(
+                  label: 'Entrar',
+                  onPressed: login,
+                ),
               ),
             ],
           ),

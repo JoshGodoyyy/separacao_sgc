@@ -1,4 +1,17 @@
 class User {
-  String companyName = 'Osmose';
-  String userName = 'Sr. Rafinha';
+  static final User _user = User._internal();
+
+  factory User() {
+    return _user;
+  }
+
+  User._internal();
+
+  String? _userName;
+
+  String? get userName => _userName;
+
+  void setUserName(String name) {
+    _userName = name;
+  }
 }

@@ -8,7 +8,7 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var data = User();
+    String user = User().userName!;
 
     return Material(
       elevation: 5,
@@ -23,7 +23,7 @@ class HomeHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Olá, ${data.userName}',
+              'Olá, $user',
               style: const TextStyle(
                 fontSize: 18,
               ),

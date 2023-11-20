@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/data/pedidos.dart';
-import 'package:sgc/app/data/user.dart';
 import 'package:sgc/app/pages/home_page/widgets/home_header.dart';
 import 'package:sgc/app/pages/main_page/main_page.dart';
 
@@ -17,8 +16,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var data = User();
-
   @override
   Widget build(BuildContext context) {
     var widgets = Provider.of<AppConfig>(context);
