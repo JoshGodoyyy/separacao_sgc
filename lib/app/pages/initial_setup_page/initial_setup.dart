@@ -23,7 +23,7 @@ class _InitialSetupState extends State<InitialSetup> {
   _loadUrl() async {
     await ApiConfig().getUrl();
     setState(() {
-      urlController.text = ApiConfig().url ?? '';
+      urlController.text = ApiConfig().url;
     });
   }
 

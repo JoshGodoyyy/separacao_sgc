@@ -9,13 +9,18 @@ class ApiConfig {
 
   ApiConfig._internal();
 
-  String? _url;
+  late String _url;
 
-  String? get url => _url;
+  String get url => _url;
 
   Future<void> getUrl() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    _url = preferences.getString('url') ?? '';
+    String response = preferences.getString('url') ?? '';
+    if (response.endsWith('/')) {
+      _url = response.substring(0, response.length - 1);
+    } else {
+      _url = response;
+    }
   }
 
   setUrl(String value) async {

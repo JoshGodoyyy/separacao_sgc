@@ -12,8 +12,10 @@ class LoginDAO {
   late String url;
 
   Future<bool> auth(LoginModel user) async {
-    ApiConfig().getUrl();
-    url = ApiConfig().url!;
+    await ApiConfig().getUrl();
+    url = ApiConfig().url;
+    url += '/Auth';
+
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
@@ -29,7 +31,10 @@ class LoginDAO {
       User().setUserName(CapitalizeText.capitalizeFirstLetter(user.user));
       return true;
     } else {
-      throw Exception('Erro ao realizar login');
+      if (response.statusCode == 404) {
+        throw Exception('Servidor não encontrado :(');
+      }
+      throw Exception('Ops, ocorreu um erro: ${response.statusCode}');
     }
   }
 }
