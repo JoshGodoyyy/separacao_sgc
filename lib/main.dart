@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sgc/app/data/pedidos.dart';
 
 import 'app/config/app_config.dart';
 import '/app/pages/login_page/login_page.dart';
@@ -10,8 +11,11 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
+          create: (_) => Pedidos(),
+        ),
+        ChangeNotifierProvider(
           create: (_) => AppConfig(),
-        )
+        ),
       ],
       child: const MainApp(),
     ),

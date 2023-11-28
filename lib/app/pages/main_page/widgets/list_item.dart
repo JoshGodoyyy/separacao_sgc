@@ -4,9 +4,11 @@ import 'package:sgc/app/pages/order/order_page.dart';
 import '../../../models/order_model.dart';
 
 class ListItem extends StatelessWidget {
+  final IconData icon;
   final Pedido pedido;
   const ListItem({
     super.key,
+    required this.icon,
     required this.pedido,
   });
 
@@ -39,33 +41,36 @@ class ListItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(
-                    pedido.icone,
+                    icon,
                     size: 30,
                   ),
                   const SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Pedido: ${pedido.idPedido}',
-                        style: const TextStyle(
-                          fontSize: 18,
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Pedido: ${pedido.id}',
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Cliente: ${pedido.cliente.fantasia}',
-                        style: const TextStyle(
-                          fontSize: 15,
+                        Text(
+                          'Cliente: ${pedido.nomeCliente} ${pedido.cidade}',
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 15,
+                          ),
                         ),
-                      ),
-                      Text(
-                        'Entrega: ${pedido.dataHoraEntrega}',
-                        style: const TextStyle(
-                          fontSize: 12,
+                        Text(
+                          'Entrega: ${pedido.dataEntrega}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                          ),
                         ),
-                      ),
-                    ],
-                  )
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

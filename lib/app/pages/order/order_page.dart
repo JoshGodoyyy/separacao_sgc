@@ -82,7 +82,7 @@ class _OrderPageState extends State<OrderPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                '${widget.pedido.idPedido} - ${widget.pedido.cliente.fantasia}',
+                '${widget.pedido.id} - ${widget.pedido.nomeCliente}',
               ),
               Text(
                 'Duração: ${durationValue()}',
@@ -111,7 +111,11 @@ class _OrderPageState extends State<OrderPage> {
         ),
         body: TabBarView(
           children: [
-            GeneralInfo(pedido: widget.pedido),
+            GeneralInfo(
+              idPedido: int.parse(
+                widget.pedido.id.toString(),
+              ),
+            ),
             Products(pedido: widget.pedido),
             Separation(
               pedido: widget.pedido,

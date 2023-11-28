@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/user.dart';
+import '../../../config/user.dart';
 import '../../login_page/login_page.dart';
 
 class HomeHeader extends StatelessWidget {
@@ -8,7 +8,7 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String user = User().userName!;
+    String user = UserConstants().userName!;
 
     return Material(
       elevation: 5,

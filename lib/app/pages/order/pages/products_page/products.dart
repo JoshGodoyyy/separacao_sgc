@@ -35,21 +35,21 @@ class _ProductsState extends State<Products> {
 
     List<Product> filteredList() {
       List<Product> items = [];
-      if (workerFunction.accessories && workerFunction.profiles) {
-        items = widget.pedido.produtos;
-      } else {
-        if (workerFunction.accessories) {
-          items = widget.pedido.produtos
-              .where((item) => item.tipo.toLowerCase() == 'acessório')
-              .toList();
-        } else if (workerFunction.profiles) {
-          items = widget.pedido.produtos
-              .where((item) => item.tipo.toLowerCase() == 'perfil')
-              .toList();
-        } else {
-          items = [];
-        }
-      }
+      // if (workerFunction.accessories && workerFunction.profiles) {
+      //   items = widget.pedido.produtos;
+      // } else {
+      //   if (workerFunction.accessories) {
+      //     items = widget.pedido.produtos
+      //         .where((item) => item.tipo.toLowerCase() == 'acessório')
+      //         .toList();
+      //   } else if (workerFunction.profiles) {
+      //     items = widget.pedido.produtos
+      //         .where((item) => item.tipo.toLowerCase() == 'perfil')
+      //         .toList();
+      //   } else {
+      //     items = [];
+      //   }
+      // }
 
       return items;
     }

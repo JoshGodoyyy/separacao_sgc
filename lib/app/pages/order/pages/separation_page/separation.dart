@@ -35,14 +35,14 @@ class _SeparationState extends State<Separation> {
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8),
         children: [
-          for (var group in widget.pedido.grupos)
-            GroupItem(
-              item: group,
-              onTap: () => showModal(
-                widget.context,
-                group,
-              ).then((value) => setState(() {})),
-            ),
+          // for (var group in widget.pedido.grupos)
+          //   GroupItem(
+          //     item: group,
+          //     onTap: () => showModal(
+          //       widget.context,
+          //       group,
+          //     ).then((value) => setState(() {})),
+          //   ),
           Details(
             setorSeparacao: setorSeparacaoController,
             pesoAcessorio: pesoAcessorioController,

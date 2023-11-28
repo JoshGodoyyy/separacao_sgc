@@ -1,130 +1,92 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:sgc/app/models/colors.dart';
-import 'package:sgc/app/models/group_model.dart';
-import 'package:sgc/app/models/product.dart';
-import 'package:sgc/app/models/tratamento.dart';
-import 'package:sgc/app/models/vendedor_model.dart';
-
-import '../models/client_model.dart';
+import 'package:http/http.dart' as http;
+import '../config/api_config.dart';
 import '../models/order_model.dart';
 
-class Pedidos {
-  static List<Pedido> pedidosSeparar = [
-    Pedido(
-      Icons.account_tree_rounded,
-      2491,
-      'Pedido',
-      'Venda',
-      Tratamento(
-        'NAT',
-        'NATURAL',
+class Pedidos with ChangeNotifier {
+  List pedidosSeparar = [];
+  List pedidosSeparando = [];
+  List pedidosEmbalagem = [];
+  List pedidosConferencia = [];
+  List pedidosFaturar = [];
+  List pedidosLogistica = [];
+  String url = '${ApiConfig().url}/Order';
+
+  Future<void> fetchData(int idSituacao) async {
+    var response = await http.post(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          "id": idSituacao,
+        },
       ),
-      VendedorModel(
-        1,
-        'Matheus',
+    );
+
+    try {
+      List data = jsonDecode(response.body);
+
+      switch (idSituacao) {
+        case 2:
+          pedidosSeparar = data.map((json) => Pedido.fromJson(json)).toList();
+          break;
+        case 3:
+          pedidosSeparando = data.map((json) => Pedido.fromJson(json)).toList();
+          break;
+        case 5:
+          pedidosFaturar = data.map((json) => Pedido.fromJson(json)).toList();
+          break;
+        case 10:
+          pedidosLogistica = data.map((json) => Pedido.fromJson(json)).toList();
+          break;
+        case 14:
+          pedidosEmbalagem = data.map((json) => Pedido.fromJson(json)).toList();
+          break;
+        case 15:
+          pedidosConferencia =
+              data.map((json) => Pedido.fromJson(json)).toList();
+          break;
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Pedido>> fetchOrdersBySituation(int idSituacao) async {
+    var response = await http.post(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          "id": idSituacao,
+        },
       ),
-      DateTime(2023, 10, 10, 12, 35),
-      1,
-      'Sastec',
-      'Separar',
-      ClienteModel(
-        24,
-        'Andreozi',
-        'Company Comercio de Vidros LTDA',
-        '13348-670',
-        'Avenida Engenheiro Fábio Roberto Barnabe',
-        4764,
-        'Casa',
-        'Jardim Colonial',
-        'Indaiatuba',
-        'SP',
+    );
+
+    try {
+      List data = jsonDecode(response.body);
+      return data.map((json) => Pedido.fromJson(json)).toList();
+    } catch (ex) {
+      throw Exception(ex);
+    }
+  }
+
+  Future<Pedido> fetchOrdersByIdOrder(int idPedido) async {
+    var response = await http.post(
+      Uri.parse('$url/Get'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          "id": idPedido,
+        },
       ),
-      DateTime(2023, 10, 1, 12, 35),
-      'Retira',
-      0,
-      0,
-      [
-        Product(
-          'Perfil',
-          'ALG-1001CHA',
-          'Perfil Natural 6000mm',
-          'PC',
-          100,
-          3,
-          Cor(
-            'Laranja',
-            Colors.orange,
-          ),
-          null,
-        ),
-        Product(
-          'Perfil',
-          'ALG-1038CHA',
-          'Perfil Branco 6000mm',
-          'KG',
-          200,
-          6,
-          Cor(
-            'Amarelo',
-            Colors.yellow,
-          ),
-          null,
-        ),
-        Product(
-          'Perfil',
-          'ALG-1038C',
-          'Perfil Branco 6000mm',
-          'KG',
-          500,
-          6,
-          Cor(
-            'Verde',
-            Colors.green,
-          ),
-          null,
-        ),
-        Product(
-          'Acessório',
-          '+PAB42X16IN',
-          'Parafuso 4,2X16mm Cabeça Chata PHS Brocante Inox',
-          'PC',
-          50,
-          0,
-          Cor(
-            'Vermelho',
-            Colors.red,
-          ),
-          null,
-        ),
-        Product(
-          'Acessório',
-          '+PC42X16IN',
-          'Parafuso 4,2X16mm Cabeça Chata PHS',
-          'PC',
-          50,
-          0,
-          Cor(
-            'Azul',
-            Colors.blue,
-          ),
-          null,
-        ),
-      ],
-      [],
-      [
-        GroupModel(
-          1,
-          'Perfis de aluminio natural',
-          19.6720,
-          0,
-          false,
-        ),
-      ],
-    ),
-  ];
-  static List<Pedido> pedidosSeparando = [];
-  static List<Pedido> pedidosEmbalagem = [];
-  static List<Pedido> pedidosConferencia = [];
-  static List<Pedido> pedidosFaturar = [];
-  static List<Pedido> pedidosLogistica = [];
+    );
+
+    try {
+      return Pedido.fromJson(jsonDecode(response.body));
+    } catch (ex) {
+      throw Exception(ex);
+    }
+  }
 }

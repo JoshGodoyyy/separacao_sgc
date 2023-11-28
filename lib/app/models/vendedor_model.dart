@@ -1,9 +1,22 @@
 class VendedorModel {
-  final int idVendedor;
-  final String nomeVendedor;
+  int? id;
+  String? nome;
 
-  VendedorModel(
-    this.idVendedor,
-    this.nomeVendedor,
-  );
+  VendedorModel({
+    id,
+    nome,
+  });
+
+  VendedorModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    nome = json['fantasia'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['fantasia'] = nome;
+
+    return data;
+  }
 }

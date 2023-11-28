@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:sgc/app/data/pedidos.dart';
 
 import '/app/pages/home_page/home_page.dart';
 
@@ -11,22 +13,30 @@ class LoadingScreen extends StatefulWidget {
   State<LoadingScreen> createState() => _LoadingScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen>
-    with SingleTickerProviderStateMixin {
+class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    getData();
+  }
 
-    Future.delayed(
-      const Duration(seconds: 2),
-      () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (builder) => const HomePage(),
-          ),
-        );
-      },
+  Future<void> getData() async {
+    final orders = Provider.of<Pedidos>(context, listen: false);
+
+    var navigator = Navigator.of(context);
+
+    await orders.fetchData(2);
+    await orders.fetchData(3);
+    await orders.fetchData(5);
+    await orders.fetchData(10);
+    await orders.fetchData(14);
+    await orders.fetchData(15);
+
+    navigator.pushReplacement(
+      MaterialPageRoute(
+        builder: (builder) => const HomePage(),
+      ),
     );
   }
 

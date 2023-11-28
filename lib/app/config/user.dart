@@ -1,11 +1,11 @@
-class User {
-  static final User _user = User._internal();
+class UserConstants {
+  static final UserConstants _user = UserConstants._internal();
 
-  factory User() {
+  factory UserConstants() {
     return _user;
   }
 
-  User._internal();
+  UserConstants._internal();
 
   String? _userName;
 

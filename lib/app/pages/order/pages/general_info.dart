@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-
-import '../../../models/order_model.dart';
+import 'package:sgc/app/data/pedidos.dart';
+import 'package:sgc/app/data/tipo_entrega.dart';
+import 'package:sgc/app/data/user_dao.dart';
+import 'package:sgc/app/data/vendedor_dao.dart';
 import '../widgets/item.dart';
 
 class GeneralInfo extends StatefulWidget {
-  final Pedido pedido;
+  final int idPedido;
   const GeneralInfo({
     super.key,
-    required this.pedido,
+    required this.idPedido,
   });
 
   @override
@@ -15,22 +17,20 @@ class GeneralInfo extends StatefulWidget {
 }
 
 class _GeneralInfoState extends State<GeneralInfo> {
+  final criadoPorController = TextEditingController();
   final dataCriacaoController = TextEditingController();
-  final nomeUsuarioController = TextEditingController();
-  final idVendedorCotroller = TextEditingController();
-  final nomeVendedorController = TextEditingController();
-  final statusPedidoController = TextEditingController();
   final idClienteController = TextEditingController();
-  final fantasiaController = TextEditingController();
   final razaoSocialController = TextEditingController();
-  final cepController = TextEditingController();
+  final idVendedorController = TextEditingController();
+  final vendedorController = TextEditingController();
   final enderecoController = TextEditingController();
-  final numeroController = TextEditingController();
+  final numeroEnderecoController = TextEditingController();
   final complementoController = TextEditingController();
   final bairroController = TextEditingController();
   final cidadeController = TextEditingController();
   final estadoController = TextEditingController();
-  final dataHoraEntregaController = TextEditingController();
+  final cepController = TextEditingController();
+  final dataHoraEntregueController = TextEditingController();
   final tipoEntregaController = TextEditingController();
   final nfeVendaController = TextEditingController();
   final nfeRemessaController = TextEditingController();
@@ -38,28 +38,51 @@ class _GeneralInfoState extends State<GeneralInfo> {
   @override
   void initState() {
     super.initState();
+    _populateFields();
+  }
 
-    var pedido = widget.pedido;
+  _populateFields() async {
+    final pedido = await Pedidos().fetchOrdersByIdOrder(
+      int.parse(
+        widget.idPedido.toString(),
+      ),
+    );
 
+    final usuarioCriacao = await UserDAO().fetchUser(
+      int.parse(
+        pedido.idCriador.toString(),
+      ),
+    );
+
+    final vendedor = await VendedorDAO().fetchVendedor(
+      int.parse(
+        pedido.idVendedor.toString(),
+      ),
+    );
+
+    final tipoEntrega = await TipoEntregaDAO().fetchTipoEntrega(
+      int.parse(
+        pedido.idTipoEntrega.toString(),
+      ),
+    );
+
+    criadoPorController.text = usuarioCriacao.user.toString();
     dataCriacaoController.text = pedido.dataCriacao.toString();
-    nomeUsuarioController.text = pedido.nomeUsuario.toString();
-    statusPedidoController.text = pedido.statusPedido.toString();
-    idVendedorCotroller.text = pedido.vendedor.idVendedor.toString();
-    nomeVendedorController.text = pedido.vendedor.nomeVendedor.toString();
-    idClienteController.text = pedido.cliente.id.toString();
-    fantasiaController.text = pedido.cliente.fantasia.toString();
-    razaoSocialController.text = pedido.cliente.razaoSocial.toString();
-    enderecoController.text = pedido.cliente.endereco.toString();
-    numeroController.text = pedido.cliente.numero.toString();
-    complementoController.text = pedido.cliente.complemento.toString();
-    cepController.text = pedido.cliente.cep.toString();
-    bairroController.text = pedido.cliente.bairro.toString();
-    cidadeController.text = pedido.cliente.cidade.toString();
-    estadoController.text = pedido.cliente.uf.toString();
-    dataHoraEntregaController.text = pedido.dataHoraEntrega.toString();
-    tipoEntregaController.text = pedido.tipoEntrega.toString();
-    nfeVendaController.text = pedido.nfeVenda.toString();
-    nfeRemessaController.text = pedido.nfeRemessa.toString();
+    idClienteController.text = pedido.idCliente.toString();
+    razaoSocialController.text = pedido.razaoSocial.toString();
+    idVendedorController.text = pedido.idVendedor.toString();
+    vendedorController.text = vendedor.nome.toString();
+    enderecoController.text = '${pedido.logradouro} ${pedido.endereco}';
+    numeroEnderecoController.text = pedido.numero.toString();
+    complementoController.text = pedido.complemento.toString();
+    bairroController.text = pedido.bairro.toString();
+    cidadeController.text = pedido.cidade.toString();
+    estadoController.text = pedido.estado.toString();
+    cepController.text = pedido.cep.toString();
+    dataHoraEntregueController.text = pedido.dataEntrega.toString();
+    tipoEntregaController.text = tipoEntrega.descricao.toString();
+    nfeVendaController.text = pedido.nnFeVenda.toString();
+    nfeRemessaController.text = pedido.nnFeRemessa.toString();
   }
 
   @override
@@ -75,7 +98,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
               child: item(
                 context,
                 'Criado por:',
-                nomeUsuarioController,
+                criadoPorController,
                 true,
               ),
             ),
@@ -114,6 +137,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
             ),
           ],
         ),
+        // Id e Nome do Vendedor
         Row(
           children: [
             Flexible(
@@ -121,7 +145,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
               child: item(
                 context,
                 'ID Vendedor:',
-                idVendedorCotroller,
+                idVendedorController,
                 true,
               ),
             ),
@@ -130,7 +154,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
               child: item(
                 context,
                 'Vendedor:',
-                nomeVendedorController,
+                vendedorController,
                 true,
               ),
             )
@@ -151,7 +175,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
               child: item(
                 context,
                 'Número:',
-                numeroController,
+                numeroEnderecoController,
                 true,
               ),
             ),
@@ -207,7 +231,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
         item(
           context,
           'Data e Hora de Entrega:',
-          dataHoraEntregaController,
+          dataHoraEntregueController,
           true,
         ),
         // Tipo de Entrega

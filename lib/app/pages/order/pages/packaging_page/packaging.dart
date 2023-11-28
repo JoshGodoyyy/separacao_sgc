@@ -60,7 +60,7 @@ class _PackagingState extends State<Packaging> {
                     observacoesController.text,
                   );
 
-                  widget.pedido.embalagens.add(embalagem);
+                  //widget.pedido.embalagens.add(embalagem);
                   setState(() {});
                   Navigator.pop(context);
                 });
@@ -82,27 +82,27 @@ class _PackagingState extends State<Packaging> {
           Expanded(
             child: ListView(
               children: [
-                for (Pack embalagem in widget.pedido.embalagens)
-                  PackagingListItem(
-                    embalagem: embalagem,
-                    onTap: () {
-                      numeroCaixaController.text =
-                          embalagem.numeroCaixa.toString();
-                      quantidadeController.text =
-                          embalagem.quantidade.toString();
-                      pesoController.text = embalagem.peso.toString();
-                      observacoesController.text = embalagem.observacoes;
+                // for (Pack embalagem in widget.pedido.embalagens)
+                // PackagingListItem(
+                //   embalagem: embalagem,
+                //   onTap: () {
+                //     numeroCaixaController.text =
+                //         embalagem.numeroCaixa.toString();
+                //     quantidadeController.text =
+                //         embalagem.quantidade.toString();
+                //     pesoController.text = embalagem.peso.toString();
+                //     observacoesController.text = embalagem.observacoes;
 
-                      showPackagingModal(
-                        context,
-                        numeroCaixaController,
-                        quantidadeController,
-                        pesoController,
-                        observacoesController,
-                        () {},
-                      );
-                    },
-                  ),
+                // showPackagingModal(
+                //   context,
+                //   numeroCaixaController,
+                //   quantidadeController,
+                //   pesoController,
+                //   observacoesController,
+                //   () {},
+                // );
+                //  },
+                //),
               ],
             ),
           ),
