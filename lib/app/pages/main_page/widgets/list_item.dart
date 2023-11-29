@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sgc/app/pages/order/order_page.dart';
 
 import '../../../models/order_model.dart';
@@ -14,6 +15,8 @@ class ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateFormat data = DateFormat('dd/MM/yyyy HH:mm');
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
       child: Material(
@@ -63,7 +66,11 @@ class ListItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Entrega: ${pedido.dataEntrega}',
+                          'Entrega: ${data.format(
+                            DateTime.parse(
+                              pedido.dataEntrega.toString(),
+                            ),
+                          )}',
                           style: const TextStyle(
                             fontSize: 12,
                           ),

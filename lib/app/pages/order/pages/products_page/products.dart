@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
+import 'package:sgc/app/pages/order/pages/treatment.dart';
 
 import '../../../../models/product.dart';
 import '../../../../models/order_model.dart';
-import 'widgets/modal.dart';
-import 'widgets/product_list_item.dart';
 
 class Products extends StatefulWidget {
   final Pedido pedido;
@@ -32,6 +31,7 @@ class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
     final workerFunction = Provider.of<AppConfig>(context);
+    final tratamentoController = TextEditingController();
 
     List<Product> filteredList() {
       List<Product> items = [];
@@ -54,63 +54,47 @@ class _ProductsState extends State<Products> {
       return items;
     }
 
-    return Column(
-      children: [
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  'Trat. quando utilizado Grupo Especial:',
-                  style: TextStyle(
-                    fontSize: 14,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Trat. quando utilizado Grupo Especial:',
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Material(
+            elevation: 5,
+            color: Theme.of(context).primaryColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
+            ),
+            child: InkWell(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const Treatment(),
+                ),
+              ),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(10),
+              ),
+              child: TextField(
+                controller: tratamentoController,
+                enabled: false,
+                decoration: const InputDecoration(
+                  suffixIcon: Icon(Icons.arrow_forward_ios_outlined),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
                   ),
                 ),
               ),
-              const SizedBox(height: 4),
-              Material(
-                elevation: 5,
-                color: Theme.of(context).primaryColor,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10),
-                ),
-                child: DropdownMenu<String>(
-                  inputDecorationTheme: const InputDecorationTheme(
-                    border: OutlineInputBorder(borderSide: BorderSide.none),
-                  ),
-                  width: MediaQuery.of(context).size.width - 32,
-                  initialSelection: list.first,
-                  onSelected: (String? value) {
-                    setState(() => dropValue = value!);
-                  },
-                  dropdownMenuEntries: list.map((String value) {
-                    return DropdownMenuEntry(value: value, label: value);
-                  }).toList(),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(12),
-            children: [
-              for (Product produto in filteredList())
-                ProductListItem(
-                  product: produto,
-                  onTap: () => showModal(
-                    context,
-                    produto,
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -4,8 +4,6 @@ import 'package:sgc/app/pages/order/widgets/save_button.dart';
 
 import '../../../../models/order_model.dart';
 import 'widgets/details.dart';
-import 'widgets/groups_item.dart';
-import 'widgets/modal.dart';
 
 class Separation extends StatefulWidget {
   final Pedido pedido;

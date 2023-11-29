@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sgc/app/data/pedidos.dart';
 import 'package:sgc/app/data/tipo_entrega.dart';
 import 'package:sgc/app/data/user_dao.dart';
@@ -35,6 +36,8 @@ class _GeneralInfoState extends State<GeneralInfo> {
   final nfeVendaController = TextEditingController();
   final nfeRemessaController = TextEditingController();
 
+  DateFormat data = DateFormat('dd/MM/yyyy HH:mm');
+
   @override
   void initState() {
     super.initState();
@@ -67,7 +70,13 @@ class _GeneralInfoState extends State<GeneralInfo> {
     );
 
     criadoPorController.text = usuarioCriacao.user.toString();
-    dataCriacaoController.text = pedido.dataCriacao.toString();
+
+    dataCriacaoController.text = data.format(
+      DateTime.parse(
+        pedido.dataCriacao.toString(),
+      ),
+    );
+
     idClienteController.text = pedido.idCliente.toString();
     razaoSocialController.text = pedido.razaoSocial.toString();
     idVendedorController.text = pedido.idVendedor.toString();
@@ -79,7 +88,13 @@ class _GeneralInfoState extends State<GeneralInfo> {
     cidadeController.text = pedido.cidade.toString();
     estadoController.text = pedido.estado.toString();
     cepController.text = pedido.cep.toString();
-    dataHoraEntregueController.text = pedido.dataEntrega.toString();
+
+    dataHoraEntregueController.text = data.format(
+      DateTime.parse(
+        pedido.dataEntrega.toString(),
+      ),
+    );
+
     tipoEntregaController.text = tipoEntrega.descricao.toString();
     nfeVendaController.text = pedido.nnFeVenda.toString();
     nfeRemessaController.text = pedido.nnFeRemessa.toString();

@@ -1,9 +1,9 @@
-class Tratamento {
-  final String id;
-  final String tratamento;
+class TratamentoModel {
+  String? id;
+  String? descricao;
 
-  Tratamento(
-    this.id,
-    this.tratamento,
+  TratamentoModel(
+    id,
+    tratamento,
   );
 }

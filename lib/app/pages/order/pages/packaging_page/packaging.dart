@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:sgc/app/models/pack.dart';
-import 'package:sgc/app/pages/order/pages/packaging_page/widgets/packaging_list_item.dart';
 import 'package:sgc/app/ui/styles/colors_app.dart';
 
 import 'widgets/show_packaging_modal.dart';
