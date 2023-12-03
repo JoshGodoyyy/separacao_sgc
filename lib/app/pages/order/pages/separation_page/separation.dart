@@ -19,14 +19,6 @@ class Separation extends StatefulWidget {
 }
 
 class _SeparationState extends State<Separation> {
-  final pesoAcessorioController = TextEditingController();
-  final setorSeparacaoController = TextEditingController();
-  final volumeAluminioController = TextEditingController();
-  final volumeAcessorioController = TextEditingController();
-  final volumeChapaController = TextEditingController();
-  final observacoesSeparacaoController = TextEditingController();
-  final observacoesSeparadorController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,13 +34,7 @@ class _SeparationState extends State<Separation> {
           //     ).then((value) => setState(() {})),
           //   ),
           Details(
-            setorSeparacao: setorSeparacaoController,
-            pesoAcessorio: pesoAcessorioController,
-            volumeAcessorio: volumeAcessorioController,
-            volumeAluminio: volumeAluminioController,
-            volumeChapas: volumeChapaController,
-            observacoesSeparacao: observacoesSeparacaoController,
-            observacoesSeparador: observacoesSeparadorController,
+            pedido: widget.pedido,
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),

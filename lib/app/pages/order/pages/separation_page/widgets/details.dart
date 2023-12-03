@@ -1,27 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/models/order_model.dart';
 
+import '../../../../../data/pedidos.dart';
 import '../../../widgets/item.dart';
 import '../../../widgets/multi_line_text.dart';
 
-class Details extends StatelessWidget {
-  final TextEditingController setorSeparacao;
-  final TextEditingController pesoAcessorio;
-  final TextEditingController volumeAcessorio;
-  final TextEditingController volumeAluminio;
-  final TextEditingController volumeChapas;
-  final TextEditingController observacoesSeparacao;
-  final TextEditingController observacoesSeparador;
-
+class Details extends StatefulWidget {
+  final Pedido pedido;
   const Details({
     super.key,
-    required this.setorSeparacao,
-    required this.pesoAcessorio,
-    required this.volumeAcessorio,
-    required this.volumeAluminio,
-    required this.volumeChapas,
-    required this.observacoesSeparacao,
-    required this.observacoesSeparador,
+    required this.pedido,
   });
+
+  @override
+  State<Details> createState() => _DetailsState();
+}
+
+class _DetailsState extends State<Details> {
+  final volumeAcessorioController = TextEditingController();
+  final volumeAluminioController = TextEditingController();
+  final volumeChapasController = TextEditingController();
+  final observacoesSeparacaoController = TextEditingController();
+  final observacoesSeparadorController = TextEditingController();
+  final setorSeparacaoController = TextEditingController();
+  final pesoAcessorioController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  fetchData() async {
+    final pedido = await Pedidos().fetchOrdersByIdOrder(
+      int.parse(
+        widget.pedido.id.toString(),
+      ),
+    );
+
+    volumeAcessorioController.text = pedido.volumeAcessorio.toString();
+    volumeAluminioController.text = pedido.volumePerfil.toString();
+    volumeChapasController.text = pedido.volumeChapa.toString();
+    observacoesSeparacaoController.text =
+        pedido.observacoesSeparacao.toString();
+    observacoesSeparadorController.text =
+        pedido.observacoesSeparador.toString();
+    setorSeparacaoController.text = pedido.setorEstoque.toString();
+    pesoAcessorioController.text = pedido.pesoAcessorios.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +62,7 @@ class Details extends StatelessWidget {
                 child: item(
                   context,
                   'Vol. Aces.:',
-                  volumeAcessorio,
+                  volumeAcessorioController,
                   false,
                   TextInputType.number,
                 ),
@@ -46,7 +72,7 @@ class Details extends StatelessWidget {
                 child: item(
                   context,
                   'Vol. Alum.:',
-                  volumeAluminio,
+                  volumeAluminioController,
                   false,
                   TextInputType.number,
                 ),
@@ -56,7 +82,7 @@ class Details extends StatelessWidget {
                 child: item(
                   context,
                   'Vol. Chapas:',
-                  volumeChapas,
+                  volumeChapasController,
                   false,
                   TextInputType.number,
                 ),
@@ -65,21 +91,21 @@ class Details extends StatelessWidget {
           ),
           MultiLineText(
             label: 'Observações para Separação:',
-            controller: observacoesSeparacao,
+            controller: observacoesSeparacaoController,
           ),
           MultiLineText(
             label: 'Observações do Separador:',
-            controller: observacoesSeparador,
+            controller: observacoesSeparadorController,
           ),
           item(
             context,
             'Setor de Separação:',
-            setorSeparacao,
+            setorSeparacaoController,
           ),
           item(
             context,
             'Peso Acessório:',
-            pesoAcessorio,
+            pesoAcessorioController,
             false,
             TextInputType.number,
           ),

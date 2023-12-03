@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sgc/app/config/app_config.dart';
-import 'package:sgc/app/pages/order/pages/treatment.dart';
+import 'package:sgc/app/data/tratamento.dart';
 
-import '../../../../models/product.dart';
+import '../../../../data/pedidos.dart';
 import '../../../../models/order_model.dart';
+import '../treatment.dart';
 
 class Products extends StatefulWidget {
   final Pedido pedido;
@@ -17,43 +16,55 @@ class Products extends StatefulWidget {
   State<Products> createState() => _ProductsState();
 }
 
-const List<String> list = <String>[
-  'ACESSÓRIO',
-  'BRANCO BRILHANTE',
-  'CEREJEIRA',
-  'CINZA',
-  'ESPECIAL',
-];
-
 class _ProductsState extends State<Products> {
-  String dropValue = list.first;
+  late String tratamento;
+  final tratamentoController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  fetchData() async {
+    final pedido = await Pedidos().fetchOrdersByIdOrder(
+      int.parse(
+        widget.pedido.id.toString(),
+      ),
+    );
+
+    if (pedido.tratamento == null || pedido.tratamento == '') {
+      tratamento = '';
+    } else {
+      tratamento = pedido.tratamento!;
+
+      final tratamentoInicial = await Tratamento().fetchTratamentoById(
+        tratamento,
+      );
+
+      tratamentoController.text = tratamentoInicial.descricao.toString();
+    }
+  }
+
+  selecionarTratamento() {
+    Navigator.of(context)
+        .push(
+      MaterialPageRoute(
+        builder: (_) => Treatment(tratamento: tratamento),
+      ),
+    )
+        .then(
+      (value) async {
+        if (value != null) {
+          final result = await Tratamento().fetchTratamentoById(value);
+          tratamentoController.text = result.descricao!;
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final workerFunction = Provider.of<AppConfig>(context);
-    final tratamentoController = TextEditingController();
-
-    List<Product> filteredList() {
-      List<Product> items = [];
-      // if (workerFunction.accessories && workerFunction.profiles) {
-      //   items = widget.pedido.produtos;
-      // } else {
-      //   if (workerFunction.accessories) {
-      //     items = widget.pedido.produtos
-      //         .where((item) => item.tipo.toLowerCase() == 'acessório')
-      //         .toList();
-      //   } else if (workerFunction.profiles) {
-      //     items = widget.pedido.produtos
-      //         .where((item) => item.tipo.toLowerCase() == 'perfil')
-      //         .toList();
-      //   } else {
-      //     items = [];
-      //   }
-      // }
-
-      return items;
-    }
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -73,11 +84,7 @@ class _ProductsState extends State<Products> {
               Radius.circular(10),
             ),
             child: InkWell(
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const Treatment(),
-                ),
-              ),
+              onTap: () => selecionarTratamento(),
               borderRadius: const BorderRadius.all(
                 Radius.circular(10),
               ),

@@ -29,19 +29,39 @@ class Pedidos with ChangeNotifier {
 
       switch (idSituacao) {
         case 2:
-          pedidosSeparar = data.map((json) => Pedido.fromJson(json)).toList();
+          pedidosSeparar = data
+              .map(
+                (json) => Pedido.fromJson(json),
+              )
+              .toList();
           break;
         case 3:
-          pedidosSeparando = data.map((json) => Pedido.fromJson(json)).toList();
+          pedidosSeparando = data
+              .map(
+                (json) => Pedido.fromJson(json),
+              )
+              .toList();
           break;
         case 5:
-          pedidosFaturar = data.map((json) => Pedido.fromJson(json)).toList();
+          pedidosFaturar = data
+              .map(
+                (json) => Pedido.fromJson(json),
+              )
+              .toList();
           break;
         case 10:
-          pedidosLogistica = data.map((json) => Pedido.fromJson(json)).toList();
+          pedidosLogistica = data
+              .map(
+                (json) => Pedido.fromJson(json),
+              )
+              .toList();
           break;
         case 14:
-          pedidosEmbalagem = data.map((json) => Pedido.fromJson(json)).toList();
+          pedidosEmbalagem = data
+              .map(
+                (json) => Pedido.fromJson(json),
+              )
+              .toList();
           break;
         case 15:
           pedidosConferencia =

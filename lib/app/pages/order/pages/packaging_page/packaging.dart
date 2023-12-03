@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'package:sgc/app/models/pack.dart';
 import 'package:sgc/app/ui/styles/colors_app.dart';
 
 import 'widgets/show_packaging_modal.dart';
@@ -52,12 +50,12 @@ class _PackagingState extends State<Packaging> {
                     quantidadeController,
                     pesoController,
                     observacoesController, () {
-                  final embalagem = Pack(
-                    numeroCaixaController.text,
-                    int.parse(quantidadeController.text),
-                    double.parse(pesoController.text),
-                    observacoesController.text,
-                  );
+                  // final embalagem = Pack(
+                  //   numeroCaixaController.text,
+                  //   int.parse(quantidadeController.text),
+                  //   double.parse(pesoController.text),
+                  //   observacoesController.text,
+                  // );
 
                   //widget.pedido.embalagens.add(embalagem);
                   setState(() {});
@@ -80,7 +78,7 @@ class _PackagingState extends State<Packaging> {
           ),
           Expanded(
             child: ListView(
-              children: [
+              children: const [
                 // for (Pack embalagem in widget.pedido.embalagens)
                 // PackagingListItem(
                 //   embalagem: embalagem,
