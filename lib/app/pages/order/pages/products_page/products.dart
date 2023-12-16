@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/data/produtos.dart';
 import 'package:sgc/app/data/tratamento.dart';
 import 'package:sgc/app/pages/order/pages/products_page/widgets/modal.dart';
@@ -24,14 +26,26 @@ class _ProductsState extends State<Products> {
   late String tratamento;
   late Future<List<dynamic>> produtos;
   final tratamentoController = TextEditingController();
+  late int tipoProduto;
   bool visibility = false;
 
   @override
   void initState() {
     super.initState();
     fetchData();
+
+    final result = Provider.of<AppConfig>(context, listen: false);
+
+    if (result.accessories && result.profiles) {
+      tipoProduto = 0;
+    } else if (result.profiles) {
+      tipoProduto = 2;
+    } else if (result.accessories) {
+      tipoProduto = 3;
+    }
+
     produtos = Produtos().fetchProdutos(
-      0,
+      tipoProduto,
       int.parse(
         widget.pedido.id.toString(),
       ),
