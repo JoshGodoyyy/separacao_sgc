@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:sgc/app/data/produtos.dart';
 import 'package:sgc/app/data/tratamento.dart';
+import 'package:sgc/app/pages/order/pages/products_page/widgets/modal.dart';
+import 'package:sgc/app/pages/order/pages/products_page/widgets/product_list_item.dart';
 
 import '../../../../data/pedidos.dart';
 import '../../../../models/order_model.dart';
@@ -18,6 +22,7 @@ class Products extends StatefulWidget {
 
 class _ProductsState extends State<Products> {
   late String tratamento;
+  late Future<List<dynamic>> produtos;
   final tratamentoController = TextEditingController();
   bool visibility = false;
 
@@ -25,6 +30,12 @@ class _ProductsState extends State<Products> {
   void initState() {
     super.initState();
     fetchData();
+    produtos = Produtos().fetchProdutos(
+      0,
+      int.parse(
+        widget.pedido.id.toString(),
+      ),
+    );
   }
 
   fetchData() async {
@@ -165,6 +176,40 @@ class _ProductsState extends State<Products> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: FutureBuilder(
+              future: produtos,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      var produto = snapshot.data![index];
+                      return ProductListItem(
+                          product: produto,
+                          onTap: () {
+                            showModal(context, produto);
+                          });
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text(
+                      snapshot.error.toString(),
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  );
+                }
+                return Center(
+                  child: LoadingAnimationWidget.waveDots(
+                    color: Theme.of(context).indicatorColor,
+                    size: 30,
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:sgc/app/pages/order/pages/products_page/widgets/item_color.dart';
 
-import '../../../../../models/product.dart';
+import '../../../../../models/product_model.dart';
 
 class ProductListItem extends StatelessWidget {
-  final Product product;
+  final ProductModel product;
   final Function onTap;
   const ProductListItem({
     super.key,
@@ -20,7 +19,7 @@ class ProductListItem extends StatelessWidget {
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
-        elevation: 3,
+        elevation: 5,
         color: Theme.of(context).primaryColor,
         child: InkWell(
           onTap: () => onTap(),
@@ -38,29 +37,29 @@ class ProductListItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        product.codigo,
+                        product.idProduto.toString(),
                         style: const TextStyle(
                           fontSize: 18,
                         ),
                       ),
-                      ItemColor(cor: product.cor),
+                      // ItemColor(cor: product.cor),
                     ],
                   ),
                   Text(
-                    product.descricao,
+                    product.descricao.toString(),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Qtd.: ${product.quantidade} ${product.unidade}'),
-                      Text('Peso Unit..: ${product.pesoUnit}'),
+                      Text('Qtd.: ${product.quantidade} ${product.idUnidade}'),
+                      Text('Peso Unit..: ${product.peso}'),
                       Text(
-                        'Peso Tot.: ${product.quantidade * product.pesoUnit}',
+                        'Peso Tot.: ${product.pesoTotal}',
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
