@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:sgc/app/models/product_model.dart';
 
@@ -19,6 +22,10 @@ Future<dynamic> showModal(
 
   observacoesController.text = observacoes;
 
+  Uint8List getImagem() {
+    return base64Decode(produto.imagem!);
+  }
+
   return showModalBottomSheet(
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
@@ -38,45 +45,48 @@ Future<dynamic> showModal(
           ),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                //* Imagem do Produto
-                Visibility(
-                  visible: produto.imagem == null,
-                  child: const ProductImage(
-                    label: 'Produto:',
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  //* Imagem do Produto
+                  Visibility(
+                    visible: produto.imagem != '',
+                    child: ProductImage(
+                      imagem: getImagem(),
+                      label: 'Produto:',
+                    ),
+                    //* Cor do Produto
+                    // ItemDetail(
+                    //   label: 'Cor',
+                    //   child: Row(
+                    //     children: [
+                    //       ItemColor(
+                    //         cor: produto.cor,
+                    //       ),
+                    //       const SizedBox(width: 10),
+                    //       Text(produto.cor.nomeCor),
+                    //     ],
+                    //   ),
+                    // ),
                   ),
-                  //* Cor do Produto
-                  // ItemDetail(
-                  //   label: 'Cor',
-                  //   child: Row(
-                  //     children: [
-                  //       ItemColor(
-                  //         cor: produto.cor,
-                  //       ),
-                  //       const SizedBox(width: 10),
-                  //       Text(produto.cor.nomeCor),
-                  //     ],
-                  //   ),
-                  // ),
-                ),
-                //* Observações do Produto
-                MultiLineText(
-                  label: 'Observações do Produto:',
-                  controller: observacoesController,
-                ),
-                //* Botão Salvar
-                const SizedBox(height: 8),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: saveButton(
-                    () {
-                      Navigator.pop(context);
-                    },
+                  //* Observações do Produto
+                  MultiLineText(
+                    label: 'Observações do Produto:',
+                    controller: observacoesController,
                   ),
-                ),
-              ],
+                  //* Botão Salvar
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: saveButton(
+                      () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

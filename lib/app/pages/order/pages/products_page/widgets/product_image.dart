@@ -1,12 +1,21 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
-class ProductImage extends StatelessWidget {
+class ProductImage extends StatefulWidget {
+  final Uint8List imagem;
   final String label;
   const ProductImage({
     super.key,
+    required this.imagem,
     required this.label,
   });
 
+  @override
+  State<ProductImage> createState() => _ProductImageState();
+}
+
+class _ProductImageState extends State<ProductImage> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,7 +26,7 @@ class ProductImage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              label,
+              widget.label,
               style: const TextStyle(
                 fontSize: 14,
               ),
@@ -32,7 +41,7 @@ class ProductImage extends StatelessWidget {
             ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Image.asset('assets/images/logo.png'),
+              child: Image.memory(widget.imagem),
             ),
           ),
         ],

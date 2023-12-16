@@ -72,7 +72,7 @@ class ProductModel {
     importacao = json['importacao'];
     juros = json['juros'];
     difal = json['difal'];
-    imagem = json['imagem'];
+    imagem = json['imagem'] ?? '';
     producaoPropria = json['producaoPropria'];
     chave = json['chave'];
     idTratamento = json['idTratamento'];
