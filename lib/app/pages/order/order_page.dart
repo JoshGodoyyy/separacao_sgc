@@ -5,7 +5,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:sgc/app/pages/order/pages/packaging_page/packaging.dart';
 
 import '../../ui/styles/colors_app.dart';
-import 'pages/general_info.dart';
+import 'pages/general_info_page/general_info.dart';
 import 'pages/products_page/products.dart';
 import 'pages/separation_page/separation.dart';
 import '../../models/order_model.dart';

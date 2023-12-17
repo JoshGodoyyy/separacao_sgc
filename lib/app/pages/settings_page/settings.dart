@@ -33,13 +33,16 @@ class _SettingsState extends State<Settings> {
         children: [
           group(
             context,
-            'Usuario',
+            'Tipo de Produto',
             Column(
               children: [
                 ToggleSwitch(
                   label: 'Perfis',
                   value: config.profiles,
                   onChanged: () {
+                    if (config.profiles && !config.accessories) {
+                      config.setAccessories(true);
+                    }
                     config.setProfiles(!config.profiles);
                   },
                 ),
@@ -47,6 +50,9 @@ class _SettingsState extends State<Settings> {
                   label: 'Acessórios',
                   value: config.accessories,
                   onChanged: () {
+                    if (config.accessories && !config.profiles) {
+                      config.setProfiles(true);
+                    }
                     config.setAccessories(!config.accessories);
                   },
                 ),
