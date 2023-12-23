@@ -45,11 +45,16 @@ class HomeButton extends StatelessWidget {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(50),
+                        ),
                         color: Theme.of(context).indicatorColor,
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 10,
+                        ),
                         child: Text(
                           '$count',
                           style: const TextStyle(

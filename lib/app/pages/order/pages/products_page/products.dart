@@ -27,7 +27,6 @@ class _ProductsState extends State<Products> {
   late Future<List<dynamic>> produtos;
   final tratamentoController = TextEditingController();
   late int tipoProduto;
-  bool visibility = false;
 
   @override
   void initState() {
@@ -70,8 +69,6 @@ class _ProductsState extends State<Products> {
 
       tratamentoController.text = tratamentoInicial.descricao.toString();
     }
-
-    setState(() => _isVisible());
   }
 
   selecionarTratamento() {
@@ -87,21 +84,8 @@ class _ProductsState extends State<Products> {
           final result = await Tratamento().fetchTratamentoById(value);
           tratamentoController.text = result.descricao!;
         }
-        setState(() {
-          _isVisible();
-        });
       },
     );
-  }
-
-  bool _isVisible() {
-    if (tratamentoController.text == '') {
-      visibility = false;
-    } else {
-      visibility = true;
-    }
-
-    return visibility;
   }
 
   @override
@@ -118,78 +102,21 @@ class _ProductsState extends State<Products> {
             ),
           ),
           const SizedBox(height: 4),
-          Row(
-            children: [
-              Expanded(
-                flex: 4,
-                child: Material(
-                  elevation: 5,
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(10),
-                    bottomLeft: const Radius.circular(10),
-                    topRight: visibility
-                        ? const Radius.circular(0)
-                        : const Radius.circular(10),
-                    bottomRight: visibility
-                        ? const Radius.circular(0)
-                        : const Radius.circular(10),
-                  ),
-                  child: InkWell(
-                    onTap: () => selecionarTratamento(),
-                    borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(10),
-                      bottomLeft: const Radius.circular(10),
-                      topRight: visibility
-                          ? const Radius.circular(0)
-                          : const Radius.circular(10),
-                      bottomRight: visibility
-                          ? const Radius.circular(0)
-                          : const Radius.circular(10),
-                    ),
-                    child: TextField(
-                      controller: tratamentoController,
-                      enabled: false,
-                      decoration: const InputDecoration(
-                        suffixIcon: Icon(Icons.arrow_forward_ios_outlined),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                  ),
+          Material(
+            elevation: 5,
+            color: Theme.of(context).primaryColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
+            ),
+            child: TextField(
+              controller: tratamentoController,
+              enabled: false,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
                 ),
               ),
-              Visibility(
-                visible: visibility,
-                child: Expanded(
-                  child: Material(
-                    borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
-                    elevation: 5,
-                    color: Colors.red,
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          tratamentoController.clear();
-                          visibility = false;
-                        });
-                      },
-                      borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(18),
-                        child: Icon(Icons.close),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
           const SizedBox(height: 16),
           Expanded(
