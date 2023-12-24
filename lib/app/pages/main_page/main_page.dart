@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:sgc/app/pages/main_page/widgets/error_alert.dart';
+import 'package:sgc/app/ui/widgets/error_alert.dart';
 import 'package:sgc/app/ui/styles/colors_app.dart';
 import '../../data/pedidos.dart';
 import '../../models/order_model.dart';

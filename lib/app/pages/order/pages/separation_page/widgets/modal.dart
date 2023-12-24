@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../../../models/group_model.dart';
 
-Future<dynamic> showModal(BuildContext context, GroupModel item) async {
+Future<dynamic> showModal(BuildContext context, GrupoModel item) async {
   final pesoController = TextEditingController();
-  bool separar = item.separar;
+  bool separado = item.separado!;
 
   pesoController.text = item.pesoReal.toString();
 
@@ -34,7 +34,13 @@ Future<dynamic> showModal(BuildContext context, GroupModel item) async {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text('Peso real:'),
+                      const Text(
+                        'Peso real',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                      ),
                       TextField(
                         controller: pesoController,
                         keyboardType: TextInputType.number,
@@ -42,11 +48,11 @@ Future<dynamic> showModal(BuildContext context, GroupModel item) async {
                       Row(
                         children: [
                           Checkbox(
-                              value: separar,
+                              value: separado,
                               onChanged: (value) {
-                                setState(() => separar = value!);
+                                setState(() => separado = value!);
                               }),
-                          const Text('Separar')
+                          const Text('Separado')
                         ],
                       ),
                       Row(
@@ -63,7 +69,7 @@ Future<dynamic> showModal(BuildContext context, GroupModel item) async {
                               onPressed: () {
                                 item.pesoReal =
                                     double.parse(pesoController.text);
-                                item.separar = separar;
+                                item.separado = separado;
                                 Navigator.pop(context);
                               },
                               child: const Text('Salvar'),

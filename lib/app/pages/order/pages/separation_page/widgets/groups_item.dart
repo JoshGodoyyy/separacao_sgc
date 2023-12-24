@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sgc/app/models/group_model.dart';
 
 class GroupItem extends StatelessWidget {
-  final GroupModel item;
+  final GrupoModel item;
   final Function onTap;
   const GroupItem({
     super.key,
@@ -31,7 +31,7 @@ class GroupItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        item.descricao.toUpperCase(),
+                        item.descricao!.toUpperCase(),
                         style: const TextStyle(fontSize: 16),
                       ),
                       const SizedBox(height: 4),
@@ -44,7 +44,7 @@ class GroupItem extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Checkbox(value: item.separar, onChanged: (value) {}),
+                    Checkbox(value: item.separado, onChanged: (value) {}),
                     const Text('Separar'),
                   ],
                 )
