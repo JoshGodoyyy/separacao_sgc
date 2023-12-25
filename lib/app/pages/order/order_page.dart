@@ -11,7 +11,7 @@ import 'pages/separation_page/separation.dart';
 import '../../models/pedido_model.dart';
 
 class OrderPage extends StatefulWidget {
-  final Pedido pedido;
+  final PedidoModel pedido;
   const OrderPage({
     super.key,
     required this.pedido,

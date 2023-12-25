@@ -10,7 +10,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => Pedidos(),
+          create: (_) => Pedido(),
         ),
         ChangeNotifierProvider(
           create: (_) => AppConfig(),

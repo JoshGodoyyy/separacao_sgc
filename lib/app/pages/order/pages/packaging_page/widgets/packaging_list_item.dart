@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '/app/models/pack.dart';
+import '../../../../../models/embalagem_model.dart';
 
 class PackagingListItem extends StatelessWidget {
-  final Pack embalagem;
+  final EmbalagemModel embalagem;
   final Function onTap;
 
   const PackagingListItem({
@@ -15,7 +15,7 @@ class PackagingListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Material(
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
@@ -37,9 +37,9 @@ class PackagingListItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Nº Caixa: ${embalagem.numeroCaixa}'),
-                      Text('Peso: ${embalagem.peso}'),
-                      Text('Quantidade: ${embalagem.quantidade}'),
+                      Text('Nº Caixa: ${embalagem.idCaixa}'),
+                      Text('Peso: ${embalagem.pesoCaixa}'),
+                      Text('Quantidade: ${embalagem.quantidadeCaixa}'),
                     ],
                   ),
                   Text(

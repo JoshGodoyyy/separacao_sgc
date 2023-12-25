@@ -1,4 +1,4 @@
-import 'package:sgc/app/models/pedido_model.dart';
+import '../../../models/pedido_model.dart';
 
 abstract class PedidoEvent {}
 
@@ -9,13 +9,13 @@ class GetPedidosSituacao extends PedidoEvent {
 }
 
 class PostPedido extends PedidoEvent {
-  final Pedido pedido;
+  final PedidoModel pedido;
 
   PostPedido({required this.pedido});
 }
 
 class DeletePedido extends PedidoEvent {
-  final Pedido pedido;
+  final PedidoModel pedido;
 
   DeletePedido({required this.pedido});
 }

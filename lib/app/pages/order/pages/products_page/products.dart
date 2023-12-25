@@ -9,10 +9,9 @@ import 'package:sgc/app/pages/order/pages/products_page/widgets/product_list_ite
 
 import '../../../../data/repositories/pedidos.dart';
 import '../../../../models/pedido_model.dart';
-import '../treatment.dart';
 
 class Products extends StatefulWidget {
-  final Pedido pedido;
+  final PedidoModel pedido;
   const Products({
     super.key,
     required this.pedido,
@@ -52,7 +51,7 @@ class _ProductsState extends State<Products> {
   }
 
   fetchData() async {
-    final pedido = await Pedidos().fetchOrdersByIdOrder(
+    final pedido = await Pedido().fetchOrdersByIdOrder(
       int.parse(
         widget.pedido.id.toString(),
       ),
@@ -71,38 +70,30 @@ class _ProductsState extends State<Products> {
     }
   }
 
-  selecionarTratamento() {
-    Navigator.of(context)
-        .push(
-      MaterialPageRoute(
-        builder: (_) => Treatment(tratamento: tratamento),
-      ),
-    )
-        .then(
-      (value) async {
-        if (value != null) {
-          final result = await Tratamento().fetchTratamentoById(value);
-          tratamentoController.text = result.descricao!;
-        }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 12),
+        const Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 8.0,
+          ),
+          child: Text(
             'Trat. quando utilizado Grupo Especial:',
             style: TextStyle(
               fontSize: 14,
             ),
           ),
-          const SizedBox(height: 4),
-          Material(
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16.0,
+            vertical: 8.0,
+          ),
+          child: Material(
             elevation: 5,
             color: Theme.of(context).primaryColor,
             borderRadius: const BorderRadius.all(
@@ -118,42 +109,43 @@ class _ProductsState extends State<Products> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: FutureBuilder(
-              future: produtos,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      var produto = snapshot.data![index];
-                      return ProductListItem(
-                          product: produto,
-                          onTap: () {
-                            showModal(context, produto);
-                          });
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text(
-                      snapshot.error.toString(),
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  );
-                }
+        ),
+        const SizedBox(height: 16),
+        Expanded(
+          child: FutureBuilder(
+            future: produtos,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    var produto = snapshot.data![index];
+                    return ProductListItem(
+                        product: produto,
+                        onTap: () {
+                          showModal(context, produto);
+                        });
+                  },
+                );
+              } else if (snapshot.hasError) {
                 return Center(
-                  child: LoadingAnimationWidget.waveDots(
-                    color: Theme.of(context).indicatorColor,
-                    size: 30,
+                  child: Text(
+                    snapshot.error.toString(),
+                    style: const TextStyle(fontSize: 16),
                   ),
                 );
-              },
-            ),
+              }
+              return Center(
+                child: LoadingAnimationWidget.waveDots(
+                  color: Theme.of(context).indicatorColor,
+                  size: 30,
+                ),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

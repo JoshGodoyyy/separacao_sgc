@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:sgc/app/data/blocs/pedido_event.dart';
-import 'package:sgc/app/data/blocs/pedido_state.dart';
-import 'package:sgc/app/data/repositories/pedidos.dart';
-
-import '../../models/pedido_model.dart';
+import '../../../models/pedido_model.dart';
+import '../../repositories/pedidos.dart';
+import 'pedido_event.dart';
+import 'pedido_state.dart';
 
 class PedidoBloc {
-  final _repository = Pedidos();
+  final _repository = Pedido();
 
   final StreamController<PedidoEvent> _inputPedidoController =
       StreamController<PedidoEvent>();
@@ -22,7 +21,7 @@ class PedidoBloc {
   }
 
   void _mapEventToState(PedidoEvent event) async {
-    List<Pedido> pedidos = [];
+    List<PedidoModel> pedidos = [];
 
     _outputPedidoController.add(PedidoLoadingState());
 

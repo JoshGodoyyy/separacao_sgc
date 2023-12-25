@@ -6,7 +6,7 @@ import '../../../widgets/item.dart';
 import '../../../widgets/multi_line_text.dart';
 
 class Details extends StatefulWidget {
-  final Pedido pedido;
+  final PedidoModel pedido;
   const Details({
     super.key,
     required this.pedido,
@@ -32,7 +32,7 @@ class _DetailsState extends State<Details> {
   }
 
   fetchData() async {
-    final pedido = await Pedidos().fetchOrdersByIdOrder(
+    final pedido = await Pedido().fetchOrdersByIdOrder(
       int.parse(
         widget.pedido.id.toString(),
       ),

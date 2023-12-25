@@ -1,7 +1,7 @@
-import 'package:sgc/app/models/pedido_model.dart';
+import '../../../models/pedido_model.dart';
 
 abstract class PedidoState {
-  final List<Pedido> pedidos;
+  final List<PedidoModel> pedidos;
 
   PedidoState({required this.pedidos});
 }
@@ -15,7 +15,8 @@ class PedidoLoadingState extends PedidoState {
 }
 
 class PedidoLoadedState extends PedidoState {
-  PedidoLoadedState({required List<Pedido> pedidos}) : super(pedidos: pedidos);
+  PedidoLoadedState({required List<PedidoModel> pedidos})
+      : super(pedidos: pedidos);
 }
 
 class PedidoErrorState extends PedidoState {

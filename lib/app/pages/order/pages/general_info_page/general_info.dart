@@ -40,7 +40,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
   DateFormat data = DateFormat('dd/MM/yyyy HH:mm');
 
   _populateFields() async {
-    final pedido = await Pedidos().fetchOrdersByIdOrder(
+    final pedido = await Pedido().fetchOrdersByIdOrder(
       int.parse(
         widget.idPedido.toString(),
       ),

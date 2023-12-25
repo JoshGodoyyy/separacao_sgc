@@ -1,4 +1,4 @@
-class Pedido {
+class PedidoModel {
   num? id;
   String? dataCriacao;
   num? idCriador;
@@ -153,7 +153,7 @@ class Pedido {
   num? custoNatural;
   num? processarFaturamento;
 
-  Pedido(
+  PedidoModel(
       {id,
       dataCriacao,
       idCriador,
@@ -308,7 +308,7 @@ class Pedido {
       custoNatural,
       processarFaturamento});
 
-  Pedido.fromJson(Map<String, dynamic> json) {
+  PedidoModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     dataCriacao = json['dataCriacao'];
     idCriador = json['idCriador'];

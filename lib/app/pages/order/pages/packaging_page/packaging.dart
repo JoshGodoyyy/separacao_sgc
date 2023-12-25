@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:sgc/app/data/blocs/embalagem/embalagem_bloc.dart';
+import 'package:sgc/app/data/blocs/embalagem/embalagem_event.dart';
+import 'package:sgc/app/data/blocs/embalagem/embalagem_state.dart';
+import 'package:sgc/app/models/embalagem_model.dart';
+import 'package:sgc/app/pages/order/pages/packaging_page/widgets/packaging_list_item.dart';
 import 'package:sgc/app/ui/styles/colors_app.dart';
+import 'package:sgc/app/ui/widgets/error_alert.dart';
 
 import 'widgets/show_packaging_modal.dart';
 import '../../../../models/pedido_model.dart';
 
 class Packaging extends StatefulWidget {
-  final Pedido pedido;
+  final PedidoModel pedido;
   const Packaging({
     super.key,
     required this.pedido,
@@ -16,10 +23,29 @@ class Packaging extends StatefulWidget {
 }
 
 class _PackagingState extends State<Packaging> {
+  late final EmbalagemBloc _embalagemBloc;
+
   final numeroCaixaController = TextEditingController();
   final quantidadeController = TextEditingController();
   final pesoController = TextEditingController();
   final observacoesController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  fetchData() {
+    _embalagemBloc = EmbalagemBloc();
+    _embalagemBloc.inputEmbalagem.add(
+      GetEmbalagens(
+        idPedido: int.parse(
+          widget.pedido.id.toString(),
+        ),
+      ),
+    );
+  }
 
   void clear() {
     numeroCaixaController.clear();
@@ -38,29 +64,57 @@ class _PackagingState extends State<Packaging> {
       ),
       body: Column(
         children: [
+          Expanded(
+            child: StreamBuilder<EmbalagemState>(
+              stream: _embalagemBloc.outputEmbalagem,
+              builder: (context, snapshot) {
+                if (snapshot.data is EmbalagemLoadingState) {
+                  return Center(
+                    child: LoadingAnimationWidget.waveDots(
+                      color: Theme.of(context).indicatorColor,
+                      size: 30,
+                    ),
+                  );
+                } else if (snapshot.data is EmbalagemLoadedState) {
+                  List embalagens = snapshot.data?.embalagens ?? [];
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    itemCount: embalagens.length,
+                    itemBuilder: (context, index) {
+                      EmbalagemModel embalagem = embalagens[index];
+                      return PackagingListItem(
+                        embalagem: embalagem,
+                        onTap: () {},
+                      );
+                    },
+                  );
+                } else {
+                  return ErrorAlert(
+                    message: snapshot.error.toString(),
+                  );
+                }
+              },
+            ),
+          ),
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(16),
             child: ElevatedButton(
               onPressed: () {
                 clear();
-
                 showPackagingModal(
-                    context,
-                    numeroCaixaController,
-                    quantidadeController,
-                    pesoController,
-                    observacoesController, () {
-                  // final embalagem = Pack(
-                  //   numeroCaixaController.text,
-                  //   int.parse(quantidadeController.text),
-                  //   double.parse(pesoController.text),
-                  //   observacoesController.text,
-                  // );
-
-                  //widget.pedido.embalagens.add(embalagem);
-                  setState(() {});
-                  Navigator.pop(context);
-                });
+                  context,
+                  numeroCaixaController,
+                  quantidadeController,
+                  pesoController,
+                  observacoesController,
+                  () {
+                    setState(() {});
+                    Navigator.pop(context);
+                  },
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: ColorsApp.primaryColor,
@@ -76,35 +130,14 @@ class _PackagingState extends State<Packaging> {
               ),
             ),
           ),
-          Expanded(
-            child: ListView(
-              children: const [
-                // for (Pack embalagem in widget.pedido.embalagens)
-                // PackagingListItem(
-                //   embalagem: embalagem,
-                //   onTap: () {
-                //     numeroCaixaController.text =
-                //         embalagem.numeroCaixa.toString();
-                //     quantidadeController.text =
-                //         embalagem.quantidade.toString();
-                //     pesoController.text = embalagem.peso.toString();
-                //     observacoesController.text = embalagem.observacoes;
-
-                // showPackagingModal(
-                //   context,
-                //   numeroCaixaController,
-                //   quantidadeController,
-                //   pesoController,
-                //   observacoesController,
-                //   () {},
-                // );
-                //  },
-                //),
-              ],
-            ),
-          ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _embalagemBloc.inputEmbalagem.close();
+    super.dispose();
   }
 }

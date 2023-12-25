@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   loadData() async {
-    var orders = Provider.of<Pedidos>(context, listen: false);
+    var orders = Provider.of<Pedido>(context, listen: false);
     await orders.fetchData(2);
     await orders.fetchData(3);
     await orders.fetchData(5);
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var widgets = Provider.of<AppConfig>(context);
-    var orders = Provider.of<Pedidos>(context);
+    var orders = Provider.of<Pedido>(context);
 
     return Scaffold(
       appBar: AppBar(

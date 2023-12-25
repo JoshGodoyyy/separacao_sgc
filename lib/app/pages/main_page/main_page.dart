@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-
-import 'package:sgc/app/pages/main_page/widgets/list_header.dart';
-import 'package:sgc/app/ui/widgets/error_alert.dart';
-
-import '../../data/blocs/pedido_bloc.dart';
-import '../../data/blocs/pedido_event.dart';
-import '../../data/blocs/pedido_state.dart';
+import '../../data/blocs/pedido/pedido_bloc.dart';
+import '../../data/blocs/pedido/pedido_event.dart';
+import '../../data/blocs/pedido/pedido_state.dart';
 import '../../models/pedido_model.dart';
 import '../../ui/styles/colors_app.dart';
+import '../../ui/widgets/error_alert.dart';
 import '../order/order_page.dart';
+import 'widgets/list_header.dart';
 import 'widgets/list_item.dart';
 
 class MainPage extends StatefulWidget {
@@ -30,7 +28,6 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final searchController = TextEditingController();
-  List<Pedido> pedidos = [];
   late final PedidoBloc _pedidoBloc;
 
   @override
@@ -46,18 +43,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    List<Pedido> filtrar(String idPedido) {
-      if (idPedido.isEmpty) {
-        return pedidos;
-      } else {
-        return pedidos
-            .where(
-              (pedido) => pedido.id == int.parse(idPedido),
-            )
-            .toList();
-      }
-    }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -99,9 +84,7 @@ class _MainPageState extends State<MainPage> {
                   ),
                   child: InkWell(
                     onTap: () {
-                      setState(() {
-                        filtrar(searchController.text);
-                      });
+                      setState(() {});
                     },
                     borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(10),
@@ -147,51 +130,53 @@ class _MainPageState extends State<MainPage> {
             ),
           );
         } else if (snapshot.data is PedidoLoadedState) {
-          pedidos = snapshot.data!.pedidos;
+          List pedidos = snapshot.data!.pedidos;
           return ListView(
             children: [
               const ListHeader(label: 'Meus Pedidos'),
               for (var pedido in pedidos)
-                ListItem(
-                  icon: widget.icon,
-                  pedido: pedido,
-                  onClick: () {
-                    Navigator.of(context)
-                        .push(
-                          MaterialPageRoute(
-                            builder: (builder) => OrderPage(
-                              pedido: pedido,
+                if (pedido.separadorIniciar.toString().toLowerCase() == 'josh')
+                  ListItem(
+                    icon: widget.icon,
+                    pedido: pedido,
+                    onClick: () {
+                      Navigator.of(context)
+                          .push(
+                            MaterialPageRoute(
+                              builder: (builder) => OrderPage(
+                                pedido: pedido,
+                              ),
                             ),
-                          ),
-                        )
-                        .then(
-                          (value) => _pedidoBloc.inputPedido.add(
-                            GetPedidosSituacao(idSituacao: widget.status),
-                          ),
-                        );
-                  },
-                ),
+                          )
+                          .then(
+                            (value) => _pedidoBloc.inputPedido.add(
+                              GetPedidosSituacao(idSituacao: widget.status),
+                            ),
+                          );
+                    },
+                  ),
               const ListHeader(label: 'Pedidos Gerais'),
               for (var pedido in pedidos)
-                ListItem(
-                  icon: widget.icon,
-                  pedido: pedido,
-                  onClick: () {
-                    Navigator.of(context)
-                        .push(
-                          MaterialPageRoute(
-                            builder: (builder) => OrderPage(
-                              pedido: pedido,
+                if (pedido.separadorIniciar.toString().toLowerCase() != 'josh')
+                  ListItem(
+                    icon: widget.icon,
+                    pedido: pedido,
+                    onClick: () {
+                      Navigator.of(context)
+                          .push(
+                            MaterialPageRoute(
+                              builder: (builder) => OrderPage(
+                                pedido: pedido,
+                              ),
                             ),
-                          ),
-                        )
-                        .then(
-                          (value) => _pedidoBloc.inputPedido.add(
-                            GetPedidosSituacao(idSituacao: widget.status),
-                          ),
-                        );
-                  },
-                ),
+                          )
+                          .then(
+                            (value) => _pedidoBloc.inputPedido.add(
+                              GetPedidosSituacao(idSituacao: widget.status),
+                            ),
+                          );
+                    },
+                  ),
             ],
           );
         } else {
@@ -215,11 +200,11 @@ class _MainPageState extends State<MainPage> {
             ),
           );
         } else if (snapshot.data is PedidoLoadedState) {
-          pedidos = snapshot.data!.pedidos;
+          List pedidos = snapshot.data!.pedidos;
           return ListView.builder(
             itemCount: pedidos.length,
             itemBuilder: (context, index) {
-              Pedido pedido = pedidos[index];
+              PedidoModel pedido = pedidos[index];
               return ListItem(
                 icon: widget.icon,
                 pedido: pedido,

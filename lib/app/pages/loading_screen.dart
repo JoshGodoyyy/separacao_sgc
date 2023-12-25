@@ -22,7 +22,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   Future<void> getData() async {
-    final orders = Provider.of<Pedidos>(context, listen: false);
+    final orders = Provider.of<Pedido>(context, listen: false);
 
     var navigator = Navigator.of(context);
 

@@ -12,7 +12,7 @@ import '../../../../models/pedido_model.dart';
 import 'widgets/details.dart';
 
 class Separation extends StatefulWidget {
-  final Pedido pedido;
+  final PedidoModel pedido;
   final BuildContext context;
   const Separation({
     super.key,

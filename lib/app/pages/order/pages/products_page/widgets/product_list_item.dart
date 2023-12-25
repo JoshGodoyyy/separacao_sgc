@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/models/colors.dart';
 
 import '../../../../../models/product_model.dart';
+import 'item_color.dart';
 
 class ProductListItem extends StatelessWidget {
   final ProductModel product;
@@ -39,12 +41,25 @@ class ProductListItem extends StatelessWidget {
                       Text(
                         product.idProduto.toString(),
                         style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      // ItemColor(cor: product.cor),
+                      ItemColor(
+                        cor: Cor(
+                          'Vermelho',
+                          Colors.red,
+                        ),
+                      ),
                     ],
                   ),
+                  Text(
+                    'Qtd.: ${product.quantidade} ${product.idUnidade}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   Text(
                     product.descricao.toString(),
                     overflow: TextOverflow.ellipsis,
@@ -53,8 +68,9 @@ class ProductListItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Qtd.: ${product.quantidade} ${product.idUnidade}'),
-                      Text('Peso Unit..: ${product.peso}'),
+                      Text(
+                        'Peso Unit..: ${product.peso}',
+                      ),
                       Text(
                         'Peso Tot.: ${product.pesoTotal}',
                       ),

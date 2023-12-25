@@ -5,7 +5,7 @@ import '../../../models/pedido_model.dart';
 
 class ListItem extends StatelessWidget {
   final IconData icon;
-  final Pedido pedido;
+  final PedidoModel pedido;
   final Function onClick;
   const ListItem({
     super.key,
