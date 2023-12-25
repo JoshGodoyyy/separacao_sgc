@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:sgc/app/data/pedidos.dart';
+import 'package:sgc/app/data/repositories/pedidos.dart';
 
 import '/app/pages/home_page/home_page.dart';
 

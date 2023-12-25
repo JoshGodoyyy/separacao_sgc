@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgc/app/data/pedidos.dart';
-
+import 'package:sgc/app/data/repositories/pedidos.dart';
 import 'app/config/app_config.dart';
 import '/app/pages/login_page/login_page.dart';
 import '/app/ui/theme/theme_config.dart';

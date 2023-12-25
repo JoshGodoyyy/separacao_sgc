@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+
+import 'package:sgc/app/pages/main_page/widgets/list_header.dart';
 import 'package:sgc/app/ui/widgets/error_alert.dart';
-import 'package:sgc/app/ui/styles/colors_app.dart';
-import '../../data/pedidos.dart';
-import '../../models/order_model.dart';
+
+import '../../data/blocs/pedido_bloc.dart';
+import '../../data/blocs/pedido_event.dart';
+import '../../data/blocs/pedido_state.dart';
+import '../../models/pedido_model.dart';
+import '../../ui/styles/colors_app.dart';
+import '../order/order_page.dart';
 import 'widgets/list_item.dart';
 
 class MainPage extends StatefulWidget {
@@ -23,17 +29,35 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  late Future<List<Pedido>> pedidos;
   final searchController = TextEditingController();
+  List<Pedido> pedidos = [];
+  late final PedidoBloc _pedidoBloc;
 
   @override
   void initState() {
     super.initState();
-    pedidos = Pedidos().fetchOrdersBySituation(widget.status);
+    fetchData();
+  }
+
+  fetchData() {
+    _pedidoBloc = PedidoBloc();
+    _pedidoBloc.inputPedido.add(GetPedidosSituacao(idSituacao: widget.status));
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Pedido> filtrar(String idPedido) {
+      if (idPedido.isEmpty) {
+        return pedidos;
+      } else {
+        return pedidos
+            .where(
+              (pedido) => pedido.id == int.parse(idPedido),
+            )
+            .toList();
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -56,6 +80,7 @@ class _MainPageState extends State<MainPage> {
                     color: Theme.of(context).primaryColor,
                     child: TextField(
                       controller: searchController,
+                      onChanged: (value) {},
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -73,7 +98,11 @@ class _MainPageState extends State<MainPage> {
                     bottomRight: Radius.circular(10),
                   ),
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      setState(() {
+                        filtrar(searchController.text);
+                      });
+                    },
                     borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(10),
                       bottomRight: Radius.circular(10),
@@ -92,34 +121,138 @@ class _MainPageState extends State<MainPage> {
             ),
           ),
           Expanded(
-            child: FutureBuilder(
-              future: pedidos,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      Pedido pedido = snapshot.data![index];
-                      return ListItem(icon: widget.icon, pedido: pedido);
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return ErrorAlert(
-                    message: '${snapshot.error}',
-                  );
-                }
-                return Center(
-                  child: LoadingAnimationWidget.waveDots(
-                    color: Theme.of(context).indicatorColor,
-                    size: 30,
-                  ),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                _pedidoBloc.inputPedido.add(
+                  GetPedidosSituacao(idSituacao: widget.status),
                 );
               },
+              child: widget.status == 3 ? pedidosFiltrados() : todosPedidos(),
             ),
           ),
         ],
       ),
     );
+  }
+
+  StreamBuilder<PedidoState> pedidosFiltrados() {
+    return StreamBuilder<PedidoState>(
+      stream: _pedidoBloc.outputPedido,
+      builder: (context, snapshot) {
+        if (snapshot.data is PedidoLoadingState) {
+          return Center(
+            child: LoadingAnimationWidget.waveDots(
+              color: Theme.of(context).indicatorColor,
+              size: 30,
+            ),
+          );
+        } else if (snapshot.data is PedidoLoadedState) {
+          pedidos = snapshot.data!.pedidos;
+          return ListView(
+            children: [
+              const ListHeader(label: 'Meus Pedidos'),
+              for (var pedido in pedidos)
+                ListItem(
+                  icon: widget.icon,
+                  pedido: pedido,
+                  onClick: () {
+                    Navigator.of(context)
+                        .push(
+                          MaterialPageRoute(
+                            builder: (builder) => OrderPage(
+                              pedido: pedido,
+                            ),
+                          ),
+                        )
+                        .then(
+                          (value) => _pedidoBloc.inputPedido.add(
+                            GetPedidosSituacao(idSituacao: widget.status),
+                          ),
+                        );
+                  },
+                ),
+              const ListHeader(label: 'Pedidos Gerais'),
+              for (var pedido in pedidos)
+                ListItem(
+                  icon: widget.icon,
+                  pedido: pedido,
+                  onClick: () {
+                    Navigator.of(context)
+                        .push(
+                          MaterialPageRoute(
+                            builder: (builder) => OrderPage(
+                              pedido: pedido,
+                            ),
+                          ),
+                        )
+                        .then(
+                          (value) => _pedidoBloc.inputPedido.add(
+                            GetPedidosSituacao(idSituacao: widget.status),
+                          ),
+                        );
+                  },
+                ),
+            ],
+          );
+        } else {
+          return ErrorAlert(
+            message: snapshot.error.toString(),
+          );
+        }
+      },
+    );
+  }
+
+  StreamBuilder<PedidoState> todosPedidos() {
+    return StreamBuilder<PedidoState>(
+      stream: _pedidoBloc.outputPedido,
+      builder: (context, snapshot) {
+        if (snapshot.data is PedidoLoadingState) {
+          return Center(
+            child: LoadingAnimationWidget.waveDots(
+              color: Theme.of(context).indicatorColor,
+              size: 30,
+            ),
+          );
+        } else if (snapshot.data is PedidoLoadedState) {
+          pedidos = snapshot.data!.pedidos;
+          return ListView.builder(
+            itemCount: pedidos.length,
+            itemBuilder: (context, index) {
+              Pedido pedido = pedidos[index];
+              return ListItem(
+                icon: widget.icon,
+                pedido: pedido,
+                onClick: () {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(
+                          builder: (builder) => OrderPage(
+                            pedido: pedido,
+                          ),
+                        ),
+                      )
+                      .then(
+                        (value) => _pedidoBloc.inputPedido.add(
+                          GetPedidosSituacao(idSituacao: widget.status),
+                        ),
+                      );
+                },
+              );
+            },
+          );
+        } else {
+          return ErrorAlert(
+            message: snapshot.error.toString(),
+          );
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _pedidoBloc.inputPedido.close();
+    super.dispose();
   }
 }

@@ -7,8 +7,8 @@ import 'package:sgc/app/data/tratamento.dart';
 import 'package:sgc/app/pages/order/pages/products_page/widgets/modal.dart';
 import 'package:sgc/app/pages/order/pages/products_page/widgets/product_list_item.dart';
 
-import '../../../../data/pedidos.dart';
-import '../../../../models/order_model.dart';
+import '../../../../data/repositories/pedidos.dart';
+import '../../../../models/pedido_model.dart';
 import '../treatment.dart';
 
 class Products extends StatefulWidget {

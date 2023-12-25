@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sgc/app/data/pedidos.dart';
+import 'package:sgc/app/data/repositories/pedidos.dart';
 import 'package:sgc/app/data/tipo_entrega.dart';
 import 'package:sgc/app/data/user_dao.dart';
 import 'package:sgc/app/data/vendedor_dao.dart';

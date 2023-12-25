@@ -8,7 +8,7 @@ import 'package:sgc/app/pages/order/pages/separation_page/widgets/modal.dart';
 import 'package:sgc/app/pages/order/widgets/save_button.dart';
 
 import '../../../../config/app_config.dart';
-import '../../../../models/order_model.dart';
+import '../../../../models/pedido_model.dart';
 import 'widgets/details.dart';
 
 class Separation extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sgc/app/ui/styles/colors_app.dart';
 
 import 'widgets/show_packaging_modal.dart';
-import '../../../../models/order_model.dart';
+import '../../../../models/pedido_model.dart';
 
 class Packaging extends StatefulWidget {
   final Pedido pedido;

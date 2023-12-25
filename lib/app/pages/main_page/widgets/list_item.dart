@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sgc/app/pages/order/order_page.dart';
 
-import '../../../models/order_model.dart';
+import '../../../models/pedido_model.dart';
 
 class ListItem extends StatelessWidget {
   final IconData icon;
   final Pedido pedido;
+  final Function onClick;
   const ListItem({
     super.key,
     required this.icon,
     required this.pedido,
+    required this.onClick,
   });
 
   @override
@@ -26,13 +27,7 @@ class ListItem extends StatelessWidget {
         elevation: 3,
         color: Theme.of(context).primaryColor,
         child: InkWell(
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (builder) => OrderPage(
-                pedido: pedido,
-              ),
-            ),
-          ),
+          onTap: () => onClick(),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),

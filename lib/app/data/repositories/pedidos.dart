@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../config/api_config.dart';
-import '../models/order_model.dart';
+import '../../config/api_config.dart';
+import '../../models/pedido_model.dart';
 
 class Pedidos with ChangeNotifier {
   List pedidosSeparar = [];

@@ -8,7 +8,7 @@ import '../../ui/styles/colors_app.dart';
 import 'pages/general_info_page/general_info.dart';
 import 'pages/products_page/products.dart';
 import 'pages/separation_page/separation.dart';
-import '../../models/order_model.dart';
+import '../../models/pedido_model.dart';
 
 class OrderPage extends StatefulWidget {
   final Pedido pedido;
