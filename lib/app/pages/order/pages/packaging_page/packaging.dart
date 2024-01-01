@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:sgc/app/data/blocs/embalagem/embalagem_bloc.dart';
-import 'package:sgc/app/data/blocs/embalagem/embalagem_event.dart';
-import 'package:sgc/app/data/blocs/embalagem/embalagem_state.dart';
-import 'package:sgc/app/models/embalagem_model.dart';
-import 'package:sgc/app/pages/order/pages/packaging_page/widgets/packaging_list_item.dart';
-import 'package:sgc/app/ui/styles/colors_app.dart';
-import 'package:sgc/app/ui/widgets/error_alert.dart';
 
-import 'widgets/show_packaging_modal.dart';
+import '../../../../data/blocs/embalagem/embalagem_bloc.dart';
+import '../../../../data/blocs/embalagem/embalagem_event.dart';
+import '../../../../data/blocs/embalagem/embalagem_state.dart';
+import '../../../../models/embalagem_model.dart';
 import '../../../../models/pedido_model.dart';
+import '../../../../ui/styles/colors_app.dart';
+import '../../../../ui/widgets/error_alert.dart';
+import 'widgets/packaging_list_item.dart';
+import 'widgets/show_packaging_modal.dart';
 
 class Packaging extends StatefulWidget {
   final PedidoModel pedido;
@@ -33,11 +33,11 @@ class _PackagingState extends State<Packaging> {
   @override
   void initState() {
     super.initState();
+    _embalagemBloc = EmbalagemBloc();
     fetchData();
   }
 
   fetchData() {
-    _embalagemBloc = EmbalagemBloc();
     _embalagemBloc.inputEmbalagem.add(
       GetEmbalagens(
         idPedido: int.parse(
@@ -77,19 +77,49 @@ class _PackagingState extends State<Packaging> {
                   );
                 } else if (snapshot.data is EmbalagemLoadedState) {
                   List embalagens = snapshot.data?.embalagens ?? [];
-                  return ListView.builder(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    itemCount: embalagens.length,
-                    itemBuilder: (context, index) {
-                      EmbalagemModel embalagem = embalagens[index];
-                      return PackagingListItem(
-                        embalagem: embalagem,
-                        onTap: () {},
-                      );
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      fetchData();
                     },
+                    child: ListView.builder(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      itemCount: embalagens.length,
+                      itemBuilder: (context, index) {
+                        EmbalagemModel embalagem = embalagens[index];
+                        return PackagingListItem(
+                          embalagem: embalagem,
+                          onTap: () {
+                            numeroCaixaController.text =
+                                embalagem.idCaixa ?? '';
+                            pesoController.text =
+                                embalagem.pesoCaixa.toString();
+                            quantidadeController.text =
+                                embalagem.quantidadeCaixa.toString();
+                            observacoesController.text =
+                                embalagem.observacoes ?? '';
+
+                            showPackagingModal(
+                              context: context,
+                              bloc: _embalagemBloc,
+                              idPedido: int.parse(
+                                widget.pedido.id.toString(),
+                              ),
+                              numeroCaixaController: numeroCaixaController,
+                              quantidadeController: quantidadeController,
+                              pesoController: pesoController,
+                              observacoesController: observacoesController,
+                              id: int.parse(embalagem.id.toString()),
+                            );
+                          },
+                          onDelete: () => _embalagemBloc.inputEmbalagem.add(
+                            DeleteEmbalagem(embalagem: embalagem),
+                          ),
+                        );
+                      },
+                    ),
                   );
                 } else {
                   return ErrorAlert(
@@ -105,15 +135,15 @@ class _PackagingState extends State<Packaging> {
               onPressed: () {
                 clear();
                 showPackagingModal(
-                  context,
-                  numeroCaixaController,
-                  quantidadeController,
-                  pesoController,
-                  observacoesController,
-                  () {
-                    setState(() {});
-                    Navigator.pop(context);
-                  },
+                  context: context,
+                  bloc: _embalagemBloc,
+                  idPedido: int.parse(
+                    widget.pedido.id.toString(),
+                  ),
+                  numeroCaixaController: numeroCaixaController,
+                  quantidadeController: quantidadeController,
+                  pesoController: pesoController,
+                  observacoesController: observacoesController,
                 );
               },
               style: ElevatedButton.styleFrom(

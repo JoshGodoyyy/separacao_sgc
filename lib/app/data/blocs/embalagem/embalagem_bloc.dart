@@ -27,6 +27,12 @@ class EmbalagemBloc {
 
     if (event is GetEmbalagens) {
       embalagens = await _repository.fetchEmbalagens(event.idPedido);
+    } else if (event is PostEmbalagem) {
+      embalagens = await _repository.insertEmbalagem(event.embalagem);
+    } else if (event is UpdateEmbalagem) {
+      embalagens = await _repository.updateEmbalagem(event.embalagem);
+    } else if (event is DeleteEmbalagem) {
+      embalagens = await _repository.deleteEmbalagem(event.embalagem);
     }
 
     _outputEmbalagemController

@@ -21,7 +21,7 @@ class UpdateEmbalagem extends EmbalagemEvent {
 }
 
 class DeleteEmbalagem extends EmbalagemEvent {
-  final int id;
+  final EmbalagemModel embalagem;
 
-  DeleteEmbalagem({required this.id});
+  DeleteEmbalagem({required this.embalagem});
 }

@@ -65,7 +65,9 @@ class _SeparationState extends State<Separation> {
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-                        child: saveButton(() {}),
+                        child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: saveButton(() {})),
                       ),
                     ],
                   );

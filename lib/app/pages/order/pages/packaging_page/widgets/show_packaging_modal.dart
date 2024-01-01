@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
+import '../../../../../data/blocs/embalagem/embalagem_bloc.dart';
+import '../../../../../data/blocs/embalagem/embalagem_event.dart';
+import '../../../../../models/embalagem_model.dart';
 import '../../../widgets/item.dart';
 import '../../../widgets/save_button.dart';
 
-Future<dynamic> showPackagingModal(
-  BuildContext context,
-  TextEditingController numeroCaixaController,
-  TextEditingController quantidadeController,
-  TextEditingController pesoController,
-  TextEditingController observacoesController,
-  Function onTap,
-) {
+Future<dynamic> showPackagingModal({
+  required BuildContext context,
+  required EmbalagemBloc bloc,
+  required int idPedido,
+  required TextEditingController numeroCaixaController,
+  required TextEditingController quantidadeController,
+  required TextEditingController pesoController,
+  required TextEditingController observacoesController,
+  int? id,
+}) {
   return showModalBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,
@@ -61,7 +68,58 @@ Future<dynamic> showPackagingModal(
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: saveButton(
-                    () => onTap(),
+                    () {
+                      if (numeroCaixaController.text == '') {
+                        showTopSnackBar(
+                          Overlay.of(context),
+                          const CustomSnackBar.error(
+                              message: 'Campo "Número Caixa" obrigatório'),
+                        );
+
+                        return;
+                      }
+
+                      if (quantidadeController.text == '') {
+                        showTopSnackBar(
+                          Overlay.of(context),
+                          const CustomSnackBar.error(
+                              message: 'Campo "Quantidade" obrigatório'),
+                        );
+
+                        return;
+                      }
+
+                      if (pesoController.text == '') {
+                        showTopSnackBar(
+                          Overlay.of(context),
+                          const CustomSnackBar.error(
+                              message: 'Campo "Peso" obrigatório'),
+                        );
+
+                        return;
+                      }
+
+                      var embalagem = EmbalagemModel(
+                        id: id ?? 0,
+                        idCaixa: numeroCaixaController.text,
+                        idPedido: idPedido,
+                        pesoCaixa: double.parse(pesoController.text),
+                        quantidadeCaixa: int.parse(quantidadeController.text),
+                        observacoes: observacoesController.text,
+                      );
+
+                      if (id == null) {
+                        bloc.inputEmbalagem.add(
+                          PostEmbalagem(embalagem: embalagem),
+                        );
+                      } else {
+                        embalagem.id = id;
+                        bloc.inputEmbalagem.add(
+                          UpdateEmbalagem(embalagem: embalagem),
+                        );
+                      }
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
               ],

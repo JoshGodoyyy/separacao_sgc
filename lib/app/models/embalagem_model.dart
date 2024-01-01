@@ -21,7 +21,7 @@ class EmbalagemModel {
     idCaixa = json['idCaixa'];
     quantidadeCaixa = json['quantidadeCaixa'];
     pesoCaixa = json['pesoCaixa'];
-    observacoes = json['observacoes'];
+    observacoes = json['observacoes'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
