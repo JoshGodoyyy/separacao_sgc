@@ -26,7 +26,12 @@ class PedidoBloc {
     _outputPedidoController.add(PedidoLoadingState());
 
     if (event is GetPedidosSituacao) {
-      pedidos = await _repository.fetchOrdersBySituation(event.idSituacao);
+      pedidos = await _repository.fetchOrdersBySituation(
+          idSituacao: event.idSituacao);
+    }
+    if (event is SearchPedido) {
+      pedidos = await _repository.fetchOrdersBySituation(
+          idSituacao: event.idSituacao, idPedido: event.idPedido);
     }
 
     _outputPedidoController.add(PedidoLoadedState(pedidos: pedidos));

@@ -8,6 +8,13 @@ class GetPedidosSituacao extends PedidoEvent {
   GetPedidosSituacao({required this.idSituacao});
 }
 
+class SearchPedido extends PedidoEvent {
+  final int idSituacao;
+  final int idPedido;
+
+  SearchPedido({required this.idSituacao, required this.idPedido});
+}
+
 class PostPedido extends PedidoEvent {
   final PedidoModel pedido;
 

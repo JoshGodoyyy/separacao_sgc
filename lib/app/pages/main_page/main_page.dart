@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../data/blocs/pedido/pedido_bloc.dart';
 import '../../data/blocs/pedido/pedido_event.dart';
@@ -29,16 +30,28 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final searchController = TextEditingController();
   late final PedidoBloc _pedidoBloc;
+  late final List pedidos;
 
   @override
   void initState() {
     super.initState();
+    _pedidoBloc = PedidoBloc();
     fetchData();
   }
 
   fetchData() {
-    _pedidoBloc = PedidoBloc();
-    _pedidoBloc.inputPedido.add(GetPedidosSituacao(idSituacao: widget.status));
+    _pedidoBloc.inputPedido.add(
+      GetPedidosSituacao(idSituacao: widget.status),
+    );
+  }
+
+  searchData(String value) {
+    _pedidoBloc.inputPedido.add(
+      SearchPedido(
+        idSituacao: widget.status,
+        idPedido: int.parse(value),
+      ),
+    );
   }
 
   @override
@@ -65,7 +78,19 @@ class _MainPageState extends State<MainPage> {
                     color: Theme.of(context).primaryColor,
                     child: TextField(
                       controller: searchController,
-                      onChanged: (value) {},
+                      keyboardType: const TextInputType.numberWithOptions(),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'[0-9]'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        if (searchController.text == '') {
+                          fetchData();
+                        } else {
+                          searchData(searchController.text);
+                        }
+                      },
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -84,7 +109,11 @@ class _MainPageState extends State<MainPage> {
                   ),
                   child: InkWell(
                     onTap: () {
-                      setState(() {});
+                      if (searchController.text == '') {
+                        fetchData();
+                      } else {
+                        searchData(searchController.text);
+                      }
                     },
                     borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(10),
