@@ -7,9 +7,24 @@ import '../../../widgets/multi_line_text.dart';
 
 class Details extends StatefulWidget {
   final PedidoModel pedido;
+  final TextEditingController volumeAcessorio;
+  final TextEditingController volumeAluminio;
+  final TextEditingController volumeChapa;
+  final TextEditingController observacoesSeparacao;
+  final TextEditingController observacoesSeparador;
+  final TextEditingController setorSeparacao;
+  final TextEditingController pesoAcessorio;
+
   const Details({
     super.key,
     required this.pedido,
+    required this.volumeAcessorio,
+    required this.volumeAluminio,
+    required this.volumeChapa,
+    required this.observacoesSeparacao,
+    required this.observacoesSeparador,
+    required this.setorSeparacao,
+    required this.pesoAcessorio,
   });
 
   @override
@@ -17,14 +32,6 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  final volumeAcessorioController = TextEditingController();
-  final volumeAluminioController = TextEditingController();
-  final volumeChapasController = TextEditingController();
-  final observacoesSeparacaoController = TextEditingController();
-  final observacoesSeparadorController = TextEditingController();
-  final setorSeparacaoController = TextEditingController();
-  final pesoAcessorioController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -38,15 +45,13 @@ class _DetailsState extends State<Details> {
       ),
     );
 
-    volumeAcessorioController.text = pedido.volumeAcessorio.toString();
-    volumeAluminioController.text = pedido.volumePerfil.toString();
-    volumeChapasController.text = pedido.volumeChapa.toString();
-    observacoesSeparacaoController.text =
-        pedido.observacoesSeparacao.toString();
-    observacoesSeparadorController.text =
-        pedido.observacoesSeparador.toString();
-    setorSeparacaoController.text = pedido.setorEstoque.toString();
-    pesoAcessorioController.text = pedido.pesoAcessorios.toString();
+    widget.volumeAcessorio.text = pedido.volumeAcessorio.toString();
+    widget.volumeAluminio.text = pedido.volumePerfil.toString();
+    widget.volumeChapa.text = pedido.volumeChapa.toString();
+    widget.observacoesSeparacao.text = pedido.observacoesSeparacao.toString();
+    widget.observacoesSeparador.text = pedido.observacoesSeparador.toString();
+    widget.setorSeparacao.text = pedido.setorEstoque.toString();
+    widget.pesoAcessorio.text = pedido.pesoAcessorios.toString();
   }
 
   @override
@@ -62,7 +67,7 @@ class _DetailsState extends State<Details> {
                 child: item(
                   context,
                   'Vol. Aces.:',
-                  volumeAcessorioController,
+                  widget.volumeAcessorio,
                   false,
                   TextInputType.number,
                 ),
@@ -72,7 +77,7 @@ class _DetailsState extends State<Details> {
                 child: item(
                   context,
                   'Vol. Alum.:',
-                  volumeAluminioController,
+                  widget.volumeAluminio,
                   false,
                   TextInputType.number,
                 ),
@@ -82,7 +87,7 @@ class _DetailsState extends State<Details> {
                 child: item(
                   context,
                   'Vol. Chapas:',
-                  volumeChapasController,
+                  widget.volumeChapa,
                   false,
                   TextInputType.number,
                 ),
@@ -91,21 +96,21 @@ class _DetailsState extends State<Details> {
           ),
           MultiLineText(
             label: 'Observações para Separação:',
-            controller: observacoesSeparacaoController,
+            controller: widget.observacoesSeparacao,
           ),
           MultiLineText(
             label: 'Observações do Separador:',
-            controller: observacoesSeparadorController,
+            controller: widget.observacoesSeparador,
           ),
           item(
             context,
             'Setor de Separação:',
-            setorSeparacaoController,
+            widget.setorSeparacao,
           ),
           item(
             context,
             'Peso Acessório:',
-            pesoAcessorioController,
+            widget.pesoAcessorio,
             false,
             TextInputType.number,
           ),

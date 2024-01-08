@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/user.dart';
-import '../../login_page/login_page.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
@@ -26,47 +25,6 @@ class HomeHeader extends StatelessWidget {
               'Olá, $user',
               style: const TextStyle(
                 fontSize: 18,
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text(
-                        'SGC',
-                      ),
-                      content: const Text(
-                        'Deseja mesmo sair?',
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (builder) => const LoginPage(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            'Sim',
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text(
-                            'Não',
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              icon: const Icon(
-                Icons.logout,
               ),
             ),
           ],

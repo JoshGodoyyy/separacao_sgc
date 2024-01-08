@@ -44,7 +44,10 @@ class GroupItem extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Checkbox(value: item.separado, onChanged: (value) {}),
+                    Checkbox(
+                      value: item.separado == 1 ? true : false,
+                      onChanged: (value) {},
+                    ),
                     const Text('Separar'),
                   ],
                 )

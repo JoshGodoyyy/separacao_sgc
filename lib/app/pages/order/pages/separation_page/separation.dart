@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:sgc/app/data/grupo.dart';
-import 'package:sgc/app/pages/order/pages/separation_page/widgets/groups_item.dart';
+import 'package:sgc/app/data/blocs/pedido/pedido_bloc.dart';
+import 'package:sgc/app/data/repositories/grupo.dart';
+import 'package:sgc/app/pages/order/pages/separation_page/widgets/group_item.dart';
 import 'package:sgc/app/pages/order/pages/separation_page/widgets/modal.dart';
 
 import 'package:sgc/app/pages/order/widgets/save_button.dart';
@@ -26,6 +27,20 @@ class Separation extends StatefulWidget {
 
 class _SeparationState extends State<Separation> {
   late int tipoProduto;
+  late final PedidoBloc _pedidoBloc;
+  final volumeAcessorioController = TextEditingController();
+  final volumeAluminioController = TextEditingController();
+  final volumeChapasController = TextEditingController();
+  final observacoesSeparacaoController = TextEditingController();
+  final observacoesSeparadorController = TextEditingController();
+  final setorSeparacaoController = TextEditingController();
+  final pesoAcessorioController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _pedidoBloc = PedidoBloc();
+  }
 
   Future<List<dynamic>> fetchData() async {
     final result = Provider.of<AppConfig>(context, listen: false);
@@ -62,6 +77,13 @@ class _SeparationState extends State<Separation> {
                     children: [
                       Details(
                         pedido: widget.pedido,
+                        volumeAcessorio: volumeAcessorioController,
+                        volumeAluminio: volumeAluminioController,
+                        volumeChapa: volumeChapasController,
+                        observacoesSeparacao: observacoesSeparacaoController,
+                        observacoesSeparador: observacoesSeparadorController,
+                        setorSeparacao: setorSeparacaoController,
+                        pesoAcessorio: pesoAcessorioController,
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
@@ -76,7 +98,14 @@ class _SeparationState extends State<Separation> {
                   return GroupItem(
                     item: grupo,
                     onTap: () {
-                      showModal(context, grupo);
+                      showModal(
+                        widget.context,
+                        grupo,
+                        int.parse(
+                          widget.pedido.id.toString(),
+                        ),
+                        tipoProduto,
+                      );
                     },
                   );
                 }

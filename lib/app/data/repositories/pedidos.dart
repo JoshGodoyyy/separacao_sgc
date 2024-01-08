@@ -19,7 +19,7 @@ class Pedido with ChangeNotifier {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
-          "id": idSituacao,
+          'id': idSituacao,
         },
       ),
     );
@@ -100,7 +100,7 @@ class Pedido with ChangeNotifier {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
-          "id": idPedido,
+          'id': idPedido,
         },
       ),
     );
@@ -110,5 +110,21 @@ class Pedido with ChangeNotifier {
     } catch (ex) {
       throw Exception(ex);
     }
+  }
+
+  Future<PedidoModel> updateOrder(PedidoModel pedido) async {
+    await http.post(
+      Uri.parse('$url/Update'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {},
+      ),
+    );
+
+    return fetchOrdersByIdOrder(
+      int.parse(
+        pedido.id.toString(),
+      ),
+    );
   }
 }

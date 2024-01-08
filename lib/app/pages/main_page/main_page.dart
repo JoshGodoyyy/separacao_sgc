@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import '../../data/blocs/pedido/pedido_bloc.dart';
+import '../../data/blocs/pedido/pedidos_bloc.dart';
 import '../../data/blocs/pedido/pedido_event.dart';
-import '../../data/blocs/pedido/pedido_state.dart';
+import '../../data/blocs/pedido/pedidos_state.dart';
 import '../../models/pedido_model.dart';
 import '../../ui/styles/colors_app.dart';
 import '../../ui/widgets/error_alert.dart';
@@ -29,24 +29,24 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final searchController = TextEditingController();
-  late final PedidoBloc _pedidoBloc;
+  late final PedidosBloc _pedidosBloc;
   late final List pedidos;
 
   @override
   void initState() {
     super.initState();
-    _pedidoBloc = PedidoBloc();
+    _pedidosBloc = PedidosBloc();
     fetchData();
   }
 
   fetchData() {
-    _pedidoBloc.inputPedido.add(
+    _pedidosBloc.inputPedido.add(
       GetPedidosSituacao(idSituacao: widget.status),
     );
   }
 
   searchData(String value) {
-    _pedidoBloc.inputPedido.add(
+    _pedidosBloc.inputPedido.add(
       SearchPedido(
         idSituacao: widget.status,
         idPedido: int.parse(value),
@@ -135,7 +135,7 @@ class _MainPageState extends State<MainPage> {
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async {
-                _pedidoBloc.inputPedido.add(
+                _pedidosBloc.inputPedido.add(
                   GetPedidosSituacao(idSituacao: widget.status),
                 );
               },
@@ -147,18 +147,18 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  StreamBuilder<PedidoState> pedidosFiltrados() {
-    return StreamBuilder<PedidoState>(
-      stream: _pedidoBloc.outputPedido,
+  StreamBuilder<PedidosState> pedidosFiltrados() {
+    return StreamBuilder<PedidosState>(
+      stream: _pedidosBloc.outputPedido,
       builder: (context, snapshot) {
-        if (snapshot.data is PedidoLoadingState) {
+        if (snapshot.data is PedidosLoadingState) {
           return Center(
             child: LoadingAnimationWidget.waveDots(
               color: Theme.of(context).indicatorColor,
               size: 30,
             ),
           );
-        } else if (snapshot.data is PedidoLoadedState) {
+        } else if (snapshot.data is PedidosLoadedState) {
           List pedidos = snapshot.data!.pedidos;
           return ListView(
             children: [
@@ -178,7 +178,7 @@ class _MainPageState extends State<MainPage> {
                             ),
                           )
                           .then(
-                            (value) => _pedidoBloc.inputPedido.add(
+                            (value) => _pedidosBloc.inputPedido.add(
                               GetPedidosSituacao(idSituacao: widget.status),
                             ),
                           );
@@ -200,7 +200,7 @@ class _MainPageState extends State<MainPage> {
                             ),
                           )
                           .then(
-                            (value) => _pedidoBloc.inputPedido.add(
+                            (value) => _pedidosBloc.inputPedido.add(
                               GetPedidosSituacao(idSituacao: widget.status),
                             ),
                           );
@@ -217,18 +217,18 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  StreamBuilder<PedidoState> todosPedidos() {
-    return StreamBuilder<PedidoState>(
-      stream: _pedidoBloc.outputPedido,
+  StreamBuilder<PedidosState> todosPedidos() {
+    return StreamBuilder<PedidosState>(
+      stream: _pedidosBloc.outputPedido,
       builder: (context, snapshot) {
-        if (snapshot.data is PedidoLoadingState) {
+        if (snapshot.data is PedidosLoadingState) {
           return Center(
             child: LoadingAnimationWidget.waveDots(
               color: Theme.of(context).indicatorColor,
               size: 30,
             ),
           );
-        } else if (snapshot.data is PedidoLoadedState) {
+        } else if (snapshot.data is PedidosLoadedState) {
           List pedidos = snapshot.data!.pedidos;
           return ListView.builder(
             itemCount: pedidos.length,
@@ -247,7 +247,7 @@ class _MainPageState extends State<MainPage> {
                         ),
                       )
                       .then(
-                        (value) => _pedidoBloc.inputPedido.add(
+                        (value) => _pedidosBloc.inputPedido.add(
                           GetPedidosSituacao(idSituacao: widget.status),
                         ),
                       );
@@ -266,7 +266,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void dispose() {
-    _pedidoBloc.inputPedido.close();
+    _pedidosBloc.inputPedido.close();
     super.dispose();
   }
 }

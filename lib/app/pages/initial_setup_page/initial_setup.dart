@@ -33,50 +33,52 @@ class _InitialSetupState extends State<InitialSetup> {
       backgroundColor: const Color(0xff12111F),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: Hero(
-                  tag: 'logo',
-                  child: Image.asset(
-                    'assets/images/logo_light.png',
-                    width: MediaQuery.of(context).size.width / 3,
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: Hero(
+                    tag: 'logo',
+                    child: Image.asset(
+                      'assets/images/logo_light.png',
+                      width: MediaQuery.of(context).size.width / 3,
+                    ),
                   ),
                 ),
-              ),
-              STextField(
-                controller: urlController,
-                label: 'URL',
-                usePasswordChar: false,
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Button(
-                      label: 'Voltar',
-                      onPressed: () => Navigator.pop(context),
+                STextField(
+                  controller: urlController,
+                  label: 'URL',
+                  usePasswordChar: false,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Button(
+                        label: 'Voltar',
+                        onPressed: () => Navigator.pop(context),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    flex: 2,
-                    child: Button(
-                      label: 'Salvar',
-                      onPressed: () {
-                        ApiConfig().setUrl(urlController.text);
-                        Navigator.pop(context);
-                      },
+                    const SizedBox(width: 16),
+                    Expanded(
+                      flex: 2,
+                      child: Button(
+                        label: 'Salvar',
+                        onPressed: () {
+                          ApiConfig().setUrl(urlController.text);
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

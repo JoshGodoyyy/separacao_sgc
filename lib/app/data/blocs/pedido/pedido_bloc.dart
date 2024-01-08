@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import '../../../models/pedido_model.dart';
-import '../../repositories/pedidos.dart';
-import 'pedido_event.dart';
-import 'pedido_state.dart';
+import 'package:sgc/app/data/blocs/pedido/pedido_event.dart';
+import 'package:sgc/app/data/blocs/pedido/pedido_state.dart';
+import 'package:sgc/app/data/repositories/pedidos.dart';
+import 'package:sgc/app/models/pedido_model.dart';
 
 class PedidoBloc {
   final _repository = Pedido();
@@ -21,19 +21,14 @@ class PedidoBloc {
   }
 
   void _mapEventToState(PedidoEvent event) async {
-    List<PedidoModel> pedidos = [];
+    PedidoModel? pedido;
 
     _outputPedidoController.add(PedidoLoadingState());
 
-    if (event is GetPedidosSituacao) {
-      pedidos = await _repository.fetchOrdersBySituation(
-          idSituacao: event.idSituacao);
-    }
-    if (event is SearchPedido) {
-      pedidos = await _repository.fetchOrdersBySituation(
-          idSituacao: event.idSituacao, idPedido: event.idPedido);
+    if (event is PostPedido) {
+      pedido = await _repository.updateOrder(event.pedido);
     }
 
-    _outputPedidoController.add(PedidoLoadedState(pedidos: pedidos));
+    _outputPedidoController.add(PedidoLoadedState(pedido: pedido!));
   }
 }

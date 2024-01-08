@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/data/blocs/grupo/grupo_bloc.dart';
+import 'package:sgc/app/data/blocs/grupo/grupo_event.dart';
 
 import '../../../../../models/group_model.dart';
 
-Future<dynamic> showModal(BuildContext context, GrupoModel item) async {
+Future<dynamic> showModal(
+  BuildContext context,
+  GrupoModel item,
+  int idPedido,
+  int tipoProduto,
+) async {
   final pesoController = TextEditingController();
-  bool separado = item.separado!;
+  bool separado = item.separado! == 1 ? true : false;
+  GrupoBloc bloc = GrupoBloc();
 
   pesoController.text = item.pesoReal.toString();
 
@@ -43,15 +51,25 @@ Future<dynamic> showModal(BuildContext context, GrupoModel item) async {
                       ),
                       TextField(
                         controller: pesoController,
+                        onChanged: (value) {
+                          if (pesoController.text.isEmpty) return;
+
+                          if (int.parse(value) > 0) {
+                            setState(() => separado = true);
+                          } else {
+                            setState(() => separado = false);
+                          }
+                        },
                         keyboardType: TextInputType.number,
                       ),
                       Row(
                         children: [
                           Checkbox(
-                              value: separado,
-                              onChanged: (value) {
-                                setState(() => separado = value!);
-                              }),
+                            value: separado,
+                            onChanged: (value) {
+                              setState(() => separado = value!);
+                            },
+                          ),
                           const Text('Separado')
                         ],
                       ),
@@ -67,9 +85,24 @@ Future<dynamic> showModal(BuildContext context, GrupoModel item) async {
                           Expanded(
                             child: TextButton(
                               onPressed: () {
-                                item.pesoReal =
-                                    double.parse(pesoController.text);
-                                item.separado = separado;
+                                var grupo = GrupoModel(
+                                  id: item.id,
+                                  idGrupo: item.idGrupo,
+                                  descricao: item.descricao,
+                                  pesoReal: double.parse(pesoController.text),
+                                  separado: separado ? 1 : 0,
+                                  difal: item.difal,
+                                  juros: item.juros,
+                                  pesoTeorico: item.pesoTeorico,
+                                  valorGrupo: item.valorGrupo,
+                                  valorReal: item.valorReal,
+                                );
+
+                                bloc.inputGrupo.add(UpdateGrupo(
+                                  grupo: grupo,
+                                  idPedido: idPedido,
+                                  tipoProduto: tipoProduto,
+                                ));
                                 Navigator.pop(context);
                               },
                               child: const Text('Salvar'),

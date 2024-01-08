@@ -1,26 +1,25 @@
 import '../../../models/pedido_model.dart';
 
 abstract class PedidoState {
-  final List<PedidoModel> pedidos;
+  final PedidoModel? pedido;
 
-  PedidoState({required this.pedidos});
+  PedidoState({required this.pedido});
 }
 
 class PedidoInitialState extends PedidoState {
-  PedidoInitialState() : super(pedidos: []);
+  PedidoInitialState() : super(pedido: null);
 }
 
 class PedidoLoadingState extends PedidoState {
-  PedidoLoadingState() : super(pedidos: []);
+  PedidoLoadingState() : super(pedido: null);
 }
 
 class PedidoLoadedState extends PedidoState {
-  PedidoLoadedState({required List<PedidoModel> pedidos})
-      : super(pedidos: pedidos);
+  PedidoLoadedState({required PedidoModel pedido}) : super(pedido: pedido);
 }
 
 class PedidoErrorState extends PedidoState {
   final String exception;
 
-  PedidoErrorState({required this.exception}) : super(pedidos: []);
+  PedidoErrorState({required this.exception}) : super(pedido: null);
 }
