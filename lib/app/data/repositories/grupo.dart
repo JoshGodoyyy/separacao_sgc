@@ -22,7 +22,7 @@ class Grupo {
 
     try {
       if (response.body.isNotEmpty) {
-        var data = jsonDecode(response.body.trim());
+        var data = jsonDecode(response.body);
         return data.map((json) => GrupoModel.fromJson(json)).toList();
       } else {
         return [];

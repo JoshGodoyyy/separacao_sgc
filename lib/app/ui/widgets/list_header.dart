@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../ui/styles/colors_app.dart';
+import '../styles/colors_app.dart';
 
 class ListHeader extends StatelessWidget {
   final String label;

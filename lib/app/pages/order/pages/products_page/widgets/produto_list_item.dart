@@ -1,29 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:sgc/app/data/blocs/produto/produto_bloc.dart';
+import 'package:sgc/app/data/blocs/produto/produto_event.dart';
 import 'package:sgc/app/models/colors.dart';
 
-import '../../../../../models/product_model.dart';
+import '../../../../../models/produto_model.dart';
 import 'item_color.dart';
 
-class ProductListItem extends StatelessWidget {
-  final ProductModel product;
+class ProdutoListItem extends StatelessWidget {
+  final ProdutoModel produto;
+  final ProdutoBloc bloc;
+  final int tipoProduto;
+  final int idPedido;
+
   final Function onTap;
-  const ProductListItem({
+  const ProdutoListItem({
     super.key,
-    required this.product,
+    required this.produto,
+    required this.bloc,
     required this.onTap,
+    required this.tipoProduto,
+    required this.idPedido,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
       child: Slidable(
         startActionPane: ActionPane(
           motion: const BehindMotion(),
           children: [
             SlidableAction(
-              onPressed: (_) {},
+              onPressed: (_) {
+                bloc.inputProdutoController.add(
+                  UpdateProduto(
+                    idProduto: int.parse(
+                      produto.id.toString(),
+                    ),
+                    separado: 1,
+                    tipoProduto: tipoProduto,
+                    idPedido: idPedido,
+                  ),
+                );
+              },
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
               icon: Icons.check,
@@ -57,7 +77,7 @@ class ProductListItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          product.idProduto.toString(),
+                          produto.idProduto.toString(),
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
@@ -72,14 +92,14 @@ class ProductListItem extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      '${product.quantidade} ${product.idUnidade}',
+                      '${produto.quantidade} ${produto.idUnidade}',
                       style: const TextStyle(
                         fontSize: 18,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      product.descricao.toString(),
+                      produto.descricao.toString(),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 3,
                     ),
@@ -87,10 +107,10 @@ class ProductListItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Peso Unit.: ${product.peso}',
+                          'Peso Unit.: ${produto.peso}',
                         ),
                         Text(
-                          'Peso Tot.: ${product.pesoTotal}',
+                          'Peso Tot.: ${produto.pesoTotal}',
                         ),
                       ],
                     ),

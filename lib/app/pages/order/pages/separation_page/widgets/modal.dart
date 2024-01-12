@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:sgc/app/data/blocs/grupo/grupo_bloc.dart';
 import 'package:sgc/app/data/blocs/grupo/grupo_event.dart';
-
+import '../../../../../data/blocs/grupo/grupo_bloc.dart';
 import '../../../../../models/group_model.dart';
 
 Future<dynamic> showModal(
   BuildContext context,
+  GrupoBloc bloc,
   GrupoModel item,
   int idPedido,
   int tipoProduto,
 ) async {
   final pesoController = TextEditingController();
   bool separado = item.separado! == 1 ? true : false;
-  GrupoBloc bloc = GrupoBloc();
 
   pesoController.text = item.pesoReal.toString();
 
@@ -98,11 +97,13 @@ Future<dynamic> showModal(
                                   valorReal: item.valorReal,
                                 );
 
-                                bloc.inputGrupo.add(UpdateGrupo(
-                                  grupo: grupo,
-                                  idPedido: idPedido,
-                                  tipoProduto: tipoProduto,
-                                ));
+                                bloc.inputGrupo.add(
+                                  UpdateGrupo(
+                                    grupo: grupo,
+                                    idPedido: idPedido,
+                                    tipoProduto: tipoProduto,
+                                  ),
+                                );
                                 Navigator.pop(context);
                               },
                               child: const Text('Salvar'),

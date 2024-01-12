@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sgc/app/models/pedido_model.dart';
 
-import '../../../../../data/repositories/pedidos.dart';
+import '../../../../../data/repositories/pedido.dart';
 import '../../../widgets/item.dart';
 import '../../../widgets/multi_line_text.dart';
 

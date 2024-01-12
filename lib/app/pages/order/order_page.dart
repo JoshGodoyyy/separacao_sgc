@@ -1,9 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:provider/provider.dart';
 import 'package:sgc/app/pages/order/pages/packaging_page/packaging.dart';
-
+import '../../config/app_config.dart';
 import '../../ui/styles/colors_app.dart';
 import 'pages/general_info_page/general_info.dart';
 import 'pages/products_page/products.dart';
@@ -23,6 +23,21 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPageState extends State<OrderPage> {
   final codigoVendedorController = TextEditingController();
+  late int tipoProduto;
+
+  @override
+  void initState() {
+    super.initState();
+    final result = Provider.of<AppConfig>(context, listen: false);
+
+    if (result.accessories && result.profiles) {
+      tipoProduto = 0;
+    } else if (result.profiles) {
+      tipoProduto = 2;
+    } else if (result.accessories) {
+      tipoProduto = 3;
+    }
+  }
 
   void clear() {
     codigoVendedorController.clear();
@@ -116,10 +131,14 @@ class _OrderPageState extends State<OrderPage> {
                 widget.pedido.id.toString(),
               ),
             ),
-            Products(pedido: widget.pedido),
-            Separation(
+            Products(
               pedido: widget.pedido,
-              context: context,
+              tipoProduto: tipoProduto,
+            ),
+            Separation(
+              ancestralContext: context,
+              pedido: widget.pedido,
+              tipoProduto: tipoProduto,
             ),
           ],
         ),

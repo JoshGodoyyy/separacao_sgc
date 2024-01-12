@@ -1,4 +1,4 @@
-class ProductModel {
+class ProdutoModel {
   num? id;
   String? idProduto;
   String? descricao;
@@ -23,8 +23,9 @@ class ProductModel {
   num? producaoPropria;
   String? chave;
   String? idTratamento;
+  bool? separado;
 
-  ProductModel({
+  ProdutoModel({
     this.id,
     this.idProduto,
     this.descricao,
@@ -49,9 +50,10 @@ class ProductModel {
     this.producaoPropria,
     this.chave,
     this.idTratamento,
+    this.separado,
   });
 
-  ProductModel.fromJson(Map<String, dynamic> json) {
+  ProdutoModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     idProduto = json['idProduto'];
     descricao = json['descricao'];
@@ -76,6 +78,7 @@ class ProductModel {
     producaoPropria = json['producaoPropria'];
     chave = json['chave'];
     idTratamento = json['idTratamento'];
+    separado = json['separado'];
   }
 
   Map<String, dynamic> toJson() {
@@ -104,6 +107,7 @@ class ProductModel {
     data['producaoPropria'] = producaoPropria;
     data['chave'] = chave;
     data['idTratamento'] = idTratamento;
+    data['separado'] = separado;
     return data;
   }
 }

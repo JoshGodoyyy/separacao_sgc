@@ -21,14 +21,22 @@ class GrupoBloc {
 
   void _mapEventToState(GrupoEvent event) async {
     List<dynamic> grupos = [];
+
     _outputGrupoController.add(GrupoLoadingState());
 
-    if (event is UpdateGrupo) {
+    if (event is GetGrupo) {
+      grupos = await _repository.fetchGrupos(
+        event.idPedido,
+        event.idTipoProduto,
+      );
+    } else if (event is UpdateGrupo) {
       grupos = await _repository.updateGrupo(
         event.grupo,
         event.idPedido,
         event.tipoProduto,
       );
     }
+
+    _outputGrupoController.add(GrupoLoadedState(grupos: grupos));
   }
 }

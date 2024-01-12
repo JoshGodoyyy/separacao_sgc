@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:sgc/app/models/product_model.dart';
+import 'package:sgc/app/models/produto_model.dart';
 
 import '/app/pages/order/widgets/save_button.dart';
 import '../../../widgets/multi_line_text.dart';
@@ -10,7 +10,7 @@ import 'product_image.dart';
 
 Future<dynamic> showModal(
   BuildContext context,
-  ProductModel produto,
+  ProdutoModel produto,
 ) {
   final observacoesController = TextEditingController();
 

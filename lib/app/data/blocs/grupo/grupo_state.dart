@@ -1,25 +1,23 @@
-import 'package:sgc/app/models/group_model.dart';
-
 abstract class GrupoState {
-  final GrupoModel? grupo;
+  final List<dynamic> grupos;
 
-  GrupoState({required this.grupo});
+  GrupoState({required this.grupos});
 }
 
 class GrupoInitialState extends GrupoState {
-  GrupoInitialState() : super(grupo: null);
+  GrupoInitialState() : super(grupos: []);
 }
 
 class GrupoLoadingState extends GrupoState {
-  GrupoLoadingState() : super(grupo: null);
+  GrupoLoadingState() : super(grupos: []);
 }
 
 class GrupoLoadedState extends GrupoState {
-  GrupoLoadedState({required GrupoModel grupo}) : super(grupo: grupo);
+  GrupoLoadedState({required List<dynamic> grupos}) : super(grupos: grupos);
 }
 
 class GrupoErrorState extends GrupoState {
   final String exception;
 
-  GrupoErrorState({required this.exception}) : super(grupo: null);
+  GrupoErrorState({required this.exception}) : super(grupos: []);
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import '../../../models/pedido_model.dart';
-import '../../repositories/pedidos.dart';
+import '../../repositories/pedido.dart';
 import 'pedido_event.dart';
 import 'pedidos_state.dart';
 

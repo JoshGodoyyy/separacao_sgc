@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:sgc/app/data/blocs/pedido/pedido_event.dart';
 import 'package:sgc/app/data/blocs/pedido/pedido_state.dart';
-import 'package:sgc/app/data/repositories/pedidos.dart';
+import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/models/pedido_model.dart';
 
 class PedidoBloc {
@@ -25,8 +25,17 @@ class PedidoBloc {
 
     _outputPedidoController.add(PedidoLoadingState());
 
-    if (event is PostPedido) {
-      pedido = await _repository.updateOrder(event.pedido);
+    if (event is UpdatePedido) {
+      pedido = await _repository.updateOrder(
+        event.idPedido,
+        event.volAcessorio,
+        event.volAlum,
+        event.volChapa,
+        event.obsSeparacao,
+        event.obsSeparador,
+        event.setorEstoque,
+        event.pesoAcessorio,
+      );
     }
 
     _outputPedidoController.add(PedidoLoadedState(pedido: pedido!));

@@ -112,19 +112,35 @@ class Pedido with ChangeNotifier {
     }
   }
 
-  Future<PedidoModel> updateOrder(PedidoModel pedido) async {
+  Future<PedidoModel> updateOrder(
+    int idPedido,
+    double volAcessorio,
+    double volAlum,
+    double volChapa,
+    String obsSeparacao,
+    String obsSeparador,
+    String setorEstoque,
+    double pesoAcessorio,
+  ) async {
     await http.post(
       Uri.parse('$url/Update'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
-        {},
+        {
+          'volumeAcessorio': volAcessorio,
+          'volumeAluminio': volAlum,
+          'volumeChapa': volChapa,
+          'observacoesSeparacao': obsSeparacao,
+          'observacoesSeparador': obsSeparador,
+          'setorSeparacao': setorEstoque,
+          'pesoAcessorio': pesoAcessorio,
+          'idPedido': idPedido,
+        },
       ),
     );
 
     return fetchOrdersByIdOrder(
-      int.parse(
-        pedido.id.toString(),
-      ),
+      idPedido,
     );
   }
 }

@@ -8,7 +8,7 @@ import '../../models/pedido_model.dart';
 import '../../ui/styles/colors_app.dart';
 import '../../ui/widgets/error_alert.dart';
 import '../order/order_page.dart';
-import 'widgets/list_header.dart';
+import '../../ui/widgets/list_header.dart';
 import 'widgets/list_item.dart';
 
 class MainPage extends StatefulWidget {

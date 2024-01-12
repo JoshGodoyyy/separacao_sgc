@@ -15,10 +15,26 @@ class SearchPedido extends PedidoEvent {
   SearchPedido({required this.idSituacao, required this.idPedido});
 }
 
-class PostPedido extends PedidoEvent {
-  final PedidoModel pedido;
+class UpdatePedido extends PedidoEvent {
+  final double volAcessorio;
+  final double volAlum;
+  final double volChapa;
+  final String obsSeparacao;
+  final String obsSeparador;
+  final String setorEstoque;
+  final double pesoAcessorio;
+  final int idPedido;
 
-  PostPedido({required this.pedido});
+  UpdatePedido({
+    required this.volAcessorio,
+    required this.volAlum,
+    required this.volChapa,
+    required this.obsSeparacao,
+    required this.obsSeparador,
+    required this.setorEstoque,
+    required this.pesoAcessorio,
+    required this.idPedido,
+  });
 }
 
 class DeletePedido extends PedidoEvent {

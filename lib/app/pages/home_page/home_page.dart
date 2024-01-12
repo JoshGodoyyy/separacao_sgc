@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
-import 'package:sgc/app/data/repositories/pedidos.dart';
+import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/pages/home_page/widgets/home_header.dart';
 import 'package:sgc/app/pages/main_page/main_page.dart';
 
