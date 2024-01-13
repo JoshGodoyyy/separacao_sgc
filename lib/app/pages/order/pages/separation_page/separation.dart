@@ -48,6 +48,7 @@ class _SeparationState extends State<Separation> {
   void initState() {
     super.initState();
     _grupoBloc = GrupoBloc();
+    _pedidoBloc = PedidoBloc();
     _fetchGrupos();
   }
 
@@ -82,6 +83,7 @@ class _SeparationState extends State<Separation> {
                 _fetchGrupos();
               },
               child: ListView.builder(
+                padding: const EdgeInsets.only(top: 10),
                 itemCount: grupos.length + 1,
                 itemBuilder: (context, index) {
                   if (index >= grupos.length) {
