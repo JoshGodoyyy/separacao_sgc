@@ -33,21 +33,36 @@ class ProdutoListItem extends StatelessWidget {
           children: [
             SlidableAction(
               onPressed: (_) {
-                bloc.inputProdutoController.add(
-                  UpdateProduto(
-                    idProduto: int.parse(
-                      produto.id.toString(),
+                if (produto.separado == false) {
+                  bloc.inputProdutoController.add(
+                    UpdateProduto(
+                      idProduto: int.parse(
+                        produto.id.toString(),
+                      ),
+                      separado: 1,
+                      tipoProduto: tipoProduto,
+                      idPedido: idPedido,
                     ),
-                    separado: 1,
-                    tipoProduto: tipoProduto,
-                    idPedido: idPedido,
-                  ),
-                );
+                  );
+                } else {
+                  bloc.inputProdutoController.add(
+                    UpdateProduto(
+                      idProduto: int.parse(
+                        produto.id.toString(),
+                      ),
+                      separado: 0,
+                      tipoProduto: tipoProduto,
+                      idPedido: idPedido,
+                    ),
+                  );
+                }
               },
-              backgroundColor: Colors.blue,
+              backgroundColor:
+                  produto.separado == false ? Colors.blue : Colors.red,
               foregroundColor: Colors.white,
-              icon: Icons.check,
-              label: 'Separado',
+              icon:
+                  produto.separado == false ? Icons.check : Icons.close_rounded,
+              label: produto.separado == false ? 'Separado' : 'Não Separado',
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10),
                 bottomLeft: Radius.circular(10),

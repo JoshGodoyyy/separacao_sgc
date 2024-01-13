@@ -123,9 +123,9 @@ class _ProductsState extends State<Products> {
                   },
                   child: ListView(
                     children: [
-                      const ListHeader(label: 'Produtos a Separar'),
+                      const ListHeader(label: 'Produtos não Separados'),
                       for (var produto in produtos)
-                        if (!produto.separado)
+                        if (produto.separado == false)
                           ProdutoListItem(
                             produto: produto,
                             bloc: _produtoBloc,

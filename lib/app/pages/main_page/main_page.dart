@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:sgc/app/config/user.dart';
 import '../../data/blocs/pedido/pedidos_bloc.dart';
 import '../../data/blocs/pedido/pedido_event.dart';
 import '../../data/blocs/pedido/pedidos_state.dart';
@@ -164,7 +165,8 @@ class _MainPageState extends State<MainPage> {
             children: [
               const ListHeader(label: 'Meus Pedidos'),
               for (var pedido in pedidos)
-                if (pedido.separadorIniciar.toString().toLowerCase() == 'josh')
+                if (pedido.separadorIniciar.toString().toLowerCase() ==
+                    UserConstants().userName!.toLowerCase())
                   ListItem(
                     icon: widget.icon,
                     pedido: pedido,
@@ -186,7 +188,8 @@ class _MainPageState extends State<MainPage> {
                   ),
               const ListHeader(label: 'Pedidos Gerais'),
               for (var pedido in pedidos)
-                if (pedido.separadorIniciar.toString().toLowerCase() != 'josh')
+                if (pedido.separadorIniciar.toString().toLowerCase() !=
+                    UserConstants().userName!.toLowerCase())
                   ListItem(
                     icon: widget.icon,
                     pedido: pedido,
