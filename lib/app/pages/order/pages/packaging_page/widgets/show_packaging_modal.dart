@@ -37,92 +37,94 @@ Future<dynamic> showPackagingModal({
           ),
           child: Padding(
             padding: const EdgeInsets.all(12.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                item(
-                  context,
-                  'Número Caixa:',
-                  numeroCaixaController,
-                ),
-                item(
-                  context,
-                  'Quantidade:',
-                  quantidadeController,
-                  false,
-                  TextInputType.number,
-                ),
-                item(
-                  context,
-                  'Peso:',
-                  pesoController,
-                  false,
-                  TextInputType.number,
-                ),
-                item(
-                  context,
-                  'Observações:',
-                  observacoesController,
-                ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: saveButton(
-                    () {
-                      if (numeroCaixaController.text == '') {
-                        showTopSnackBar(
-                          Overlay.of(context),
-                          const CustomSnackBar.error(
-                              message: 'Campo "Número Caixa" obrigatório'),
-                        );
-
-                        return;
-                      }
-
-                      if (quantidadeController.text == '') {
-                        showTopSnackBar(
-                          Overlay.of(context),
-                          const CustomSnackBar.error(
-                              message: 'Campo "Quantidade" obrigatório'),
-                        );
-
-                        return;
-                      }
-
-                      if (pesoController.text == '') {
-                        showTopSnackBar(
-                          Overlay.of(context),
-                          const CustomSnackBar.error(
-                              message: 'Campo "Peso" obrigatório'),
-                        );
-
-                        return;
-                      }
-
-                      var embalagem = EmbalagemModel(
-                        id: id ?? 0,
-                        idCaixa: numeroCaixaController.text,
-                        idPedido: idPedido,
-                        pesoCaixa: double.parse(pesoController.text),
-                        quantidadeCaixa: int.parse(quantidadeController.text),
-                        observacoes: observacoesController.text,
-                      );
-
-                      if (id == null) {
-                        bloc.inputEmbalagem.add(
-                          PostEmbalagem(embalagem: embalagem),
-                        );
-                      } else {
-                        embalagem.id = id;
-                        bloc.inputEmbalagem.add(
-                          UpdateEmbalagem(embalagem: embalagem),
-                        );
-                      }
-                      Navigator.pop(context);
-                    },
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  item(
+                    context,
+                    'Número Caixa:',
+                    numeroCaixaController,
                   ),
-                ),
-              ],
+                  item(
+                    context,
+                    'Quantidade:',
+                    quantidadeController,
+                    false,
+                    TextInputType.number,
+                  ),
+                  item(
+                    context,
+                    'Peso:',
+                    pesoController,
+                    false,
+                    TextInputType.number,
+                  ),
+                  item(
+                    context,
+                    'Observações:',
+                    observacoesController,
+                  ),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: saveButton(
+                      () {
+                        if (numeroCaixaController.text == '') {
+                          showTopSnackBar(
+                            Overlay.of(context),
+                            const CustomSnackBar.error(
+                                message: 'Campo "Número Caixa" obrigatório'),
+                          );
+
+                          return;
+                        }
+
+                        if (quantidadeController.text == '') {
+                          showTopSnackBar(
+                            Overlay.of(context),
+                            const CustomSnackBar.error(
+                                message: 'Campo "Quantidade" obrigatório'),
+                          );
+
+                          return;
+                        }
+
+                        if (pesoController.text == '') {
+                          showTopSnackBar(
+                            Overlay.of(context),
+                            const CustomSnackBar.error(
+                                message: 'Campo "Peso" obrigatório'),
+                          );
+
+                          return;
+                        }
+
+                        var embalagem = EmbalagemModel(
+                          id: id ?? 0,
+                          idCaixa: numeroCaixaController.text,
+                          idPedido: idPedido,
+                          pesoCaixa: double.parse(pesoController.text),
+                          quantidadeCaixa: int.parse(quantidadeController.text),
+                          observacoes: observacoesController.text,
+                        );
+
+                        if (id == null) {
+                          bloc.inputEmbalagem.add(
+                            PostEmbalagem(embalagem: embalagem),
+                          );
+                        } else {
+                          embalagem.id = id;
+                          bloc.inputEmbalagem.add(
+                            UpdateEmbalagem(embalagem: embalagem),
+                          );
+                        }
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

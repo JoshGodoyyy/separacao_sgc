@@ -7,6 +7,7 @@ import 'package:sgc/app/data/tratamento.dart';
 import 'package:sgc/app/pages/order/pages/products_page/widgets/modal.dart';
 import 'package:sgc/app/pages/order/pages/products_page/widgets/produto_list_item.dart';
 import 'package:sgc/app/ui/widgets/list_header.dart';
+import '../../../../data/repositories/pedido.dart';
 import '../../../../models/pedido_model.dart';
 import '../../../../ui/widgets/error_alert.dart';
 
@@ -49,10 +50,16 @@ class _ProductsState extends State<Products> {
   }
 
   _fetchTratamento() async {
-    if (widget.pedido.tratamento == null || widget.pedido.tratamento == '') {
+    final pedido = await Pedido().fetchOrdersByIdOrder(
+      int.parse(
+        widget.pedido.id.toString(),
+      ),
+    );
+
+    if (pedido.tratamento == null || pedido.tratamento == '') {
       tratamento = '';
     } else {
-      tratamento = widget.pedido.tratamento!;
+      tratamento = pedido.tratamento!;
 
       final tratamentoInicial = await Tratamento().fetchTratamentoById(
         tratamento,

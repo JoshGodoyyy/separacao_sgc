@@ -36,6 +36,16 @@ class PedidoBloc {
         event.setorEstoque,
         event.pesoAcessorio,
       );
+    } else if (event is UpdateSituacaoPedido) {
+      pedido = await _repository.updateStatusOrder(
+        event.idSituacao,
+        event.dataLiberacaoSeparacao,
+        event.dataEnvioSeparacao,
+        event.idIniciarSeparacao,
+        event.sepAcessorio,
+        event.sepPerfil,
+        event.id,
+      );
     }
 
     _outputPedidoController.add(PedidoLoadedState(pedido: pedido!));

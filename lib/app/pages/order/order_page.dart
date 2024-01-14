@@ -1,8 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sgc/app/data/blocs/pedido/pedido_bloc.dart';
+import 'package:sgc/app/data/blocs/pedido/pedido_event.dart';
+import 'package:sgc/app/data/enums/icones.dart';
+import 'package:sgc/app/data/enums/situacao_pedido.dart';
+import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/pages/order/pages/packaging_page/packaging.dart';
+import 'package:sgc/app/ui/widgets/custom_dialog.dart';
+import 'package:sgc/app/ui/widgets/loading_dialog.dart';
 import '../../config/app_config.dart';
 import '../../ui/styles/colors_app.dart';
 import 'pages/general_info_page/general_info.dart';
@@ -149,16 +157,23 @@ class _OrderPageState extends State<OrderPage> {
           backgroundColor: ColorsApp.primaryColor,
           children: [
             SpeedDialChild(
-              child: const Icon(Icons.shopping_cart_outlined),
-              label: 'Finalizar Separação',
-            ),
+                child: const Icon(Icons.shopping_cart_outlined),
+                label: 'Finalizar Separação',
+                onTap: () {
+                  _finalizarSeparacao();
+                }),
             SpeedDialChild(
-              child: const Icon(Icons.checklist_rtl_rounded),
-              label: 'Liberar para Conferência',
-            ),
+                child: const Icon(Icons.checklist_rtl_rounded),
+                label: 'Liberar para Conferência',
+                onTap: () {
+                  _liberarConferencia();
+                }),
             SpeedDialChild(
               child: const Icon(Icons.archive),
               label: 'Liberar para Embalagem',
+              onTap: () {
+                _liberarEmbalagem();
+              },
             ),
             SpeedDialChild(
               child: const Icon(Icons.directions_walk_outlined),
@@ -176,9 +191,13 @@ class _OrderPageState extends State<OrderPage> {
                       ),
                       actions: [
                         TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            startTimer();
+                          onPressed: () async {
+                            await _enviarSeparacao(SituacaoPedido.separando)
+                                .then(
+                              (value) => Navigator.pop(context),
+                            );
+
+                            //startTimer();
                           },
                           child: const Text(
                             'Sim',
@@ -209,5 +228,143 @@ class _OrderPageState extends State<OrderPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _enviarSeparacao(SituacaoPedido situacao) async {
+    if (widget.pedido.status.toString().toUpperCase() == 'NOVO' ||
+        widget.pedido.status.toString().toUpperCase() == 'SEPARAR') {
+      if (situacao == SituacaoPedido.separar) {}
+    }
+
+    if (int.parse(widget.pedido.autorizado.toString()) != 1) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const CustomDialog(
+            titulo: 'SGC Mobile',
+            descricao: 'É necessário autorizar o pedido para esta operação',
+            tipo: Icones.erro,
+          );
+        },
+      ).then((value) => Navigator.pop(context));
+
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const LoadingDialog();
+      },
+    );
+
+    int sepPerfil = await Pedido()
+        .getSeparacao(int.parse(widget.pedido.id.toString()), 'sepPerfil');
+    int sepAcessorio = await Pedido()
+        .getSeparacao(int.parse(widget.pedido.id.toString()), 'sepAcessorio');
+
+    if (tipoProduto == 2) {
+      sepPerfil = situacao.index + 1;
+    } else {
+      sepAcessorio = situacao.index + 1;
+    }
+
+    PedidoBloc pedido = PedidoBloc();
+
+    DateFormat data = DateFormat('yyyy-MM-dd HH:mm:ss');
+
+    pedido.inputPedido.add(
+      UpdateSituacaoPedido(
+        idSituacao: situacao.index + 1,
+        dataLiberacaoSeparacao: data.format(DateTime.now()).toString(),
+        dataEnvioSeparacao: data
+            .format(
+              DateTime.parse(
+                widget.pedido.dataEnvioSeparacao.toString(),
+              ),
+            )
+            .toString(),
+        idIniciarSeparacao: '9663',
+        sepAcessorio: sepAcessorio,
+        sepPerfil: sepPerfil,
+        id: int.parse(
+          widget.pedido.id.toString(),
+        ),
+      ),
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        Navigator.pop(context);
+      },
+    );
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return const CustomDialog(
+              titulo: 'SGC Mobile',
+              descricao: 'Processo iniciado com sucesso',
+              tipo: Icones.sucesso,
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _liberarEmbalagem() async {
+    if (widget.pedido.status.toString().toUpperCase() == 'NOVO' ||
+        widget.pedido.status.toString().toUpperCase() == 'SEPARAR') {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const CustomDialog(
+            titulo: 'SGC Mobile',
+            descricao: 'É necessário iniciar a separação antes de conclui-la',
+            tipo: Icones.erro,
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> _liberarConferencia() async {
+    if (widget.pedido.status.toString().toUpperCase() == 'NOVO' ||
+        widget.pedido.status.toString().toUpperCase() == 'SEPARAR') {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const CustomDialog(
+            titulo: 'SGC Mobile',
+            descricao: 'É necessário iniciar a separação antes de conclui-la',
+            tipo: Icones.erro,
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> _finalizarSeparacao() async {
+    if (widget.pedido.status.toString().toUpperCase() == 'NOVO' ||
+        widget.pedido.status.toString().toUpperCase() == 'SEPARAR') {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const CustomDialog(
+            titulo: 'SGC Mobile',
+            descricao: 'É necessário iniciar a separação antes de conclui-la',
+            tipo: Icones.erro,
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

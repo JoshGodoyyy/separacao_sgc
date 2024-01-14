@@ -37,6 +37,26 @@ class UpdatePedido extends PedidoEvent {
   });
 }
 
+class UpdateSituacaoPedido extends PedidoEvent {
+  final int idSituacao;
+  final String dataLiberacaoSeparacao;
+  final String dataEnvioSeparacao;
+  final String idIniciarSeparacao;
+  final int sepAcessorio;
+  final int sepPerfil;
+  final int id;
+
+  UpdateSituacaoPedido({
+    required this.idSituacao,
+    required this.dataLiberacaoSeparacao,
+    required this.dataEnvioSeparacao,
+    required this.idIniciarSeparacao,
+    required this.sepAcessorio,
+    required this.sepPerfil,
+    required this.id,
+  });
+}
+
 class DeletePedido extends PedidoEvent {
   final PedidoModel pedido;
 

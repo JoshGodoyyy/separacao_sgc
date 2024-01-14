@@ -5,6 +5,8 @@ import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/pages/home_page/widgets/home_header.dart';
 import 'package:sgc/app/pages/main_page/main_page.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../login_page/login_page.dart';
 import '/app/pages/home_page/widgets/home_button.dart';
@@ -64,11 +66,14 @@ class _HomePageState extends State<HomePage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(height: 64),
-                Center(
-                  child: Image.asset(
-                    'assets/images/logo_light.png',
-                    fit: BoxFit.fill,
-                    width: 255,
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(
+                    child: Image.asset(
+                      'assets/images/logo_light.png',
+                      fit: BoxFit.fill,
+                      width: 255,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 64),
@@ -77,17 +82,35 @@ class _HomePageState extends State<HomePage> {
                   child: Text('Orçamentos'),
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    showTopSnackBar(
+                      Overlay.of(context),
+                      const CustomSnackBar.info(
+                          message: 'Feature em desenvolvimento'),
+                    );
+                  },
                   leading: const Icon(Icons.assignment_add),
                   title: const Text('Orçamentos'),
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    showTopSnackBar(
+                      Overlay.of(context),
+                      const CustomSnackBar.info(
+                          message: 'Feature em desenvolvimento'),
+                    );
+                  },
                   leading: const Icon(Icons.assignment_add),
                   title: const Text('Novo Orçamento'),
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    showTopSnackBar(
+                      Overlay.of(context),
+                      const CustomSnackBar.info(
+                          message: 'Feature em desenvolvimento'),
+                    );
+                  },
                   leading: const Icon(Icons.assignment_add),
                   title: const Text('Orçamento de Pedidos'),
                 ),
@@ -96,7 +119,9 @@ class _HomePageState extends State<HomePage> {
                   child: Text('Separação'),
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    _advancedDrawerController.hideDrawer();
+                  },
                   leading: const Icon(Icons.add_shopping_cart_rounded),
                   title: const Text('Separação'),
                 ),

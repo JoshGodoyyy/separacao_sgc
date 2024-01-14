@@ -112,6 +112,55 @@ class Pedido with ChangeNotifier {
     }
   }
 
+  Future<int> getSeparacao(int idPedido, String tipoSeparacao) async {
+    var response = await http.post(
+      Uri.parse('$url/Get/Separation'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'idPedido': idPedido,
+          'tipoSeparacao': tipoSeparacao,
+        },
+      ),
+    );
+
+    try {
+      final int data = json.decode(response.body);
+      return data;
+    } catch (ex) {
+      throw Exception(ex.toString());
+    }
+  }
+
+  Future<PedidoModel> updateStatusOrder(
+    int idSituacao,
+    String dataLiberacaoSeparacao,
+    String dataEnvioSeparacao,
+    String idIniciarSeparacao,
+    int sepAcessorio,
+    int sepPerfil,
+    int id,
+  ) async {
+    await http.post(
+      Uri.parse('$url/Get/Update'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'id': id,
+          'idSituacao': idSituacao,
+          'dataLiberacaoSeparacao': dataLiberacaoSeparacao,
+          'dataEnvioSeparacao': dataEnvioSeparacao,
+          'sepAcessorio': sepAcessorio,
+          'sepPerfil': sepPerfil,
+        },
+      ),
+    );
+
+    return fetchOrdersByIdOrder(
+      id,
+    );
+  }
+
   Future<PedidoModel> updateOrder(
     int idPedido,
     double volAcessorio,
