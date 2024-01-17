@@ -3,7 +3,6 @@ import 'package:sgc/app/config/api_config.dart';
 import 'package:sgc/app/pages/initial_setup_page/initial_setup.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
-
 import '../../ui/widgets/button.dart';
 import '../../ui/widgets/textfield.dart';
 import '../../data/user_dao.dart';
@@ -18,10 +17,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final idLiberacaoController = TextEditingController();
   final usuarioController = TextEditingController();
   final senhaController = TextEditingController();
 
   void clear() {
+    idLiberacaoController.clear();
     usuarioController.clear();
     senhaController.clear();
   }
@@ -35,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     var user = User();
     user.user = usuarioController.text;
     user.password = senhaController.text;
+    user.idLiberacao = idLiberacaoController.text;
 
     try {
       var response = await UserDAO().auth(user);
@@ -47,7 +49,12 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     } catch (e) {
-      String message = e.toString().substring(11);
+      String message = '';
+      if (e.toString().startsWith('Exception')) {
+        message = e.toString().substring(11);
+      } else {
+        message = e.toString();
+      }
       showTopSnackBar(
         overlay,
         CustomSnackBar.error(
@@ -82,6 +89,11 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 STextField(
+                  controller: idLiberacaoController,
+                  label: 'Chave de Acesso',
+                  usePasswordChar: true,
+                ),
+                STextField(
                   controller: usuarioController,
                   label: 'Usuário',
                   usePasswordChar: false,
@@ -91,18 +103,29 @@ class _LoginPageState extends State<LoginPage> {
                   label: 'Senha',
                   usePasswordChar: true,
                 ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (builder) => const InitialSetup(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(value: false, onChanged: (value) {}),
+                        const Text('Salvar login'),
+                      ],
                     ),
-                  ),
-                  child: const Text(
-                    'Configurar acesso',
-                    style: TextStyle(
-                      fontSize: 14,
+                    TextButton(
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (builder) => const InitialSetup(),
+                        ),
+                      ),
+                      child: const Text(
+                        'Configurar acesso',
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,

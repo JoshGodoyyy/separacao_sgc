@@ -3,6 +3,7 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
+import 'package:sgc/app/models/pedido_model.dart';
 import 'package:sgc/app/pages/home_page/widgets/home_header.dart';
 import 'package:sgc/app/pages/main_page/main_page.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
@@ -22,6 +23,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _advancedDrawerController = AdvancedDrawerController();
 
+  double pesoSeparar = 0;
+  double pesoSeparando = 0;
+  double pesoEmbalagem = 0;
+  double pesoConferencia = 0;
+  double pesoFaturar = 0;
+  double pesoLogistica = 0;
+
   loadData() async {
     var orders = Provider.of<Pedido>(context, listen: false);
     await orders.fetchData(2);
@@ -30,6 +38,38 @@ class _HomePageState extends State<HomePage> {
     await orders.fetchData(10);
     await orders.fetchData(14);
     await orders.fetchData(15);
+
+    pesoSeparar = 0;
+    pesoSeparando = 0;
+    pesoEmbalagem = 0;
+    pesoConferencia = 0;
+    pesoFaturar = 0;
+    pesoLogistica = 0;
+
+    for (PedidoModel pedido in orders.pedidosSeparar) {
+      pesoSeparar += double.parse(pedido.pesoTotal.toString());
+    }
+
+    for (PedidoModel pedido in orders.pedidosSeparando) {
+      pesoSeparando += double.parse(pedido.pesoTotal.toString());
+    }
+
+    for (PedidoModel pedido in orders.pedidosEmbalagem) {
+      pesoEmbalagem += double.parse(pedido.pesoTotal.toString());
+    }
+
+    for (PedidoModel pedido in orders.pedidosConferencia) {
+      pesoConferencia += double.parse(pedido.pesoTotal.toString());
+    }
+
+    for (PedidoModel pedido in orders.pedidosFaturar) {
+      pesoFaturar += double.parse(pedido.pesoTotal.toString());
+    }
+
+    for (PedidoModel pedido in orders.pedidosLogistica) {
+      pesoLogistica += double.parse(pedido.pesoTotal.toString());
+    }
+
     setState(() {});
   }
 
@@ -214,6 +254,7 @@ class _HomePageState extends State<HomePage> {
                           child: HomeButton(
                             title: 'Separar',
                             count: orders.pedidosSeparar.length,
+                            weight: pesoSeparar,
                             icon: Icons.account_tree_rounded,
                             page: const MainPage(
                               icon: Icons.account_tree_rounded,
@@ -229,6 +270,7 @@ class _HomePageState extends State<HomePage> {
                           child: HomeButton(
                             title: 'Separando',
                             count: orders.pedidosSeparando.length,
+                            weight: pesoSeparando,
                             icon: Icons.alt_route_outlined,
                             page: const MainPage(
                               icon: Icons.alt_route_outlined,
@@ -249,6 +291,7 @@ class _HomePageState extends State<HomePage> {
                           child: HomeButton(
                             title: 'Embalagem',
                             count: orders.pedidosEmbalagem.length,
+                            weight: pesoEmbalagem,
                             icon: Icons.bento,
                             page: const MainPage(
                               icon: Icons.bento,
@@ -264,6 +307,7 @@ class _HomePageState extends State<HomePage> {
                           child: HomeButton(
                             title: 'Conferência',
                             count: orders.pedidosConferencia.length,
+                            weight: pesoConferencia,
                             icon: Icons.app_registration_outlined,
                             page: const MainPage(
                               icon: Icons.app_registration_outlined,
@@ -284,6 +328,7 @@ class _HomePageState extends State<HomePage> {
                           child: HomeButton(
                             title: 'Faturar',
                             count: orders.pedidosFaturar.length,
+                            weight: pesoFaturar,
                             icon: Icons.request_page_outlined,
                             page: const MainPage(
                               icon: Icons.request_page_outlined,
@@ -299,6 +344,7 @@ class _HomePageState extends State<HomePage> {
                           child: HomeButton(
                             title: 'Logística',
                             count: orders.pedidosLogistica.length,
+                            weight: pesoLogistica,
                             icon: Icons.rv_hookup_outlined,
                             page: const MainPage(
                               icon: Icons.rv_hookup_outlined,

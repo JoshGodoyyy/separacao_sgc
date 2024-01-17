@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/config/capitalize_text.dart';
 
 import '../../../config/user.dart';
 
@@ -7,7 +8,9 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String user = UserConstants().userName!;
+    String user = CapitalizeText.capitalizeFirstLetter(
+      UserConstants().userName!.split(' ')[0].toLowerCase(),
+    );
 
     return Material(
       elevation: 5,

@@ -4,6 +4,7 @@ import '/app/pages/home_page/widgets/gradient_icon.dart';
 class HomeButton extends StatelessWidget {
   final String title;
   final int count;
+  final double weight;
   final IconData icon;
   final Widget page;
   final Color begin;
@@ -13,6 +14,7 @@ class HomeButton extends StatelessWidget {
     super.key,
     required this.title,
     required this.count,
+    required this.weight,
     required this.icon,
     required this.page,
     required this.begin,
@@ -104,6 +106,7 @@ class HomeButton extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
+                            Text('$weight Kg'),
                           ],
                         ),
                       ),

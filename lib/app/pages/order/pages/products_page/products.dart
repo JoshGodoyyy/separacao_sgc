@@ -75,41 +75,50 @@ class _ProductsState extends State<Products> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
-        const Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 16.0,
-            vertical: 8.0,
-          ),
-          child: Text(
-            'Trat. quando utilizado Grupo Especial:',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16.0,
-            vertical: 8.0,
-          ),
-          child: Material(
-            elevation: 5,
-            color: Theme.of(context).primaryColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
-            ),
-            child: TextField(
-              controller: tratamentoController,
-              enabled: false,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
+        Visibility(
+          visible: tratamentoController.text == '' ? false : true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: Text(
+                  'Trat. quando utilizado Grupo Especial:',
+                  style: TextStyle(
+                    fontSize: 14,
+                  ),
                 ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: Material(
+                  elevation: 5,
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  child: TextField(
+                    controller: tratamentoController,
+                    enabled: false,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
           ),
         ),
-        const SizedBox(height: 16),
         Expanded(
           child: StreamBuilder<ProdutoState>(
             stream: _produtoBloc.outputProdutoController,
