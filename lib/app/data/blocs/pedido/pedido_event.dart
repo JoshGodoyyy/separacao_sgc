@@ -37,7 +37,7 @@ class UpdatePedido extends PedidoEvent {
   });
 }
 
-class UpdateSituacaoPedido extends PedidoEvent {
+class EnviarSeparacao extends PedidoEvent {
   final int idSituacao;
   final String dataLiberacaoSeparacao;
   final String dataEnvioSeparacao;
@@ -46,11 +46,33 @@ class UpdateSituacaoPedido extends PedidoEvent {
   final int sepPerfil;
   final int id;
 
-  UpdateSituacaoPedido({
+  EnviarSeparacao({
     required this.idSituacao,
     required this.dataLiberacaoSeparacao,
     required this.dataEnvioSeparacao,
     required this.idIniciarSeparacao,
+    required this.sepAcessorio,
+    required this.sepPerfil,
+    required this.id,
+  });
+}
+
+class EnviarEmbalagem extends PedidoEvent {
+  final int idSituacao;
+  final String observacoesSeparacao;
+  final int idSeparador;
+  final String dataRetornoSeparacao;
+  final String idConcluirSeparacao;
+  final int sepAcessorio;
+  final int sepPerfil;
+  final int id;
+
+  EnviarEmbalagem({
+    required this.idSituacao,
+    required this.observacoesSeparacao,
+    required this.idSeparador,
+    required this.dataRetornoSeparacao,
+    required this.idConcluirSeparacao,
     required this.sepAcessorio,
     required this.sepPerfil,
     required this.id,

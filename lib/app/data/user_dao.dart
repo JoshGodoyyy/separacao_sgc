@@ -27,6 +27,7 @@ class UserDAO {
     if (response.statusCode == 200) {
       String apelido = await UserDAO().fetchApelido(user.idLiberacao!);
       UserConstants().setUserName(apelido);
+      UserConstants().setIdLiberacao(user.idLiberacao.toString());
       return true;
     } else if (response.statusCode == 401) {
       throw Exception('Dado(s) de entrada inválido(s)');

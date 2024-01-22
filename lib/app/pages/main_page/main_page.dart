@@ -55,6 +55,14 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  String avancarPedido() {
+    return widget.title;
+  }
+
+  String retrocederPedido() {
+    return '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -237,24 +245,61 @@ class _MainPageState extends State<MainPage> {
             itemCount: pedidos.length,
             itemBuilder: (context, index) {
               PedidoModel pedido = pedidos[index];
-              return ListItem(
-                icon: widget.icon,
-                pedido: pedido,
-                onClick: () {
-                  Navigator.of(context)
-                      .push(
-                        MaterialPageRoute(
-                          builder: (builder) => OrderPage(
-                            pedido: pedido,
-                          ),
-                        ),
-                      )
-                      .then(
-                        (value) => _pedidosBloc.inputPedido.add(
-                          GetPedidosSituacao(idSituacao: widget.status),
-                        ),
-                      );
+              return Dismissible(
+                key: ValueKey<PedidoModel>(pedidos[index]),
+                confirmDismiss: (direction) async {
+                  if (direction == DismissDirection.startToEnd) {
+                  } else {}
                 },
+                background: Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    avancarPedido(),
+                  ),
+                ),
+                secondaryBackground: Container(
+                  alignment: Alignment.centerRight,
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.only(right: 20.0),
+                  decoration: const BoxDecoration(
+                    color: Colors.orange,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    retrocederPedido(),
+                  ),
+                ),
+                child: ListItem(
+                  icon: widget.icon,
+                  pedido: pedido,
+                  onClick: () {
+                    Navigator.of(context)
+                        .push(
+                          MaterialPageRoute(
+                            builder: (builder) => OrderPage(
+                              pedido: pedido,
+                            ),
+                          ),
+                        )
+                        .then(
+                          (value) => _pedidosBloc.inputPedido.add(
+                            GetPedidosSituacao(idSituacao: widget.status),
+                          ),
+                        );
+                  },
+                ),
               );
             },
           );

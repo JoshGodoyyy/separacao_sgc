@@ -36,14 +36,25 @@ class PedidoBloc {
         event.setorEstoque,
         event.pesoAcessorio,
       );
-    } else if (event is UpdateSituacaoPedido) {
-      pedido = await _repository.updateStatusOrder(
+    } else if (event is EnviarSeparacao) {
+      pedido = await _repository.enviarSeparacao(
         event.idSituacao,
         event.dataLiberacaoSeparacao,
         event.dataEnvioSeparacao,
         event.idIniciarSeparacao,
         event.sepAcessorio,
         event.sepPerfil,
+        event.id,
+      );
+    } else if (event is EnviarEmbalagem) {
+      pedido = await _repository.enviarEmbalagem(
+        event.idSituacao,
+        event.sepAcessorio,
+        event.sepPerfil,
+        event.idSeparador,
+        event.dataRetornoSeparacao,
+        event.observacoesSeparacao,
+        event.idConcluirSeparacao,
         event.id,
       );
     }

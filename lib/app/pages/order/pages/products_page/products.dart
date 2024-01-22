@@ -67,6 +67,8 @@ class _ProductsState extends State<Products> {
 
       tratamentoController.text = tratamentoInicial.descricao.toString();
     }
+
+    setState(() {});
   }
 
   @override

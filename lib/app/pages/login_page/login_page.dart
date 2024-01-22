@@ -31,6 +31,17 @@ class _LoginPageState extends State<LoginPage> {
     final navigator = Navigator.of(context);
     final overlay = Overlay.of(context);
 
+    if (idLiberacaoController.text.trim() == '') {
+      showTopSnackBar(
+        overlay,
+        const CustomSnackBar.error(
+          message: 'Chave de acesso obrigatória',
+        ),
+      );
+
+      return;
+    }
+
     await ApiConfig().getUrl();
 
     var user = User();

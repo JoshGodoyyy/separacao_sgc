@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sgc/app/config/capitalize_text.dart';
+import 'package:sgc/app/ui/styles/colors_app.dart';
 
 import '../../../config/user.dart';
 
-class HomeHeader extends StatelessWidget {
-  const HomeHeader({super.key});
+class HomeHeader extends StatefulWidget {
+  final bool carregando;
+  const HomeHeader({
+    super.key,
+    required this.carregando,
+  });
 
+  @override
+  State<HomeHeader> createState() => _HomeHeaderState();
+}
+
+class _HomeHeaderState extends State<HomeHeader> {
   @override
   Widget build(BuildContext context) {
     String user = CapitalizeText.capitalizeFirstLetter(
@@ -28,6 +39,13 @@ class HomeHeader extends StatelessWidget {
               'Olá, $user',
               style: const TextStyle(
                 fontSize: 18,
+              ),
+            ),
+            Visibility(
+              visible: widget.carregando,
+              child: LoadingAnimationWidget.fourRotatingDots(
+                color: ColorsApp.secondaryColor,
+                size: 25,
               ),
             ),
           ],

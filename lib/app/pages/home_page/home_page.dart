@@ -30,21 +30,39 @@ class _HomePageState extends State<HomePage> {
   double pesoFaturar = 0;
   double pesoLogistica = 0;
 
+  bool carregando = false;
+
   loadData() async {
     var orders = Provider.of<Pedido>(context, listen: false);
-    await orders.fetchData(2);
-    await orders.fetchData(3);
-    await orders.fetchData(5);
-    await orders.fetchData(10);
-    await orders.fetchData(14);
-    await orders.fetchData(15);
+    setState(() => carregando = true);
+    Future.wait([
+      orders.fetchData(2),
+      orders.fetchData(3),
+      orders.fetchData(5),
+      orders.fetchData(10),
+      orders.fetchData(14),
+      orders.fetchData(15),
+    ]);
+    setState(() => carregando = false);
+  }
 
+  @override
+  void initState() {
+    super.initState();
+    setState(() => carregando = true);
+    _calcularPeso();
+    setState(() => carregando = false);
+  }
+
+  _calcularPeso() {
     pesoSeparar = 0;
     pesoSeparando = 0;
     pesoEmbalagem = 0;
     pesoConferencia = 0;
     pesoFaturar = 0;
     pesoLogistica = 0;
+
+    var orders = Provider.of<Pedido>(context, listen: false);
 
     for (PedidoModel pedido in orders.pedidosSeparar) {
       pesoSeparar += double.parse(pedido.pesoTotal.toString());
@@ -237,7 +255,9 @@ class _HomePageState extends State<HomePage> {
         ),
         body: Column(
           children: [
-            const HomeHeader(),
+            HomeHeader(
+              carregando: carregando,
+            ),
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {

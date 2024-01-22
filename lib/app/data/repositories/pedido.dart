@@ -132,7 +132,7 @@ class Pedido with ChangeNotifier {
     }
   }
 
-  Future<PedidoModel> updateStatusOrder(
+  Future<PedidoModel> enviarSeparacao(
     int idSituacao,
     String dataLiberacaoSeparacao,
     String dataEnvioSeparacao,
@@ -142,7 +142,7 @@ class Pedido with ChangeNotifier {
     int id,
   ) async {
     await http.post(
-      Uri.parse('$url/Get/Update'),
+      Uri.parse('$url/SendToSeparation'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
@@ -150,8 +150,47 @@ class Pedido with ChangeNotifier {
           'idSituacao': idSituacao,
           'dataLiberacaoSeparacao': dataLiberacaoSeparacao,
           'dataEnvioSeparacao': dataEnvioSeparacao,
+          'idIniciarSeparacao': idIniciarSeparacao,
           'sepAcessorio': sepAcessorio,
           'sepPerfil': sepPerfil,
+          'dataRetornoSeparacao': '',
+          'observacoesSeparacao': '',
+          'idConcluirSeparacao': '',
+        },
+      ),
+    );
+
+    return fetchOrdersByIdOrder(
+      id,
+    );
+  }
+
+  Future<PedidoModel> enviarEmbalagem(
+    int idSituacao,
+    int sepAcessorio,
+    int sepPerfil,
+    int idSeparador,
+    String dataRetornoSeparacao,
+    String observacoesSeparacao,
+    String idConcluirSeparacao,
+    int id,
+  ) async {
+    await http.post(
+      Uri.parse('$url/SendToPackaging'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'id': id,
+          'idSituacao': idSituacao,
+          'dataLiberacaoSeparacao': '',
+          'dataEnvioSeparacao': '',
+          'idIniciarSeparacao': '',
+          'idSeparador': idSeparador,
+          'sepAcessorio': sepAcessorio,
+          'sepPerfil': sepPerfil,
+          'dataRetornoSeparacao': dataRetornoSeparacao,
+          'observacoesSeparacao': observacoesSeparacao,
+          'idConcluirSeparacao': idConcluirSeparacao,
         },
       ),
     );
