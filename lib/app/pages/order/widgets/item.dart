@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Item extends StatelessWidget {
   const Item({super.key});
@@ -15,6 +16,7 @@ Padding item(
   TextEditingController controller, [
   bool readOnly = false,
   TextInputType keyboardType = TextInputType.text,
+  List<TextInputFormatter>? inputFormat,
 ]) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
@@ -41,6 +43,7 @@ Padding item(
             controller: controller,
             readOnly: readOnly,
             keyboardType: keyboardType,
+            inputFormatters: inputFormat,
             decoration: const InputDecoration(
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,

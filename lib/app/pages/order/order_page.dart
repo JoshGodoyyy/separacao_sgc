@@ -161,7 +161,59 @@ class _OrderPageState extends State<OrderPage> {
             SpeedDialChild(
               child: const Icon(Icons.checklist_rtl_rounded),
               label: 'Liberar para Conferência',
-              onTap: () {},
+              onTap: () async {
+                try {
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const LoadingDialog();
+                    },
+                  );
+
+                  await AlterarStatusPedido().liberarConferencia(
+                    widget.pedido.status.toString().toUpperCase(),
+                    widget.pedido.observacoesSeparacao.toString(),
+                    int.parse(
+                      widget.pedido.id.toString(),
+                    ),
+                  );
+
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (timeStamp) {
+                      Navigator.pop(context);
+                    },
+                  );
+
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (timeStamp) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const CustomDialog(
+                            titulo: 'SGC Mobile',
+                            descricao: 'Pedido separado com sucesso',
+                            tipo: Icones.sucesso,
+                          );
+                        },
+                      ).then((value) => Navigator.pop(context));
+                    },
+                  );
+                } catch (e) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomDialog(
+                        titulo: 'SGC Mobile',
+                        descricao: e.toString().substring(11),
+                        tipo: Icones.erro,
+                      );
+                    },
+                  ).then(
+                    (value) => Navigator.pop(context),
+                  );
+                }
+              },
             ),
             SpeedDialChild(
               child: const Icon(Icons.archive),
@@ -198,7 +250,7 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return const CustomDialog(
                             titulo: 'SGC Mobile',
-                            descricao: 'Processo iniciado com sucesso',
+                            descricao: 'Pedido separado com sucesso',
                             tipo: Icones.sucesso,
                           );
                         },

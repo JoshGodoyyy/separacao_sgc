@@ -17,7 +17,7 @@ class AlterarStatusPedido {
     int tipoProduto,
     String dataEnvioSeparacao,
   ) async {
-    if (autorizado != 10) {
+    if (autorizado != 1) {
       throw Exception('É necessário autorizar o pedido para esta operação');
     }
 
@@ -49,8 +49,12 @@ class AlterarStatusPedido {
     );
   }
 
-  Future<void> enviarEmbalagem(String status, int id, int tipoProduto,
-      String observacoesSeparacao) async {
+  Future<void> enviarEmbalagem(
+    String status,
+    int id,
+    int tipoProduto,
+    String observacoesSeparacao,
+  ) async {
     if (status == 'NOVO' || status == 'SEPARAR') {
       throw Exception(
         'É necessário iniciar a separação antes de conclui-la',
@@ -74,21 +78,25 @@ class AlterarStatusPedido {
     );
   }
 
-  // Future<void> _liberarConferencia() async {
-  //   if (widget.pedido.status.toString().toUpperCase() == 'NOVO' ||
-  //       widget.pedido.status.toString().toUpperCase() == 'SEPARAR') {
-  //     showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return const CustomDialog(
-  //           titulo: 'SGC Mobile',
-  //           descricao: 'É necessário iniciar a separação antes de conclui-la',
-  //           tipo: Icones.erro,
-  //         );
-  //       },
-  //     );
-  //   }
-  // }
+  Future<void> liberarConferencia(
+    String status,
+    String observacoesSeparacao,
+    int id,
+  ) async {
+    if (status == 'NOVO' || status == 'SEPARAR') {
+      throw Exception(
+        'É necessário iniciar a separação antes de conclui-la',
+      );
+    }
+
+    _pedido.inputPedido.add(
+      LiberarConferencia(
+        idSituacao: 15,
+        observacoesSeparacao: observacoesSeparacao,
+        id: id,
+      ),
+    );
+  }
 
   // Future<void> _finalizarSeparacao() async {
   //   if (widget.pedido.status.toString().toUpperCase() == 'NOVO' ||

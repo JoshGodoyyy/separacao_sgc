@@ -57,6 +57,12 @@ class PedidoBloc {
         event.idConcluirSeparacao,
         event.id,
       );
+    } else if (event is LiberarConferencia) {
+      pedido = await _repository.liberarConferencia(
+        event.idSituacao,
+        event.observacoesSeparacao,
+        event.id,
+      );
     }
 
     _outputPedidoController.add(PedidoLoadedState(pedido: pedido!));

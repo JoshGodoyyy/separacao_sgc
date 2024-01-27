@@ -1,5 +1,3 @@
-import '../../../models/pedido_model.dart';
-
 abstract class PedidoEvent {}
 
 class GetPedidosSituacao extends PedidoEvent {
@@ -79,8 +77,14 @@ class EnviarEmbalagem extends PedidoEvent {
   });
 }
 
-class DeletePedido extends PedidoEvent {
-  final PedidoModel pedido;
+class LiberarConferencia extends PedidoEvent {
+  final int idSituacao;
+  final String observacoesSeparacao;
+  final int id;
 
-  DeletePedido({required this.pedido});
+  LiberarConferencia({
+    required this.idSituacao,
+    required this.observacoesSeparacao,
+    required this.id,
+  });
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sgc/app/models/pedido_model.dart';
 
 import '../../../../../data/repositories/pedido.dart';
@@ -70,6 +71,11 @@ class _DetailsState extends State<Details> {
                   widget.volumeAcessorio,
                   false,
                   TextInputType.number,
+                  [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'[0-9]'),
+                    ),
+                  ],
                 ),
               ),
               Flexible(
@@ -80,6 +86,11 @@ class _DetailsState extends State<Details> {
                   widget.volumeAluminio,
                   false,
                   TextInputType.number,
+                  [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'[0-9]'),
+                    ),
+                  ],
                 ),
               ),
               Flexible(
@@ -90,6 +101,11 @@ class _DetailsState extends State<Details> {
                   widget.volumeChapa,
                   false,
                   TextInputType.number,
+                  [
+                    FilteringTextInputFormatter.allow(
+                      RegExp(r'[0-9]'),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -113,6 +129,11 @@ class _DetailsState extends State<Details> {
             widget.pesoAcessorio,
             false,
             TextInputType.number,
+            [
+              FilteringTextInputFormatter.allow(
+                RegExp(r'[0-9]'),
+              ),
+            ],
           ),
         ],
       ),

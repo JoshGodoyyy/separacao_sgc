@@ -200,6 +200,38 @@ class Pedido with ChangeNotifier {
     );
   }
 
+  Future<PedidoModel> liberarConferencia(
+    int idSituacao,
+    String observacoesSeparacao,
+    int id,
+  ) async {
+    var response = await http.post(
+      Uri.parse('$url/SendToConference'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'id': id,
+          'idSituacao': idSituacao,
+          'idSeparador': 0,
+          'idConcluirSeparacao': '',
+          'dataEnvioSeparacao': '',
+          'dataLiberacaoSeparacao': '',
+          'dataRetornoSeparacao': '',
+          'idIniciarSeparacao': '',
+          'observacoesSeparacao': observacoesSeparacao,
+          'sepAcessorio': 0,
+          'sepPerfil': 0,
+        },
+      ),
+    );
+
+    print(response.statusCode);
+
+    return fetchOrdersByIdOrder(
+      id,
+    );
+  }
+
   Future<PedidoModel> updateOrder(
     int idPedido,
     double volAcessorio,
