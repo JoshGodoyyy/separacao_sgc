@@ -205,7 +205,7 @@ class Pedido with ChangeNotifier {
     String observacoesSeparacao,
     int id,
   ) async {
-    var response = await http.post(
+    await http.post(
       Uri.parse('$url/SendToConference'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
@@ -224,8 +224,6 @@ class Pedido with ChangeNotifier {
         },
       ),
     );
-
-    print(response.statusCode);
 
     return fetchOrdersByIdOrder(
       id,
