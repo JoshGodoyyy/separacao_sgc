@@ -15,8 +15,7 @@ class PedidosLoadingState extends PedidosState {
 }
 
 class PedidosLoadedState extends PedidosState {
-  PedidosLoadedState({required List<PedidoModel> pedidos})
-      : super(pedidos: pedidos);
+  PedidosLoadedState({required super.pedidos});
 }
 
 class PedidosErrorState extends PedidosState {

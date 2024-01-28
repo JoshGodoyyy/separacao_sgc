@@ -9,6 +9,7 @@ import 'package:sgc/app/ui/utils/alterar_status_pedido.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import 'package:sgc/app/ui/widgets/loading_dialog.dart';
 import '../../config/app_config.dart';
+import '../../data/repositories/grupo_pedido.dart';
 import '../../ui/styles/colors_app.dart';
 import 'pages/general_info_page/general_info.dart';
 import 'pages/products_page/products.dart';
@@ -156,7 +157,36 @@ class _OrderPageState extends State<OrderPage> {
             SpeedDialChild(
               child: const Icon(Icons.shopping_cart_outlined),
               label: 'Finalizar Separação',
-              onTap: () {},
+              onTap: () async {
+                try {
+                  showDialog(
+                    barrierDismissible: false,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const LoadingDialog();
+                    },
+                  );
+
+                  await GrupoPedido().apagarGruposInconsistentes(
+                    int.parse(
+                      widget.pedido.id.toString(),
+                    ),
+                  );
+                } catch (e) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomDialog(
+                        titulo: 'SGC Mobile',
+                        descricao: e.toString().substring(11),
+                        tipo: Icones.erro,
+                      );
+                    },
+                  ).then(
+                    (value) => Navigator.pop(context),
+                  );
+                }
+              },
             ),
             SpeedDialChild(
               child: const Icon(Icons.checklist_rtl_rounded),

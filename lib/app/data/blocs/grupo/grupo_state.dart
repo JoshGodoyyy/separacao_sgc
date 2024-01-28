@@ -13,7 +13,7 @@ class GrupoLoadingState extends GrupoState {
 }
 
 class GrupoLoadedState extends GrupoState {
-  GrupoLoadedState({required List<dynamic> grupos}) : super(grupos: grupos);
+  GrupoLoadedState({required super.grupos});
 }
 
 class GrupoErrorState extends GrupoState {

@@ -13,8 +13,7 @@ class EmbalagemLoadingState extends EmbalagemState {
 }
 
 class EmbalagemLoadedState extends EmbalagemState {
-  EmbalagemLoadedState({required List<dynamic> embalagens})
-      : super(embalagens: embalagens);
+  EmbalagemLoadedState({required super.embalagens});
 }
 
 class EmbalagemErrorState extends EmbalagemState {

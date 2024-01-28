@@ -13,8 +13,7 @@ class ProdutoLoadingState extends ProdutoState {
 }
 
 class ProdutoLoadedState extends ProdutoState {
-  ProdutoLoadedState({required List<dynamic> produtos})
-      : super(produtos: produtos);
+  ProdutoLoadedState({required super.produtos});
 }
 
 class ProdutoErrorState extends ProdutoState {

@@ -98,19 +98,11 @@ class AlterarStatusPedido {
     );
   }
 
-  // Future<void> _finalizarSeparacao() async {
-  //   if (widget.pedido.status.toString().toUpperCase() == 'NOVO' ||
-  //       widget.pedido.status.toString().toUpperCase() == 'SEPARAR') {
-  //     showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return const CustomDialog(
-  //           titulo: 'SGC Mobile',
-  //           descricao: 'É necessário iniciar a separação antes de conclui-la',
-  //           tipo: Icones.erro,
-  //         );
-  //       },
-  //     );
-  //   }
-  // }
+  Future<void> finalizarSeparacao(String status) async {
+    if (status == 'NOVO' || status == 'SEPARAR') {
+      throw Exception(
+        'É necessário iniciar a separação antes de conclui-la',
+      );
+    }
+  }
 }

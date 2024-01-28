@@ -27,6 +27,7 @@ class _ButtonState extends State<Button> {
         widget.label,
         style: const TextStyle(
           fontSize: 16,
+          color: Colors.white,
         ),
       ),
     );

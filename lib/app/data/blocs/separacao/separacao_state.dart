@@ -13,5 +13,5 @@ class SeparacaoLoadingState extends SeparacaoState {
 }
 
 class SeparacaoLoadedState extends SeparacaoState {
-  SeparacaoLoadedState({required int result}) : super(result: result);
+  SeparacaoLoadedState({required super.result});
 }
