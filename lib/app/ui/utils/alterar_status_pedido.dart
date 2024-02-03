@@ -4,7 +4,9 @@ import 'package:sgc/app/config/user.dart';
 import '../../data/blocs/pedido/pedido_bloc.dart';
 import '../../data/blocs/pedido/pedido_event.dart';
 import '../../data/enums/situacao_pedido.dart';
+import '../../data/repositories/nivel_senha.dart';
 import '../../data/repositories/pedido.dart';
+import '../../models/nivel_senha_model.dart';
 
 class AlterarStatusPedido {
   final PedidoBloc _pedido = PedidoBloc();
@@ -17,6 +19,18 @@ class AlterarStatusPedido {
     int tipoProduto,
     String dataEnvioSeparacao,
   ) async {
+    final nivelUsuario = NivelSenhaModel(
+      idUsuario: UserConstants().idUsuario,
+      nivel: 'VenPedSepIni',
+    );
+
+    bool nivelSenhaAutorizado =
+        await NivelSenha().verificarNivelSenha(nivelUsuario);
+
+    if (!nivelSenhaAutorizado) {
+      throw Exception('Nível de Senha requerido: ${nivelUsuario.nivel}');
+    }
+
     if (autorizado != 1) {
       throw Exception('É necessário autorizar o pedido para esta operação');
     }
@@ -98,7 +112,7 @@ class AlterarStatusPedido {
     );
   }
 
-  Future<void> finalizarSeparacao(String status) async {
+  Future<void> finalizarSeparacao(String status, List grupos) async {
     if (status == 'NOVO' || status == 'SEPARAR') {
       throw Exception(
         'É necessário iniciar a separação antes de conclui-la',

@@ -62,4 +62,15 @@ class Grupo {
 
     return fetchGrupos(idPedido, tipoProduto);
   }
+
+  Future<void> atualizarGruposPedidos(List grupos, List produtos) async {
+    await http.post(
+      Uri.parse('$url/Update'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'groups': grupos,
+        'products': produtos,
+      }),
+    );
+  }
 }

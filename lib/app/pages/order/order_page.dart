@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/enums/icones.dart';
 import 'package:sgc/app/data/enums/situacao_pedido.dart';
 import 'package:sgc/app/pages/order/pages/packaging_page/packaging.dart';
@@ -9,7 +11,11 @@ import 'package:sgc/app/ui/utils/alterar_status_pedido.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import 'package:sgc/app/ui/widgets/loading_dialog.dart';
 import '../../config/app_config.dart';
+import '../../data/repositories/grupo.dart';
 import '../../data/repositories/grupo_pedido.dart';
+import '../../data/repositories/historico_pedido.dart';
+import '../../data/repositories/produto.dart';
+import '../../models/historico_pedido_model.dart';
 import '../../ui/styles/colors_app.dart';
 import 'pages/general_info_page/general_info.dart';
 import 'pages/products_page/products.dart';
@@ -171,6 +177,25 @@ class _OrderPageState extends State<OrderPage> {
                     int.parse(
                       widget.pedido.id.toString(),
                     ),
+                  );
+
+                  var grupos = await Grupo().fetchGrupos(
+                    int.parse(
+                      widget.pedido.id.toString(),
+                    ),
+                    tipoProduto,
+                  );
+
+                  var produtos = await Produto().fetchProdutos(
+                    tipoProduto,
+                    int.parse(
+                      widget.pedido.id.toString(),
+                    ),
+                  );
+
+                  await Grupo().atualizarGruposPedidos(
+                    grupos,
+                    produtos,
                   );
                 } catch (e) {
                   showDialog(
@@ -340,6 +365,23 @@ class _OrderPageState extends State<OrderPage> {
                                 tipoProduto,
                                 widget.pedido.dataEnvioSeparacao.toString(),
                               );
+
+                              final DateFormat data =
+                                  DateFormat('yyyy-MM-dd HH:mm:ss');
+
+                              var historico = HistoricoPedidoModel(
+                                idPedido: widget.pedido.id,
+                                idStatus: widget.pedido.idSituacao,
+                                status: widget.pedido.status,
+                                chaveFuncionario: UserConstants().idLiberacao,
+                                data: data.format(
+                                  DateTime.now(),
+                                ),
+                                idUsuario: UserConstants().idUsuario,
+                              );
+
+                              await HistoricoPedido()
+                                  .adicionarHistorico(historico);
 
                               WidgetsBinding.instance.addPostFrameCallback(
                                 (timeStamp) {

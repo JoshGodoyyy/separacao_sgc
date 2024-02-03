@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/data/tipo_entrega.dart';
-import 'package:sgc/app/data/user_dao.dart';
 import 'package:sgc/app/data/vendedor_dao.dart';
 import 'package:sgc/app/pages/order/pages/general_info_page/loading_data.dart';
 import 'widgets/item_field.dart';
@@ -46,11 +46,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
       ),
     );
 
-    final usuarioCriacao = await UserDAO().fetchUser(
-      int.parse(
-        pedido.idCriador.toString(),
-      ),
-    );
+    final String usuarioCriacao = UserConstants().userName.toString();
 
     final vendedor = await VendedorDAO().fetchVendedor(
       int.parse(
@@ -64,7 +60,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
       ),
     );
 
-    criadoPorController.text = usuarioCriacao.user.toString();
+    criadoPorController.text = usuarioCriacao;
 
     dataCriacaoController.text = data.format(
       DateTime.parse(
