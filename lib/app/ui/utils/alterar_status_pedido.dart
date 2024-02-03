@@ -69,6 +69,18 @@ class AlterarStatusPedido {
     int tipoProduto,
     String observacoesSeparacao,
   ) async {
+    final nivelUsuario = NivelSenhaModel(
+      idUsuario: UserConstants().idUsuario,
+      nivel: 'VenPedSepEmb',
+    );
+
+    bool nivelSenhaAutorizado =
+        await NivelSenha().verificarNivelSenha(nivelUsuario);
+
+    if (!nivelSenhaAutorizado) {
+      throw Exception('Nível de Senha requerido: ${nivelUsuario.nivel}');
+    }
+
     if (status == 'NOVO' || status == 'SEPARAR') {
       throw Exception(
         'É necessário iniciar a separação antes de conclui-la',
@@ -88,6 +100,7 @@ class AlterarStatusPedido {
         dataRetornoSeparacao: _data.format(DateTime.now()).toString(),
         observacoesSeparacao: observacoesSeparacao,
         id: id,
+        tipoProduto: tipoProduto,
       ),
     );
   }

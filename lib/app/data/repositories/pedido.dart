@@ -156,6 +156,7 @@ class Pedido with ChangeNotifier {
           'dataRetornoSeparacao': '',
           'observacoesSeparacao': '',
           'idConcluirSeparacao': '',
+          'tipoProduto': 0,
         },
       ),
     );
@@ -174,6 +175,7 @@ class Pedido with ChangeNotifier {
     String observacoesSeparacao,
     String idConcluirSeparacao,
     int id,
+    int tipoProduto,
   ) async {
     await http.post(
       Uri.parse('$url/SendToPackaging'),
@@ -191,6 +193,7 @@ class Pedido with ChangeNotifier {
           'dataRetornoSeparacao': dataRetornoSeparacao,
           'observacoesSeparacao': observacoesSeparacao,
           'idConcluirSeparacao': idConcluirSeparacao,
+          'tipoProduto': tipoProduto,
         },
       ),
     );
@@ -221,6 +224,7 @@ class Pedido with ChangeNotifier {
           'observacoesSeparacao': observacoesSeparacao,
           'sepAcessorio': 0,
           'sepPerfil': 0,
+          'tipoProduto': 0,
         },
       ),
     );

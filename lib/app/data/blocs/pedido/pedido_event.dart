@@ -64,6 +64,7 @@ class EnviarEmbalagem extends PedidoEvent {
   final int sepAcessorio;
   final int sepPerfil;
   final int id;
+  final int tipoProduto;
 
   EnviarEmbalagem({
     required this.idSituacao,
@@ -74,6 +75,7 @@ class EnviarEmbalagem extends PedidoEvent {
     required this.sepAcessorio,
     required this.sepPerfil,
     required this.id,
+    required this.tipoProduto,
   });
 }
 

@@ -59,6 +59,8 @@ class _OrderPageState extends State<OrderPage> {
   int _minutes = 0;
   int _hours = 0;
 
+  final DateFormat _data = DateFormat('yyyy-MM-dd HH:mm:ss');
+
   late Timer timer;
 
   void startTimer() {
@@ -292,6 +294,19 @@ class _OrderPageState extends State<OrderPage> {
                     widget.pedido.observacoesSeparacao.toString(),
                   );
 
+                  var historico = HistoricoPedidoModel(
+                    idPedido: widget.pedido.id,
+                    idStatus: widget.pedido.idSituacao,
+                    status: 'EMBALAGEM',
+                    chaveFuncionario: UserConstants().idLiberacao,
+                    data: _data.format(
+                      DateTime.now(),
+                    ),
+                    idUsuario: UserConstants().idUsuario,
+                  );
+
+                  await HistoricoPedido().adicionarHistorico(historico);
+
                   WidgetsBinding.instance.addPostFrameCallback(
                     (timeStamp) {
                       Navigator.pop(context);
@@ -313,17 +328,21 @@ class _OrderPageState extends State<OrderPage> {
                     },
                   );
                 } catch (e) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return CustomDialog(
-                        titulo: 'SGC Mobile',
-                        descricao: e.toString().substring(11),
-                        tipo: Icones.erro,
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (timeStamp) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CustomDialog(
+                            titulo: 'SGC Mobile',
+                            descricao: e.toString().substring(11),
+                            tipo: Icones.erro,
+                          );
+                        },
+                      ).then(
+                        (value) => Navigator.pop(context),
                       );
                     },
-                  ).then(
-                    (value) => Navigator.pop(context),
                   );
                 }
               },
@@ -366,15 +385,12 @@ class _OrderPageState extends State<OrderPage> {
                                 widget.pedido.dataEnvioSeparacao.toString(),
                               );
 
-                              final DateFormat data =
-                                  DateFormat('yyyy-MM-dd HH:mm:ss');
-
                               var historico = HistoricoPedidoModel(
                                 idPedido: widget.pedido.id,
                                 idStatus: widget.pedido.idSituacao,
                                 status: widget.pedido.status,
                                 chaveFuncionario: UserConstants().idLiberacao,
-                                data: data.format(
+                                data: _data.format(
                                   DateTime.now(),
                                 ),
                                 idUsuario: UserConstants().idUsuario,

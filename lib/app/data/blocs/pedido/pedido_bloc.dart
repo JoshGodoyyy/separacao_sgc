@@ -56,6 +56,7 @@ class PedidoBloc {
         event.observacoesSeparacao,
         event.idConcluirSeparacao,
         event.id,
+        event.tipoProduto,
       );
     } else if (event is LiberarConferencia) {
       pedido = await _repository.liberarConferencia(
