@@ -215,6 +215,7 @@ class _OrderPageState extends State<OrderPage> {
                 }
               },
             ),
+            //* Liberar para Conferência
             SpeedDialChild(
               child: const Icon(Icons.checklist_rtl_rounded),
               label: 'Liberar para Conferência',
@@ -235,6 +236,19 @@ class _OrderPageState extends State<OrderPage> {
                       widget.pedido.id.toString(),
                     ),
                   );
+
+                  var historico = HistoricoPedidoModel(
+                    idPedido: widget.pedido.id,
+                    idStatus: widget.pedido.idSituacao,
+                    status: 'CONFERENCIA',
+                    chaveFuncionario: UserConstants().idLiberacao,
+                    data: _data.format(
+                      DateTime.now(),
+                    ),
+                    idUsuario: UserConstants().idUsuario,
+                  );
+
+                  await HistoricoPedido().adicionarHistorico(historico);
 
                   WidgetsBinding.instance.addPostFrameCallback(
                     (timeStamp) {
@@ -257,21 +271,26 @@ class _OrderPageState extends State<OrderPage> {
                     },
                   );
                 } catch (e) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return CustomDialog(
-                        titulo: 'SGC Mobile',
-                        descricao: e.toString().substring(11),
-                        tipo: Icones.erro,
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (timeStamp) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CustomDialog(
+                            titulo: 'SGC Mobile',
+                            descricao: e.toString().substring(11),
+                            tipo: Icones.erro,
+                          );
+                        },
+                      ).then(
+                        (value) => Navigator.pop(context),
                       );
                     },
-                  ).then(
-                    (value) => Navigator.pop(context),
                   );
                 }
               },
             ),
+            //* Liberar para Embalagem
             SpeedDialChild(
               child: const Icon(Icons.archive),
               label: 'Liberar para Embalagem',
@@ -347,6 +366,7 @@ class _OrderPageState extends State<OrderPage> {
                 }
               },
             ),
+            //* Iniciar Separação
             SpeedDialChild(
               child: const Icon(Icons.directions_walk_outlined),
               label: 'Iniciar Separação',
@@ -421,17 +441,21 @@ class _OrderPageState extends State<OrderPage> {
                                 },
                               );
                             } catch (e) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return CustomDialog(
-                                    titulo: 'SGC Mobile',
-                                    descricao: e.toString().substring(11),
-                                    tipo: Icones.erro,
+                              WidgetsBinding.instance.addPostFrameCallback(
+                                (timeStamp) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return CustomDialog(
+                                        titulo: 'SGC Mobile',
+                                        descricao: e.toString().substring(11),
+                                        tipo: Icones.erro,
+                                      );
+                                    },
+                                  ).then(
+                                    (value) => Navigator.pop(context),
                                   );
                                 },
-                              ).then(
-                                (value) => Navigator.pop(context),
                               );
                             }
                             //startTimer();
@@ -452,6 +476,7 @@ class _OrderPageState extends State<OrderPage> {
                 );
               },
             ),
+            //* Embalagem
             SpeedDialChild(
               child: const Icon(Icons.inbox),
               label: 'Embalagens',

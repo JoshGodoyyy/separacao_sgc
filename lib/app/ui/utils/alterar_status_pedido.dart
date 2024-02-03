@@ -110,6 +110,18 @@ class AlterarStatusPedido {
     String observacoesSeparacao,
     int id,
   ) async {
+    final nivelUsuario = NivelSenhaModel(
+      idUsuario: UserConstants().idUsuario,
+      nivel: 'VenPedSepConf',
+    );
+
+    bool nivelSenhaAutorizado =
+        await NivelSenha().verificarNivelSenha(nivelUsuario);
+
+    if (!nivelSenhaAutorizado) {
+      throw Exception('Nível de Senha requerido: ${nivelUsuario.nivel}');
+    }
+
     if (status == 'NOVO' || status == 'SEPARAR') {
       throw Exception(
         'É necessário iniciar a separação antes de conclui-la',
