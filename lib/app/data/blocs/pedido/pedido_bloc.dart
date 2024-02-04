@@ -64,6 +64,23 @@ class PedidoBloc {
         event.observacoesSeparacao,
         event.id,
       );
+    } else if (event is FinalizarSeparacao) {
+      pedido = await _repository.finalizarSeparacao(
+        event.idSituacao,
+        event.observacoesSeparacao,
+        event.volumePerfil,
+        event.volumeAcessorio,
+        event.volumeChapa,
+        event.pesoTotalTeorico,
+        event.pesoTotalReal,
+        event.valorTotalTeorico,
+        event.valorTotalReal,
+        event.sepAcessorio,
+        event.sepPerfil,
+        event.idSeparador,
+        event.chaveLiberacao,
+        event.id,
+      );
     }
 
     _outputPedidoController.add(PedidoLoadedState(pedido: pedido!));

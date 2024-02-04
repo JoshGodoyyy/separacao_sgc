@@ -11,10 +11,7 @@ import 'package:sgc/app/ui/utils/alterar_status_pedido.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import 'package:sgc/app/ui/widgets/loading_dialog.dart';
 import '../../config/app_config.dart';
-import '../../data/repositories/grupo.dart';
-import '../../data/repositories/grupo_pedido.dart';
 import '../../data/repositories/historico_pedido.dart';
-import '../../data/repositories/produto.dart';
 import '../../models/historico_pedido_model.dart';
 import '../../ui/styles/colors_app.dart';
 import 'pages/general_info_page/general_info.dart';
@@ -162,6 +159,7 @@ class _OrderPageState extends State<OrderPage> {
           overlayOpacity: 0.6,
           backgroundColor: ColorsApp.primaryColor,
           children: [
+            //* Finalizar Separação
             SpeedDialChild(
               child: const Icon(Icons.shopping_cart_outlined),
               label: 'Finalizar Separação',
@@ -175,42 +173,79 @@ class _OrderPageState extends State<OrderPage> {
                     },
                   );
 
-                  await GrupoPedido().apagarGruposInconsistentes(
+                  await AlterarStatusPedido().finalizarSeparacao(
+                    widget.pedido.status.toString().toUpperCase(),
+                    widget.pedido.observacoesSeparacao.toString(),
                     int.parse(
-                      widget.pedido.id.toString(),
+                      widget.pedido.volumePerfil.toString(),
                     ),
-                  );
-
-                  var grupos = await Grupo().fetchGrupos(
                     int.parse(
-                      widget.pedido.id.toString(),
+                      widget.pedido.volumeAcessorio.toString(),
+                    ),
+                    int.parse(
+                      widget.pedido.volumeChapa.toString(),
+                    ),
+                    double.parse(
+                      widget.pedido.pesoTotalTeorico.toString(),
+                    ),
+                    double.parse(
+                      widget.pedido.valorTotalTeorico.toString(),
                     ),
                     tipoProduto,
-                  );
-
-                  var produtos = await Produto().fetchProdutos(
-                    tipoProduto,
                     int.parse(
                       widget.pedido.id.toString(),
                     ),
                   );
 
-                  await Grupo().atualizarGruposPedidos(
-                    grupos,
-                    produtos,
+                  var historico = HistoricoPedidoModel(
+                    idPedido: widget.pedido.id,
+                    idStatus: widget.pedido.idSituacao,
+                    status: 'FATURAR',
+                    chaveFuncionario: UserConstants().idLiberacao,
+                    data: _data.format(
+                      DateTime.now(),
+                    ),
+                    idUsuario: UserConstants().idUsuario,
+                  );
+
+                  await HistoricoPedido().adicionarHistorico(historico);
+
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (timeStamp) {
+                      Navigator.pop(context);
+                    },
+                  );
+
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (timeStamp) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const CustomDialog(
+                            titulo: 'SGC Mobile',
+                            descricao: 'Pedido separado com sucesso',
+                            tipo: Icones.sucesso,
+                          );
+                        },
+                      ).then((value) => Navigator.pop(context));
+                    },
                   );
                 } catch (e) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return CustomDialog(
-                        titulo: 'SGC Mobile',
-                        descricao: e.toString().substring(11),
-                        tipo: Icones.erro,
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (timeStamp) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CustomDialog(
+                            titulo: 'SGC Mobile',
+                            descricao: e.toString().substring(11),
+                            tipo: Icones.erro,
+                          );
+                        },
+                      ).then(
+                        (value) => Navigator.pop(context),
                       );
                     },
-                  ).then(
-                    (value) => Navigator.pop(context),
                   );
                 }
               },

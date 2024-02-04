@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sgc/app/config/api_config.dart';
+import 'package:sgc/app/data/repositories/configuracoes.dart';
 import 'package:sgc/app/pages/initial_setup_page/initial_setup.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../ui/widgets/button.dart';
 import '../../ui/widgets/textfield.dart';
-import '../../data/user_dao.dart';
+import '../../data/repositories/user_dao.dart';
 import '../../models/user_model.dart';
 import '/app/pages/loading_screen.dart';
 
@@ -53,6 +54,8 @@ class _LoginPageState extends State<LoginPage> {
       var response = await UserDAO().auth(user);
 
       if (response) {
+        await Configuracoes().verificaFechamentoPedAntSeparacao();
+
         navigator.pushReplacement(
           MaterialPageRoute(
             builder: (builder) => const LoadingScreen(),

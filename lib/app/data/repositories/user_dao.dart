@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:sgc/app/config/api_config.dart';
 import 'package:sgc/app/config/user.dart';
-import '../models/user_model.dart';
+import '../../models/user_model.dart';
 
 import 'package:http/http.dart' as http;
 

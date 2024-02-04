@@ -90,3 +90,37 @@ class LiberarConferencia extends PedidoEvent {
     required this.id,
   });
 }
+
+class FinalizarSeparacao extends PedidoEvent {
+  final int idSituacao;
+  final String observacoesSeparacao;
+  final int volumePerfil;
+  final int volumeAcessorio;
+  final int volumeChapa;
+  final double pesoTotalTeorico;
+  final double pesoTotalReal;
+  final double valorTotalTeorico;
+  final double valorTotalReal;
+  final int sepAcessorio;
+  final int sepPerfil;
+  final int idSeparador;
+  final String chaveLiberacao;
+  final int id;
+
+  FinalizarSeparacao({
+    required this.idSituacao,
+    required this.observacoesSeparacao,
+    required this.volumePerfil,
+    required this.volumeAcessorio,
+    required this.volumeChapa,
+    required this.pesoTotalTeorico,
+    required this.pesoTotalReal,
+    required this.valorTotalTeorico,
+    required this.valorTotalReal,
+    required this.sepAcessorio,
+    required this.sepPerfil,
+    required this.idSeparador,
+    required this.chaveLiberacao,
+    required this.id,
+  });
+}
