@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:sgc/app/data/tratamento.dart';
+import 'package:sgc/app/data/repositories/tratamento.dart';
 import 'package:sgc/app/models/tratamento_model.dart';
 
 class Treatment extends StatefulWidget {

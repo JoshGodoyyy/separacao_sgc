@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
-import 'package:sgc/app/data/tipo_entrega.dart';
-import 'package:sgc/app/data/vendedor_dao.dart';
+import 'package:sgc/app/data/repositories/tipo_entrega.dart';
+import 'package:sgc/app/data/repositories/vendedor_dao.dart';
 import 'package:sgc/app/pages/order/pages/general_info_page/loading_data.dart';
 import 'widgets/item_field.dart';
 

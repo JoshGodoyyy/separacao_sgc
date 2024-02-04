@@ -3,7 +3,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sgc/app/data/blocs/produto/produto_bloc.dart';
 import 'package:sgc/app/data/blocs/produto/produto_event.dart';
 import 'package:sgc/app/data/blocs/produto/produto_state.dart';
-import 'package:sgc/app/data/tratamento.dart';
+import 'package:sgc/app/data/repositories/tratamento.dart';
 import 'package:sgc/app/pages/order/pages/products_page/widgets/modal.dart';
 import 'package:sgc/app/pages/order/pages/products_page/widgets/produto_list_item.dart';
 import 'package:sgc/app/ui/widgets/list_header.dart';

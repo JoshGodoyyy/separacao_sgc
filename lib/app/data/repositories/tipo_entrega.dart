@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:sgc/app/models/tipo_entrega_model.dart';
 
-import '../config/api_config.dart';
+import '../../config/api_config.dart';
 
 import 'package:http/http.dart' as http;
 

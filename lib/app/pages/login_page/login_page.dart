@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sgc/app/config/api_config.dart';
+import 'package:sgc/app/config/secure_storage.dart';
 import 'package:sgc/app/data/repositories/configuracoes.dart';
 import 'package:sgc/app/pages/initial_setup_page/initial_setup.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import '../../config/app_config.dart';
 import '../../ui/widgets/button.dart';
 import '../../ui/widgets/textfield.dart';
 import '../../data/repositories/user_dao.dart';
@@ -22,6 +25,18 @@ class _LoginPageState extends State<LoginPage> {
   final usuarioController = TextEditingController();
   final senhaController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    idLiberacaoController.text = await SecureStorage().ler('chave');
+    usuarioController.text = await SecureStorage().ler('usuario');
+    senhaController.text = await SecureStorage().ler('senha');
+  }
+
   void clear() {
     idLiberacaoController.clear();
     usuarioController.clear();
@@ -29,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() async {
+    final config = Provider.of<AppConfig>(context, listen: false);
     final navigator = Navigator.of(context);
     final overlay = Overlay.of(context);
 
@@ -56,6 +72,16 @@ class _LoginPageState extends State<LoginPage> {
       if (response) {
         await Configuracoes().verificaFechamentoPedAntSeparacao();
 
+        if (config.salvarDados) {
+          SecureStorage().salvar('chave', idLiberacaoController.text);
+          SecureStorage().salvar('usuario', usuarioController.text);
+          SecureStorage().salvar('senha', senhaController.text);
+        } else {
+          SecureStorage().apagar('chave');
+          SecureStorage().apagar('usuario');
+          SecureStorage().apagar('senha');
+        }
+
         navigator.pushReplacement(
           MaterialPageRoute(
             builder: (builder) => const LoadingScreen(),
@@ -82,6 +108,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final config = Provider.of<AppConfig>(context);
+
     return Scaffold(
       backgroundColor: const Color(0xff12111F),
       body: Padding(
@@ -122,7 +150,12 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Row(
                       children: [
-                        Checkbox(value: false, onChanged: (value) {}),
+                        Checkbox(
+                          value: config.salvarDados,
+                          onChanged: (value) {
+                            config.setSalvarDados(!config.salvarDados);
+                          },
+                        ),
                         const Text('Salvar login'),
                       ],
                     ),

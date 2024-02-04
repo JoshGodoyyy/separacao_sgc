@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:sgc/app/models/tratamento_model.dart';
-import '../config/api_config.dart';
+import '../../config/api_config.dart';
 import 'package:http/http.dart' as http;
 
 class Tratamento {
