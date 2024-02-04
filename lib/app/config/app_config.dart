@@ -41,6 +41,15 @@ class AppConfig with ChangeNotifier {
   bool get faturar => _faturar;
   bool get logistica => _logistica;
 
+  List<String> operacoes = [
+    'Separar',
+    'Separando',
+    'Embalagem',
+    'Conferência',
+    'Faturar',
+    'Logística',
+  ];
+
   void setSalvarDados(bool value) {
     _salvarDados = value;
     preferences.setBool(_keySalvarDados, value);

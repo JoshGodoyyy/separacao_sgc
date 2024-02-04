@@ -249,9 +249,9 @@ class _MainPageState extends State<MainPage> {
                 key: ValueKey<PedidoModel>(pedidos[index]),
                 confirmDismiss: (direction) async {
                   if (direction == DismissDirection.startToEnd) {
-                    return await Future.delayed(const Duration(seconds: 2));
+                    return await Future.delayed(const Duration(seconds: 0));
                   } else {
-                    return await Future.delayed(const Duration(seconds: 2));
+                    return await Future.delayed(const Duration(seconds: 0));
                   }
                 },
                 background: Container(

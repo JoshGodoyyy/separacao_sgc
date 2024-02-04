@@ -100,8 +100,13 @@ class ProdutoListItem extends StatelessWidget {
                         ),
                         ItemColor(
                           cor: Cor(
-                            'Vermelho',
-                            Colors.red,
+                            '',
+                            Color.fromARGB(
+                              produto.cor!['a'],
+                              produto.cor!['r'],
+                              produto.cor!['g'],
+                              produto.cor!['b'],
+                            ),
                           ),
                         ),
                       ],
