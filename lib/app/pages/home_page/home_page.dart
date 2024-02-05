@@ -137,7 +137,12 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 64),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: Text('Orçamentos'),
+                  child: Text(
+                    'Orçamentos',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 ListTile(
                   onTap: () {
@@ -147,8 +152,16 @@ class _HomePageState extends State<HomePage> {
                           message: 'Feature em desenvolvimento'),
                     );
                   },
-                  leading: const Icon(Icons.assignment_add),
-                  title: const Text('Orçamentos'),
+                  leading: const Icon(
+                    Icons.assignment_add,
+                    color: Colors.white,
+                  ),
+                  title: const Text(
+                    'Orçamentos',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 ListTile(
                   onTap: () {
@@ -158,8 +171,16 @@ class _HomePageState extends State<HomePage> {
                           message: 'Feature em desenvolvimento'),
                     );
                   },
-                  leading: const Icon(Icons.assignment_add),
-                  title: const Text('Novo Orçamento'),
+                  leading: const Icon(
+                    Icons.assignment_add,
+                    color: Colors.white,
+                  ),
+                  title: const Text(
+                    'Novo Orçamento',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 ListTile(
                   onTap: () {
@@ -169,19 +190,40 @@ class _HomePageState extends State<HomePage> {
                           message: 'Feature em desenvolvimento'),
                     );
                   },
-                  leading: const Icon(Icons.assignment_add),
-                  title: const Text('Orçamento de Pedidos'),
+                  leading: const Icon(
+                    Icons.assignment_add,
+                    color: Colors.white,
+                  ),
+                  title: const Text(
+                    'Orçamento de Pedidos',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: Text('Separação'),
+                  child: Text(
+                    'Separação',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 ListTile(
                   onTap: () {
                     _advancedDrawerController.hideDrawer();
                   },
-                  leading: const Icon(Icons.add_shopping_cart_rounded),
-                  title: const Text('Separação'),
+                  leading: const Icon(
+                    Icons.add_shopping_cart_rounded,
+                    color: Colors.white,
+                  ),
+                  title: const Text(
+                    'Separação',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 const Divider(),
                 ListTile(
@@ -221,8 +263,16 @@ class _HomePageState extends State<HomePage> {
                       },
                     );
                   },
-                  leading: const Icon(Icons.logout),
-                  title: const Text('Sair'),
+                  leading: const Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                  title: const Text(
+                    'Sair',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/config/user.dart';
 import '../../data/blocs/pedido/pedidos_bloc.dart';
 import '../../data/blocs/pedido/pedido_event.dart';
@@ -56,11 +58,78 @@ class _MainPageState extends State<MainPage> {
   }
 
   String avancarPedido() {
-    return widget.title;
+    var config = Provider.of<AppConfig>(context, listen: false);
+
+    String result = '';
+
+    switch (widget.title) {
+      case 'Separar':
+        if (config.separando) {
+          result = 'Enviar para Separação';
+        } else {
+          if (config.embalagem) {
+            result = 'Liberar para Embalagem';
+          } else if (config.conferencia) {
+            result = 'Liberar para Conferência';
+          } else if (config.faturar) {
+            result = 'Finalizar Separação';
+          }
+        }
+        break;
+      case 'Separando':
+        if (config.embalagem) {
+          result = 'Liberar para Embalagem';
+        } else if (config.conferencia) {
+          result = 'Liberar para Conferência';
+        } else if (config.faturar) {
+          result = 'Finalizar Separação';
+        }
+        break;
+      case 'Embalagem':
+        if (config.conferencia) {
+          result = 'Liberar para Conferência';
+        } else if (config.faturar) {
+          result = 'Finalizar Separação';
+        }
+        break;
+      case 'Conferência':
+        result = 'Finalizar Separação';
+        break;
+    }
+
+    return result;
   }
 
   String retrocederPedido() {
-    return '';
+    var config = Provider.of<AppConfig>(context, listen: false);
+
+    String result = '';
+
+    switch (widget.title) {
+      case 'Embalagem':
+        result = 'Iniciar Separação';
+        break;
+      case 'Conferência':
+        if (config.embalagem) {
+          result = 'Liberar para Embalagem';
+        } else {
+          result = 'Iniciar Separação';
+        }
+        break;
+      case 'Faturar':
+        if (config.conferencia) {
+          result = 'Liberar para Conferência';
+        } else {
+          if (config.embalagem) {
+            result = 'Liberar para Embalagem';
+          } else {
+            result = 'Iniciar Separação';
+          }
+        }
+        break;
+    }
+
+    return result;
   }
 
   @override
@@ -249,9 +318,27 @@ class _MainPageState extends State<MainPage> {
                 key: ValueKey<PedidoModel>(pedidos[index]),
                 confirmDismiss: (direction) async {
                   if (direction == DismissDirection.startToEnd) {
-                    return await Future.delayed(const Duration(seconds: 0));
+                    switch (avancarPedido()) {
+                      case 'Iniciar Separação':
+                        break;
+                      case 'Liberar para Embalagem':
+                        break;
+                      case 'Liberar para Conferência':
+                        break;
+                      case 'Finalizar Separação':
+                        break;
+                    }
                   } else {
-                    return await Future.delayed(const Duration(seconds: 0));
+                    switch (retrocederPedido()) {
+                      case 'Iniciar Separação':
+                        break;
+                      case 'Liberar para Embalagem':
+                        break;
+                      case 'Liberar para Conferência':
+                        break;
+                      case 'Finalizar Separação':
+                        break;
+                    }
                   }
                 },
                 background: Container(
