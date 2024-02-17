@@ -161,6 +161,7 @@ class _OrderPageState extends State<OrderPage> {
           children: [
             //* Finalizar Separação
             SpeedDialChild(
+              visible: UserConstants().idLiberacao == '' ? false : true,
               child: const Icon(Icons.shopping_cart_outlined),
               label: 'Finalizar Separação',
               onTap: () async {
@@ -252,6 +253,7 @@ class _OrderPageState extends State<OrderPage> {
             ),
             //* Liberar para Conferência
             SpeedDialChild(
+              visible: UserConstants().idLiberacao == '' ? false : true,
               child: const Icon(Icons.checklist_rtl_rounded),
               label: 'Liberar para Conferência',
               onTap: () async {
@@ -327,6 +329,7 @@ class _OrderPageState extends State<OrderPage> {
             ),
             //* Liberar para Embalagem
             SpeedDialChild(
+              visible: UserConstants().idLiberacao == '' ? false : true,
               child: const Icon(Icons.archive),
               label: 'Liberar para Embalagem',
               onTap: () async {
@@ -403,6 +406,7 @@ class _OrderPageState extends State<OrderPage> {
             ),
             //* Iniciar Separação
             SpeedDialChild(
+              visible: UserConstants().idLiberacao == '' ? false : true,
               child: const Icon(Icons.directions_walk_outlined),
               label: 'Iniciar Separação',
               onTap: () {

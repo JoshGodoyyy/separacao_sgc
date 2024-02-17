@@ -21,7 +21,7 @@ class UserConstants {
     _idUsuario = int.parse(
       usuario.id.toString(),
     );
-    _userName = usuario.apelido;
-    _idLiberacao = usuario.idLiberacao;
+    _userName = usuario.apelido == '' ? usuario.user : usuario.apelido;
+    _idLiberacao = usuario.idLiberacao == '' ? '' : usuario.idLiberacao;
   }
 }

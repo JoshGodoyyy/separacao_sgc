@@ -42,24 +42,12 @@ class _LoginPageState extends State<LoginPage> {
   void clear() {
     idLiberacaoController.clear();
     usuarioController.clear();
-    senhaController.clear();
   }
 
   void login() async {
     final config = Provider.of<AppConfig>(context, listen: false);
     final navigator = Navigator.of(context);
     final overlay = Overlay.of(context);
-
-    if (idLiberacaoController.text.trim() == '') {
-      showTopSnackBar(
-        overlay,
-        const CustomSnackBar.error(
-          message: 'Chave de acesso obrigatória',
-        ),
-      );
-
-      return;
-    }
 
     setState(() => isWaiting = true);
 
@@ -161,7 +149,10 @@ class _LoginPageState extends State<LoginPage> {
                             config.setSalvarDados(!config.salvarDados);
                           },
                         ),
-                        const Text('Salvar login'),
+                        const Text(
+                          'Salvar login',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ],
                     ),
                     TextButton(
