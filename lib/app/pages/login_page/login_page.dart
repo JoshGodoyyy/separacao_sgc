@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/api_config.dart';
 import 'package:sgc/app/config/secure_storage.dart';
@@ -24,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   final idLiberacaoController = TextEditingController();
   final usuarioController = TextEditingController();
   final senhaController = TextEditingController();
+  bool isWaiting = false;
 
   @override
   void initState() {
@@ -58,6 +60,8 @@ class _LoginPageState extends State<LoginPage> {
 
       return;
     }
+
+    setState(() => isWaiting = true);
 
     await ApiConfig().getUrl();
 
@@ -103,6 +107,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
 
+    setState(() => isWaiting = false);
     clear();
   }
 
@@ -178,7 +183,17 @@ class _LoginPageState extends State<LoginPage> {
                   width: MediaQuery.of(context).size.width,
                   child: Button(
                     label: 'Entrar',
-                    onPressed: login,
+                    onPressed: isWaiting ? () {} : login,
+                  ),
+                ),
+                const SizedBox(height: 64),
+                Visibility(
+                  visible: isWaiting,
+                  child: Center(
+                    child: LoadingAnimationWidget.hexagonDots(
+                      color: Colors.white,
+                      size: 50,
+                    ),
                   ),
                 ),
               ],
