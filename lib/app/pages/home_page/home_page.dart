@@ -6,8 +6,6 @@ import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/models/pedido_model.dart';
 import 'package:sgc/app/pages/home_page/widgets/home_header.dart';
 import 'package:sgc/app/pages/main_page/main_page.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../login_page/login_page.dart';
 import '/app/pages/home_page/widgets/home_button.dart';
@@ -131,73 +129,6 @@ class _HomePageState extends State<HomePage> {
                       'assets/images/logo_light.png',
                       fit: BoxFit.fill,
                       width: 255,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 64),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
-                  child: Text(
-                    'Orçamentos',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    showTopSnackBar(
-                      Overlay.of(context),
-                      const CustomSnackBar.info(
-                          message: 'Feature em desenvolvimento'),
-                    );
-                  },
-                  leading: const Icon(
-                    Icons.assignment_add,
-                    color: Colors.white,
-                  ),
-                  title: const Text(
-                    'Orçamentos',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    showTopSnackBar(
-                      Overlay.of(context),
-                      const CustomSnackBar.info(
-                          message: 'Feature em desenvolvimento'),
-                    );
-                  },
-                  leading: const Icon(
-                    Icons.assignment_add,
-                    color: Colors.white,
-                  ),
-                  title: const Text(
-                    'Novo Orçamento',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    showTopSnackBar(
-                      Overlay.of(context),
-                      const CustomSnackBar.info(
-                          message: 'Feature em desenvolvimento'),
-                    );
-                  },
-                  leading: const Icon(
-                    Icons.assignment_add,
-                    color: Colors.white,
-                  ),
-                  title: const Text(
-                    'Orçamento de Pedidos',
-                    style: TextStyle(
-                      color: Colors.white,
                     ),
                   ),
                 ),
