@@ -21,6 +21,7 @@ class TodosPedidos extends StatelessWidget {
               child: const ColunaStatus(
                 titulo: 'Separar',
                 cor: Colors.red,
+                idStatus: 2,
               ),
             ),
             Visibility(
@@ -28,6 +29,7 @@ class TodosPedidos extends StatelessWidget {
               child: const ColunaStatus(
                 titulo: 'Separando',
                 cor: Colors.orange,
+                idStatus: 3,
               ),
             ),
             Visibility(
@@ -35,6 +37,7 @@ class TodosPedidos extends StatelessWidget {
               child: const ColunaStatus(
                 titulo: 'Embalagem',
                 cor: Color(0xff6482b4),
+                idStatus: 14,
               ),
             ),
             Visibility(
@@ -42,6 +45,7 @@ class TodosPedidos extends StatelessWidget {
               child: const ColunaStatus(
                 titulo: 'Conferência',
                 cor: Color(0xffa300d3),
+                idStatus: 15,
               ),
             ),
             Visibility(
@@ -49,6 +53,7 @@ class TodosPedidos extends StatelessWidget {
               child: const ColunaStatus(
                 titulo: 'Faturar',
                 cor: Color(0xff348000),
+                idStatus: 5,
               ),
             ),
             Visibility(
@@ -56,6 +61,7 @@ class TodosPedidos extends StatelessWidget {
               child: const ColunaStatus(
                 titulo: 'Logística',
                 cor: Color(0xFFFFC400),
+                idStatus: 10,
               ),
             ),
           ],

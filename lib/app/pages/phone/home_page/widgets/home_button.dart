@@ -107,7 +107,7 @@ class HomeButton extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
-                            Text('$weight Kg'),
+                            Text('${weight.toStringAsFixed(2)} Kg'),
                           ],
                         ),
                       ),

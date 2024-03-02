@@ -57,7 +57,10 @@ class _THomePageState extends State<THomePage> {
                               icone: Icons.menu,
                               titulo: 'Menu',
                               onTap: () => setState(
-                                () => _largura = _largura == 60 ? 250 : 60,
+                                () {
+                                  _largura = _largura == 60 ? 250 : 60;
+                                  menuEstado.setEstado(false);
+                                },
                               ),
                               selecionado: false,
                             ),
@@ -143,29 +146,6 @@ class _THomePageState extends State<THomePage> {
                                         ),
                                       ),
                                     ],
-                                  ),
-                                  const Spacer(),
-                                  Visibility(
-                                    visible: _indexTela == 0 ? true : false,
-                                    child: Expanded(
-                                      child: Material(
-                                        elevation: 5,
-                                        color: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                        child: const TextField(
-                                          decoration: InputDecoration(
-                                            hintText: 'Pesquisar',
-                                            suffixIcon: Icon(Icons.search),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide.none,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
                                   ),
                                 ],
                               ),
