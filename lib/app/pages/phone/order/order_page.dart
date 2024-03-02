@@ -433,6 +433,9 @@ class _OrderPageState extends State<OrderPage> {
                               );
 
                               await AlterarStatusPedido().enviarSeparacao(
+                                int.parse(
+                                  widget.pedido.idSituacao.toString(),
+                                ),
                                 SituacaoPedido.separando,
                                 int.parse(
                                   widget.pedido.autorizado.toString(),

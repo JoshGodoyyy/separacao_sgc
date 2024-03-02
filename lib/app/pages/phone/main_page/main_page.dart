@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -34,27 +36,35 @@ class _MainPageState extends State<MainPage> {
   final searchController = TextEditingController();
   late final PedidosBloc _pedidosBloc;
   late final List pedidos;
+  late Timer timer;
+  String search = '';
 
   @override
   void initState() {
     super.initState();
     _pedidosBloc = PedidosBloc();
     fetchData();
+
+    const Duration duracao = Duration(seconds: 30);
+
+    timer = Timer.periodic(duracao, (timer) {
+      fetchData();
+    });
   }
 
   fetchData() {
-    _pedidosBloc.inputPedido.add(
-      GetPedidosSituacao(idSituacao: widget.status),
-    );
-  }
-
-  searchData(String value) {
-    _pedidosBloc.inputPedido.add(
-      SearchPedido(
-        idSituacao: widget.status,
-        idPedido: int.parse(value),
-      ),
-    );
+    if (search == '') {
+      _pedidosBloc.inputPedido.add(
+        GetPedidosSituacao(idSituacao: widget.status),
+      );
+    } else {
+      _pedidosBloc.inputPedido.add(
+        SearchPedido(
+          idSituacao: widget.status,
+          idPedido: int.parse(search),
+        ),
+      );
+    }
   }
 
   String avancarPedido() {
@@ -164,9 +174,11 @@ class _MainPageState extends State<MainPage> {
                       ],
                       onChanged: (value) {
                         if (searchController.text == '') {
+                          search = '';
                           fetchData();
                         } else {
-                          searchData(searchController.text);
+                          search = searchController.text;
+                          fetchData();
                         }
                       },
                       decoration: const InputDecoration(
@@ -188,9 +200,11 @@ class _MainPageState extends State<MainPage> {
                   child: InkWell(
                     onTap: () {
                       if (searchController.text == '') {
+                        search = '';
                         fetchData();
                       } else {
-                        searchData(searchController.text);
+                        search = searchController.text;
+                        fetchData();
                       }
                     },
                     borderRadius: const BorderRadius.only(
@@ -400,11 +414,5 @@ class _MainPageState extends State<MainPage> {
         }
       },
     );
-  }
-
-  @override
-  void dispose() {
-    _pedidosBloc.inputPedido.close();
-    super.dispose();
   }
 }

@@ -10,6 +10,7 @@ class HomeButton extends StatelessWidget {
   final Widget page;
   final Color begin;
   final Color end;
+  final Function refresh;
 
   const HomeButton({
     super.key,
@@ -20,6 +21,7 @@ class HomeButton extends StatelessWidget {
     required this.page,
     required this.begin,
     required this.end,
+    required this.refresh,
   });
 
   @override
@@ -48,9 +50,11 @@ class HomeButton extends StatelessWidget {
             ),
             color: Theme.of(context).primaryColor,
             child: InkWell(
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (builder) => page),
-              ),
+              onTap: () => Navigator.of(context)
+                  .push(
+                    MaterialPageRoute(builder: (builder) => page),
+                  )
+                  .then((value) => refresh()),
               borderRadius: const BorderRadius.all(
                 Radius.circular(10),
               ),

@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:sgc/app/config/configuracoes_sistema.dart';
 import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/repositories/produto.dart';
+import 'package:sgc/app/data/repositories/repository_situacao_pedido.dart';
 import 'package:sgc/app/models/group_model.dart';
 
 import '../../data/blocs/pedido/pedido_bloc.dart';
@@ -18,12 +19,30 @@ class AlterarStatusPedido {
   final DateFormat _data = DateFormat('yyyy-MM-dd HH:mm:ss');
 
   Future<void> enviarSeparacao(
+    int idSituacao,
     SituacaoPedido situacao,
     int autorizado,
     int id,
     int tipoProduto,
     String dataEnvioSeparacao,
   ) async {
+    var pedido = await Pedido().fetchOrdersByIdOrder(id);
+
+    int sepPerfil = await Pedido().getSeparacao(id, 'sepPerfil');
+    int sepAcessorio = await Pedido().getSeparacao(id, 'sepAcessorio');
+
+    String status = (await RepositorySituacaoPedido().situacaoPedido(
+      int.parse(
+        pedido.idSituacao.toString(),
+      ),
+    ))
+        .descricao
+        .toString();
+
+    if (status.toUpperCase() != 'SEPARAR' || status.toUpperCase() != 'NOVO') {
+      throw Exception('Pedido não pode ser alterado');
+    }
+
     final nivelUsuario = NivelSenhaModel(
       idUsuario: UserConstants().idUsuario,
       nivel: 'VenPedSepIni',
@@ -39,9 +58,6 @@ class AlterarStatusPedido {
     if (autorizado != 1) {
       throw Exception('É necessário autorizar o pedido para esta operação');
     }
-
-    int sepPerfil = await Pedido().getSeparacao(id, 'sepPerfil');
-    int sepAcessorio = await Pedido().getSeparacao(id, 'sepAcessorio');
 
     if (tipoProduto == 2) {
       sepPerfil = situacao.index + 1;

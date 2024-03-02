@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:provider/provider.dart';
@@ -30,23 +32,29 @@ class _HomePageState extends State<HomePage> {
 
   bool carregando = false;
 
+  late Timer timer;
+
   loadData() async {
     var orders = Provider.of<Pedido>(context, listen: false);
     setState(() => carregando = true);
-    Future.wait([
-      orders.fetchData(2),
-      orders.fetchData(3),
-      orders.fetchData(5),
-      orders.fetchData(10),
-      orders.fetchData(14),
-      orders.fetchData(15),
-    ]);
+    await orders.fetchData(2);
+    await orders.fetchData(3);
+    await orders.fetchData(5);
+    await orders.fetchData(10);
+    await orders.fetchData(14);
+    await orders.fetchData(15);
     setState(() => carregando = false);
   }
 
   @override
   void initState() {
     super.initState();
+    const Duration duracao = Duration(seconds: 30);
+
+    timer = Timer.periodic(duracao, (timer) {
+      loadData();
+    });
+
     setState(() => carregando = true);
     _calcularPeso();
     setState(() => carregando = false);
@@ -132,6 +140,45 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                // const Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 8),
+                //   child: Text(
+                //     'Orçamento',
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
+                // ListTile(
+                //   onTap: () {
+                //     _advancedDrawerController.hideDrawer();
+                //   },
+                //   leading: const Icon(
+                //     Icons.assignment_add,
+                //     color: Colors.white,
+                //   ),
+                //   title: const Text(
+                //     'Orçamentos',
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
+                // ListTile(
+                //   onTap: () {
+                //     _advancedDrawerController.hideDrawer();
+                //   },
+                //   leading: const Icon(
+                //     Icons.assignment_add,
+                //     color: Colors.white,
+                //   ),
+                //   title: const Text(
+                //     'Novo Orçamento',
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
@@ -156,6 +203,30 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                // const Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 8),
+                //   child: Text(
+                //     'Entrega',
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
+                // ListTile(
+                //   onTap: () {
+                //     _advancedDrawerController.hideDrawer();
+                //   },
+                //   leading: const Icon(
+                //     Icons.add_shopping_cart_rounded,
+                //     color: Colors.white,
+                //   ),
+                //   title: const Text(
+                //     'Rotas de Entrega',
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
                 const Divider(),
                 ListTile(
                   onTap: () {
@@ -264,6 +335,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             begin: Colors.red,
                             end: Colors.red[200]!,
+                            refresh: loadData,
                           ),
                         ),
                         Visibility(
@@ -280,6 +352,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             begin: Colors.orange,
                             end: const Color(0xFFFFC267),
+                            refresh: loadData,
                           ),
                         ),
                       ],
@@ -301,6 +374,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             begin: const Color(0xff6482b4),
                             end: const Color(0xff64b9e6),
+                            refresh: loadData,
                           ),
                         ),
                         Visibility(
@@ -317,6 +391,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             begin: const Color(0xffa300d3),
                             end: const Color(0xFFE2A6DE),
+                            refresh: loadData,
                           ),
                         ),
                       ],
@@ -338,6 +413,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             begin: const Color(0xff348000),
                             end: const Color(0xFF97DB6A),
+                            refresh: loadData,
                           ),
                         ),
                         Visibility(
@@ -354,6 +430,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             begin: const Color(0xFFFFC400),
                             end: const Color(0xFFF7E180),
+                            refresh: loadData,
                           ),
                         ),
                       ],

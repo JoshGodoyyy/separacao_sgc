@@ -47,14 +47,25 @@ class ListItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Pedido: ${pedido.id}',
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${pedido.id}',
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                            Text(
+                              pedido.separadorIniciar ?? '',
+                              style: const TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
                         ),
                         Text(
-                          'Cliente: ${pedido.nomeCliente} ${pedido.cidade}',
+                          '${pedido.nomeCliente} ${pedido.cidade}',
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 15,
