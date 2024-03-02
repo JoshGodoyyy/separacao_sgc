@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/models/pedido_model.dart';
 import 'package:sgc/app/pages/phone/home_page/widgets/home_header.dart';
 import 'package:sgc/app/pages/phone/main_page/main_page.dart';
+import 'package:vibration/vibration.dart';
 
 import '../login_page/login_page.dart';
 import 'widgets/home_button.dart';
@@ -44,6 +46,26 @@ class _HomePageState extends State<HomePage> {
     await orders.fetchData(14);
     await orders.fetchData(15);
     setState(() => carregando = false);
+
+    alertar(
+      orders.pedidosSeparar.any((pedido) => pedido.tipoEntrega == 'BAL'),
+    );
+  }
+
+  void alertar(bool value) async {
+    var config = Provider.of<AppConfig>(context, listen: false);
+
+    if (!config.balcao) return;
+
+    FlutterRingtonePlayer().playNotification();
+
+    bool vibrator = await Vibration.hasVibrator() ?? false;
+
+    if (vibrator) {
+      Vibration.vibrate();
+      await Future.delayed(const Duration(milliseconds: 1000));
+      Vibration.vibrate();
+    }
   }
 
   @override

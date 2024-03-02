@@ -108,6 +108,17 @@ class _SettingsState extends State<Settings> {
           ),
           group(
             context,
+            'Alerta',
+            ToggleSwitch(
+              label: 'Alerta para Balcão',
+              value: config.balcao,
+              onChanged: () {
+                config.setBalcao(!config.balcao);
+              },
+            ),
+          ),
+          group(
+            context,
             'Tema',
             ToggleSwitch(
               label: 'Modo escuro',

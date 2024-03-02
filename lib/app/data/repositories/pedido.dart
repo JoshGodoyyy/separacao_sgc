@@ -5,7 +5,7 @@ import '../../config/api_config.dart';
 import '../../models/pedido_model.dart';
 
 class Pedido with ChangeNotifier {
-  List pedidosSeparar = [];
+  List<PedidoModel> pedidosSeparar = [];
   List pedidosSeparando = [];
   List pedidosEmbalagem = [];
   List pedidosConferencia = [];

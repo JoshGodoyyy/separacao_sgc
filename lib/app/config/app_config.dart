@@ -14,6 +14,7 @@ class AppConfig with ChangeNotifier {
   static const String _keyConferencia = 'keyConferencia';
   static const String _keyFaturar = 'keyFaturar';
   static const String _keyLogistica = 'keyLogistica';
+  static const String _keyBalcao = 'keyBalcao';
 
   bool _salvarDados = false;
   bool _isDarkMode = false;
@@ -25,6 +26,7 @@ class AppConfig with ChangeNotifier {
   bool _conferencia = true;
   bool _faturar = true;
   bool _logistica = true;
+  bool _balcao = true;
 
   AppConfig() {
     _loadData();
@@ -40,15 +42,7 @@ class AppConfig with ChangeNotifier {
   bool get conferencia => _conferencia;
   bool get faturar => _faturar;
   bool get logistica => _logistica;
-
-  List<String> operacoes = [
-    'Separar',
-    'Separando',
-    'Embalagem',
-    'Conferência',
-    'Faturar',
-    'Logística',
-  ];
+  bool get balcao => _balcao;
 
   void setSalvarDados(bool value) {
     _salvarDados = value;
@@ -110,6 +104,12 @@ class AppConfig with ChangeNotifier {
     notifyListeners();
   }
 
+  void setBalcao(bool value) {
+    _balcao = value;
+    preferences.setBool(_keyBalcao, _balcao);
+    notifyListeners();
+  }
+
   Future<void> _loadData() async {
     preferences = await SharedPreferences.getInstance();
     _salvarDados = preferences.getBool(_keySalvarDados) ?? false;
@@ -122,6 +122,7 @@ class AppConfig with ChangeNotifier {
     _conferencia = preferences.getBool(_keyConferencia) ?? true;
     _faturar = preferences.getBool(_keyFaturar) ?? true;
     _logistica = preferences.getBool(_keyLogistica) ?? true;
+    _balcao = preferences.getBool(_keyBalcao) ?? true;
     notifyListeners();
   }
 }
