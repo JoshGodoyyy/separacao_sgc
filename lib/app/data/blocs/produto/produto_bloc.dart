@@ -30,10 +30,24 @@ class ProdutoBloc {
         event.tipoProduto,
         event.idPedido,
       );
-    } else if (event is UpdateProduto) {
+    } else if (event is UpdateSeparacao) {
       produtos = await _repository.updateProduto(
         event.idProduto,
         event.separado,
+        event.tipoProduto,
+        event.idPedido,
+      );
+    } else if (event is UpdateEmbalagem) {
+      produtos = await _repository.updateEmbalado(
+        event.idProduto,
+        event.embalado,
+        event.tipoProduto,
+        event.idPedido,
+      );
+    } else if (event is UpdateConferencia) {
+      produtos = await _repository.updateConferido(
+        event.idProduto,
+        event.conferido,
         event.tipoProduto,
         event.idPedido,
       );

@@ -32,12 +32,52 @@ class Produto {
     int idPedido,
   ) async {
     await http.post(
-      Uri.parse('$url/Update'),
+      Uri.parse('$url/UpdateSeparado'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
           'id': idProduto,
-          'separado': separado,
+          'valor': separado,
+        },
+      ),
+    );
+
+    return fetchProdutos(tipoProduto, idPedido);
+  }
+
+  Future<List<dynamic>> updateEmbalado(
+    int idProduto,
+    int embalado,
+    int tipoProduto,
+    int idPedido,
+  ) async {
+    await http.post(
+      Uri.parse('$url/UpdateEmbalagem'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'id': idProduto,
+          'valor': embalado,
+        },
+      ),
+    );
+
+    return fetchProdutos(tipoProduto, idPedido);
+  }
+
+  Future<List<dynamic>> updateConferido(
+    int idProduto,
+    int conferido,
+    int tipoProduto,
+    int idPedido,
+  ) async {
+    await http.post(
+      Uri.parse('$url/UpdateConferido'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'id': idProduto,
+          'valor': conferido,
         },
       ),
     );

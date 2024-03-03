@@ -109,12 +109,23 @@ class _SettingsState extends State<Settings> {
           group(
             context,
             'Alerta',
-            ToggleSwitch(
-              label: 'Alerta para Balcão',
-              value: config.balcao,
-              onChanged: () {
-                config.setBalcao(!config.balcao);
-              },
+            Column(
+              children: [
+                ToggleSwitch(
+                  label: 'Alerta para Retirar',
+                  value: config.retirar,
+                  onChanged: () {
+                    config.setRetirar(!config.retirar);
+                  },
+                ),
+                ToggleSwitch(
+                  label: 'Alerta para Balcão',
+                  value: config.balcao,
+                  onChanged: () {
+                    config.setBalcao(!config.balcao);
+                  },
+                ),
+              ],
             ),
           ),
           group(

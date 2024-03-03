@@ -73,8 +73,10 @@ class Pedido with ChangeNotifier {
     }
   }
 
-  Future<List<PedidoModel>> fetchOrdersBySituation(
-      {required int idSituacao, int? idPedido}) async {
+  Future<List<PedidoModel>> fetchOrdersBySituation({
+    required int idSituacao,
+    int? idPedido,
+  }) async {
     var response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},

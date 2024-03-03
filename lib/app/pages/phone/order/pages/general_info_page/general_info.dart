@@ -144,23 +144,9 @@ class _GeneralInfoState extends State<GeneralInfo> {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  Flexible(
-                    flex: 1,
-                    child: ItemField(
-                      label: 'ID Vendedor:',
-                      controller: idVendedorController,
-                    ),
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: ItemField(
-                      label: 'Vendedor:',
-                      controller: vendedorController,
-                    ),
-                  ),
-                ],
+              ItemField(
+                label: 'Vendedor:',
+                controller: vendedorController,
               ),
               ItemField(
                 label: 'Endereço:',

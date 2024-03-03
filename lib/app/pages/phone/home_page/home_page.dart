@@ -47,24 +47,48 @@ class _HomePageState extends State<HomePage> {
     await orders.fetchData(15);
     setState(() => carregando = false);
 
-    alertar(
-      orders.pedidosSeparar.any((pedido) => pedido.tipoEntrega == 'BAL'),
+    alertarBalcao(
+      orders.pedidosSeparar.any(
+        (pedido) => pedido.tipoEntrega == 'BAL',
+      ),
+    );
+
+    alertarRetirar(
+      orders.pedidosSeparar.any(
+        (pedido) => pedido.tipoEntrega == 'RET',
+      ),
     );
   }
 
-  void alertar(bool value) async {
+  void alertarBalcao(bool value) async {
     var config = Provider.of<AppConfig>(context, listen: false);
 
-    if (!config.balcao) return;
+    if (config.balcao) {
+      FlutterRingtonePlayer().playNotification();
 
-    FlutterRingtonePlayer().playNotification();
+      bool vibrator = await Vibration.hasVibrator() ?? false;
 
-    bool vibrator = await Vibration.hasVibrator() ?? false;
+      if (vibrator) {
+        Vibration.vibrate();
+        await Future.delayed(const Duration(milliseconds: 1000));
+        Vibration.vibrate();
+      }
+    }
+  }
 
-    if (vibrator) {
-      Vibration.vibrate();
-      await Future.delayed(const Duration(milliseconds: 1000));
-      Vibration.vibrate();
+  void alertarRetirar(bool value) async {
+    var config = Provider.of<AppConfig>(context, listen: false);
+
+    if (config.retirar) {
+      FlutterRingtonePlayer().playNotification();
+
+      bool vibrator = await Vibration.hasVibrator() ?? false;
+
+      if (vibrator) {
+        Vibration.vibrate();
+        await Future.delayed(const Duration(milliseconds: 1000));
+        Vibration.vibrate();
+      }
     }
   }
 

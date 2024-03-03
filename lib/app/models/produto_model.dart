@@ -24,6 +24,8 @@ class ProdutoModel {
   String? chave;
   String? idTratamento;
   bool? separado;
+  bool? embalado;
+  bool? conferido;
   Map<String, dynamic>? cor;
 
   ProdutoModel({
@@ -52,6 +54,8 @@ class ProdutoModel {
     this.chave,
     this.idTratamento,
     this.separado,
+    this.embalado,
+    this.conferido,
     this.cor,
   });
 
@@ -81,6 +85,8 @@ class ProdutoModel {
     chave = json['chave'];
     idTratamento = json['idTratamento'];
     separado = json['separado'];
+    embalado = json['embalado'];
+    conferido = json['conferido'];
     cor = json['cor'];
   }
 
@@ -111,6 +117,8 @@ class ProdutoModel {
     data['chave'] = chave;
     data['idTratamento'] = idTratamento;
     data['separado'] = separado;
+    data['embalado'] = embalado;
+    data['conferido'] = conferido;
     data['cor'] = cor;
     return data;
   }

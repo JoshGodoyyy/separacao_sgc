@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/config/user.dart';
@@ -37,7 +36,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   final searchController = TextEditingController();
   late final PedidosBloc _pedidosBloc;
-  late final List pedidos;
+  List<PedidoModel> pedidos = [];
   late Timer timer;
   String search = '';
 
@@ -67,49 +66,6 @@ class _MainPageState extends State<MainPage> {
         ),
       );
     }
-  }
-
-  String avancarPedido() {
-    var config = Provider.of<AppConfig>(context, listen: false);
-
-    String result = '';
-
-    switch (widget.title) {
-      case 'Separar':
-        if (config.separando) {
-          result = 'Enviar para Separação';
-        } else {
-          if (config.embalagem) {
-            result = 'Liberar para Embalagem';
-          } else if (config.conferencia) {
-            result = 'Liberar para Conferência';
-          } else if (config.faturar) {
-            result = 'Finalizar Separação';
-          }
-        }
-        break;
-      case 'Separando':
-        if (config.embalagem) {
-          result = 'Liberar para Embalagem';
-        } else if (config.conferencia) {
-          result = 'Liberar para Conferência';
-        } else if (config.faturar) {
-          result = 'Finalizar Separação';
-        }
-        break;
-      case 'Embalagem':
-        if (config.conferencia) {
-          result = 'Liberar para Conferência';
-        } else if (config.faturar) {
-          result = 'Finalizar Separação';
-        }
-        break;
-      case 'Conferência':
-        result = 'Finalizar Separação';
-        break;
-    }
-
-    return result;
   }
 
   String retrocederPedido() {
@@ -144,19 +100,35 @@ class _MainPageState extends State<MainPage> {
     return result;
   }
 
-  void alertar(bool value) async {
+  void alertarBalcao(bool value) async {
     var config = Provider.of<AppConfig>(context, listen: false);
 
-    if (!config.balcao) return;
+    if (config.balcao) {
+      FlutterRingtonePlayer().playNotification();
 
-    FlutterRingtonePlayer().playNotification();
+      bool vibrator = await Vibration.hasVibrator() ?? false;
 
-    bool vibrator = await Vibration.hasVibrator() ?? false;
+      if (vibrator) {
+        Vibration.vibrate();
+        await Future.delayed(const Duration(milliseconds: 1000));
+        Vibration.vibrate();
+      }
+    }
+  }
 
-    if (vibrator) {
-      Vibration.vibrate();
-      await Future.delayed(const Duration(milliseconds: 1000));
-      Vibration.vibrate();
+  void alertarRetirar(bool value) async {
+    var config = Provider.of<AppConfig>(context, listen: false);
+
+    if (config.retirar) {
+      FlutterRingtonePlayer().playNotification();
+
+      bool vibrator = await Vibration.hasVibrator() ?? false;
+
+      if (vibrator) {
+        Vibration.vibrate();
+        await Future.delayed(const Duration(milliseconds: 1000));
+        Vibration.vibrate();
+      }
     }
   }
 
@@ -262,14 +234,58 @@ class _MainPageState extends State<MainPage> {
       stream: _pedidosBloc.outputPedido,
       builder: (context, snapshot) {
         if (snapshot.data is PedidosLoadingState) {
-          return Center(
-            child: LoadingAnimationWidget.waveDots(
-              color: Theme.of(context).indicatorColor,
-              size: 30,
-            ),
+          return ListView(
+            children: [
+              const ListHeader(label: 'Meus Pedidos'),
+              for (var pedido in pedidos)
+                if (pedido.separadorIniciar.toString().toLowerCase() ==
+                    UserConstants().userName!.toLowerCase())
+                  ListItem(
+                    icon: widget.icon,
+                    pedido: pedido,
+                    onClick: () {
+                      Navigator.of(context)
+                          .push(
+                            MaterialPageRoute(
+                              builder: (builder) => OrderPage(
+                                pedido: pedido,
+                              ),
+                            ),
+                          )
+                          .then(
+                            (value) => _pedidosBloc.inputPedido.add(
+                              GetPedidosSituacao(idSituacao: widget.status),
+                            ),
+                          );
+                    },
+                  ),
+              const ListHeader(label: 'Pedidos Gerais'),
+              for (var pedido in pedidos)
+                if (pedido.separadorIniciar.toString().toLowerCase() !=
+                    UserConstants().userName!.toLowerCase())
+                  ListItem(
+                    icon: widget.icon,
+                    pedido: pedido,
+                    onClick: () {
+                      Navigator.of(context)
+                          .push(
+                            MaterialPageRoute(
+                              builder: (builder) => OrderPage(
+                                pedido: pedido,
+                              ),
+                            ),
+                          )
+                          .then(
+                            (value) => _pedidosBloc.inputPedido.add(
+                              GetPedidosSituacao(idSituacao: widget.status),
+                            ),
+                          );
+                    },
+                  ),
+            ],
           );
         } else if (snapshot.data is PedidosLoadedState) {
-          List pedidos = snapshot.data!.pedidos;
+          pedidos = snapshot.data!.pedidos;
           return ListView(
             children: [
               const ListHeader(label: 'Meus Pedidos'),
@@ -334,97 +350,73 @@ class _MainPageState extends State<MainPage> {
       stream: _pedidosBloc.outputPedido,
       builder: (context, snapshot) {
         if (snapshot.data is PedidosLoadingState) {
-          return Center(
-            child: LoadingAnimationWidget.waveDots(
-              color: Theme.of(context).indicatorColor,
-              size: 30,
-            ),
-          );
-        } else if (snapshot.data is PedidosLoadedState) {
-          List<PedidoModel> pedidos = snapshot.data!.pedidos;
           if (widget.status == 2) {
-            alertar(pedidos.any((pedido) => pedido.tipoEntrega == 'BAL'));
+            alertarBalcao(
+              pedidos.any((pedido) => pedido.tipoEntrega == 'BAL'),
+            );
+
+            alertarRetirar(
+              pedidos.any((pedido) => pedido.tipoEntrega == 'RET'),
+            );
           }
           return ListView.builder(
             itemCount: pedidos.length,
             itemBuilder: (context, index) {
               PedidoModel pedido = pedidos[index];
-              return Dismissible(
-                key: ValueKey<PedidoModel>(pedidos[index]),
-                confirmDismiss: (direction) async {
-                  if (direction == DismissDirection.startToEnd) {
-                    switch (avancarPedido()) {
-                      case 'Iniciar Separação':
-                        break;
-                      case 'Liberar para Embalagem':
-                        break;
-                      case 'Liberar para Conferência':
-                        break;
-                      case 'Finalizar Separação':
-                        break;
-                    }
-                  } else {
-                    switch (retrocederPedido()) {
-                      case 'Iniciar Separação':
-                        break;
-                      case 'Liberar para Embalagem':
-                        break;
-                      case 'Liberar para Conferência':
-                        break;
-                      case 'Finalizar Separação':
-                        break;
-                    }
-                  }
+              return ListItem(
+                icon: widget.icon,
+                pedido: pedido,
+                onClick: () {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(
+                          builder: (builder) => OrderPage(
+                            pedido: pedido,
+                          ),
+                        ),
+                      )
+                      .then(
+                        (value) => _pedidosBloc.inputPedido.add(
+                          GetPedidosSituacao(idSituacao: widget.status),
+                        ),
+                      );
                 },
-                background: Container(
-                  alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.all(10),
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                    ),
-                  ),
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    avancarPedido(),
-                  ),
-                ),
-                secondaryBackground: Container(
-                  alignment: Alignment.centerRight,
-                  margin: const EdgeInsets.all(10),
-                  padding: const EdgeInsets.only(right: 20.0),
-                  decoration: const BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    retrocederPedido(),
-                  ),
-                ),
-                child: ListItem(
-                  icon: widget.icon,
-                  pedido: pedido,
-                  onClick: () {
-                    Navigator.of(context)
-                        .push(
-                          MaterialPageRoute(
-                            builder: (builder) => OrderPage(
-                              pedido: pedido,
-                            ),
+              );
+            },
+          );
+        } else if (snapshot.data is PedidosLoadedState) {
+          pedidos = snapshot.data!.pedidos;
+          if (widget.status == 2) {
+            alertarBalcao(
+              pedidos.any((pedido) => pedido.tipoEntrega == 'BAL'),
+            );
+
+            alertarRetirar(
+              pedidos.any((pedido) => pedido.tipoEntrega == 'RET'),
+            );
+          }
+          return ListView.builder(
+            itemCount: pedidos.length,
+            itemBuilder: (context, index) {
+              PedidoModel pedido = pedidos[index];
+              return ListItem(
+                icon: widget.icon,
+                pedido: pedido,
+                onClick: () {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(
+                          builder: (builder) => OrderPage(
+                            pedido: pedido,
                           ),
-                        )
-                        .then(
-                          (value) => _pedidosBloc.inputPedido.add(
-                            GetPedidosSituacao(idSituacao: widget.status),
-                          ),
-                        );
-                  },
-                ),
+                        ),
+                      )
+                      .then(
+                        (value) => _pedidosBloc.inputPedido.add(
+                          GetPedidosSituacao(idSituacao: widget.status),
+                        ),
+                      );
+                },
               );
             },
           );

@@ -71,6 +71,65 @@ class _ProductsState extends State<Products> {
     setState(() {});
   }
 
+  Widget listaProdutos(List produtos) {
+    switch (widget.pedido.status) {
+      case 'SEPARAR':
+      case 'SEPARANDO':
+        return Column(
+          children: [
+            const ListHeader(label: 'Produtos não Separados'),
+            for (var produto in produtos)
+              if (produto.separado == false) item(produto),
+            const ListHeader(label: 'Produtos Separados'),
+            for (var produto in produtos)
+              if (produto.separado) item(produto)
+          ],
+        );
+      case 'EMBALAGEM':
+        return Column(
+          children: [
+            const ListHeader(label: 'Produtos não Embalados'),
+            for (var produto in produtos)
+              if (produto.embalado == false) item(produto),
+            const ListHeader(label: 'Produtos Embalados'),
+            for (var produto in produtos)
+              if (produto.embalado) item(produto)
+          ],
+        );
+      case 'CONFERENCIA':
+        return Column(
+          children: [
+            const ListHeader(label: 'Produtos não Conferidos'),
+            for (var produto in produtos)
+              if (produto.conferido == false) item(produto),
+            const ListHeader(label: 'Produtos Conferidos'),
+            for (var produto in produtos)
+              if (produto.conferido) item(produto)
+          ],
+        );
+      default:
+        return Column(
+          children: [for (var produto in produtos) item(produto)],
+        );
+    }
+  }
+
+  Widget item(dynamic produto) {
+    return ProdutoListItem(
+      status: widget.pedido.status!,
+      produto: produto,
+      bloc: _produtoBloc,
+      onTap: () => showModal(
+        context,
+        produto,
+      ),
+      tipoProduto: widget.tipoProduto,
+      idPedido: int.parse(
+        widget.pedido.id.toString(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -141,36 +200,7 @@ class _ProductsState extends State<Products> {
                   },
                   child: ListView(
                     children: [
-                      const ListHeader(label: 'Produtos não Separados'),
-                      for (var produto in produtos)
-                        if (produto.separado == false)
-                          ProdutoListItem(
-                            produto: produto,
-                            bloc: _produtoBloc,
-                            onTap: () => showModal(
-                              context,
-                              produto,
-                            ),
-                            tipoProduto: widget.tipoProduto,
-                            idPedido: int.parse(
-                              widget.pedido.id.toString(),
-                            ),
-                          ),
-                      const ListHeader(label: 'Produtos Separados'),
-                      for (var produto in produtos)
-                        if (produto.separado)
-                          ProdutoListItem(
-                            produto: produto,
-                            bloc: _produtoBloc,
-                            onTap: () => showModal(
-                              context,
-                              produto,
-                            ),
-                            tipoProduto: widget.tipoProduto,
-                            idPedido: int.parse(
-                              widget.pedido.id.toString(),
-                            ),
-                          ),
+                      listaProdutos(produtos),
                     ],
                   ),
                 );
