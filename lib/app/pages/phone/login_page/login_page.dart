@@ -40,8 +40,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void clear() {
-    idLiberacaoController.clear();
-    usuarioController.clear();
+    senhaController.clear();
   }
 
   void login() async {

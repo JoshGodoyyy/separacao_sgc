@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '/app/ui/styles/colors_app.dart';
-
 class STextField extends StatefulWidget {
   final String label;
   final bool usePasswordChar;
@@ -19,14 +17,6 @@ class STextField extends StatefulWidget {
 }
 
 class _STextFieldState extends State<STextField> {
-  bool _ocultarSenha = true;
-
-  void ocultarSenha() {
-    setState(() {
-      _ocultarSenha = !_ocultarSenha;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -55,20 +45,9 @@ class _STextFieldState extends State<STextField> {
           child: TextField(
             controller: widget.controller,
             style: const TextStyle(color: Colors.white),
-            obscureText: widget.usePasswordChar ? _ocultarSenha : false,
-            decoration: InputDecoration(
-              suffixIcon: widget.usePasswordChar
-                  ? IconButton(
-                      onPressed: ocultarSenha,
-                      icon: Icon(
-                        _ocultarSenha
-                            ? Icons.remove_red_eye
-                            : Icons.remove_red_eye_outlined,
-                        color: ColorsApp.backgroundColor,
-                      ),
-                    )
-                  : null,
-              border: const OutlineInputBorder(
+            obscureText: widget.usePasswordChar ? true : false,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(
                 borderSide: BorderSide.none,
               ),
             ),

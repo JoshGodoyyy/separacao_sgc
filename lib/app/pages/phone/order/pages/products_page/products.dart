@@ -73,14 +73,21 @@ class _ProductsState extends State<Products> {
 
   Widget listaProdutos(List produtos) {
     switch (widget.pedido.status) {
-      case 'SEPARAR':
       case 'SEPARANDO':
         return Column(
           children: [
-            const ListHeader(label: 'Produtos não Separados'),
+            ListHeader(
+              label: 'Produtos não Separados',
+              count:
+                  '${produtos.where((element) => element.separado == false).toList().length}',
+            ),
             for (var produto in produtos)
               if (produto.separado == false) item(produto),
-            const ListHeader(label: 'Produtos Separados'),
+            ListHeader(
+              label: 'Produtos Separados',
+              count:
+                  '${produtos.where((element) => element.separado == true).toList().length}',
+            ),
             for (var produto in produtos)
               if (produto.separado) item(produto)
           ],
@@ -88,10 +95,18 @@ class _ProductsState extends State<Products> {
       case 'EMBALAGEM':
         return Column(
           children: [
-            const ListHeader(label: 'Produtos não Embalados'),
+            ListHeader(
+              label: 'Produtos não Embalados',
+              count:
+                  '${produtos.where((element) => element.embalado == false).toList().length}',
+            ),
             for (var produto in produtos)
               if (produto.embalado == false) item(produto),
-            const ListHeader(label: 'Produtos Embalados'),
+            ListHeader(
+              label: 'Produtos Embalados',
+              count:
+                  '${produtos.where((element) => element.separado == true).toList().length}',
+            ),
             for (var produto in produtos)
               if (produto.embalado) item(produto)
           ],
@@ -99,17 +114,27 @@ class _ProductsState extends State<Products> {
       case 'CONFERENCIA':
         return Column(
           children: [
-            const ListHeader(label: 'Produtos não Conferidos'),
+            ListHeader(
+              label: 'Produtos não Conferidos',
+              count:
+                  '${produtos.where((element) => element.conferido == false).toList().length}',
+            ),
             for (var produto in produtos)
               if (produto.conferido == false) item(produto),
-            const ListHeader(label: 'Produtos Conferidos'),
+            ListHeader(
+              label: 'Produtos Conferidos',
+              count:
+                  '${produtos.where((element) => element.conferido == true).toList().length}',
+            ),
             for (var produto in produtos)
               if (produto.conferido) item(produto)
           ],
         );
       default:
         return Column(
-          children: [for (var produto in produtos) item(produto)],
+          children: [
+            for (var produto in produtos) item(produto),
+          ],
         );
     }
   }

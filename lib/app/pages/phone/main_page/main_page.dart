@@ -103,7 +103,7 @@ class _MainPageState extends State<MainPage> {
   void alertarBalcao(bool value) async {
     var config = Provider.of<AppConfig>(context, listen: false);
 
-    if (config.balcao) {
+    if (config.balcao && value) {
       FlutterRingtonePlayer().playNotification();
 
       bool vibrator = await Vibration.hasVibrator() ?? false;
@@ -119,7 +119,7 @@ class _MainPageState extends State<MainPage> {
   void alertarRetirar(bool value) async {
     var config = Provider.of<AppConfig>(context, listen: false);
 
-    if (config.retirar) {
+    if (config.retirar && value) {
       FlutterRingtonePlayer().playNotification();
 
       bool vibrator = await Vibration.hasVibrator() ?? false;
@@ -236,7 +236,14 @@ class _MainPageState extends State<MainPage> {
         if (snapshot.data is PedidosLoadingState) {
           return ListView(
             children: [
-              const ListHeader(label: 'Meus Pedidos'),
+              ListHeader(
+                label: 'Meus Pedidos',
+                count: '${snapshot.data!.pedidos.where(
+                      (pedido) =>
+                          pedido.separadorIniciar.toString().toLowerCase() ==
+                          UserConstants().userName!.toLowerCase(),
+                    ).toList().length}',
+              ),
               for (var pedido in pedidos)
                 if (pedido.separadorIniciar.toString().toLowerCase() ==
                     UserConstants().userName!.toLowerCase())
@@ -259,7 +266,14 @@ class _MainPageState extends State<MainPage> {
                           );
                     },
                   ),
-              const ListHeader(label: 'Pedidos Gerais'),
+              ListHeader(
+                label: 'Pedidos Gerais',
+                count: '${snapshot.data!.pedidos.where(
+                      (pedido) =>
+                          pedido.separadorIniciar.toString().toLowerCase() !=
+                          UserConstants().userName!.toLowerCase(),
+                    ).toList().length}',
+              ),
               for (var pedido in pedidos)
                 if (pedido.separadorIniciar.toString().toLowerCase() !=
                     UserConstants().userName!.toLowerCase())
@@ -288,7 +302,14 @@ class _MainPageState extends State<MainPage> {
           pedidos = snapshot.data!.pedidos;
           return ListView(
             children: [
-              const ListHeader(label: 'Meus Pedidos'),
+              ListHeader(
+                label: 'Meus Pedidos',
+                count: '${snapshot.data!.pedidos.where(
+                      (pedido) =>
+                          pedido.separadorIniciar.toString().toLowerCase() ==
+                          UserConstants().userName!.toLowerCase(),
+                    ).toList().length}',
+              ),
               for (var pedido in pedidos)
                 if (pedido.separadorIniciar.toString().toLowerCase() ==
                     UserConstants().userName!.toLowerCase())
@@ -311,7 +332,14 @@ class _MainPageState extends State<MainPage> {
                           );
                     },
                   ),
-              const ListHeader(label: 'Pedidos Gerais'),
+              ListHeader(
+                label: 'Pedidos Gerais',
+                count: '${snapshot.data!.pedidos.where(
+                      (pedido) =>
+                          pedido.separadorIniciar.toString().toLowerCase() !=
+                          UserConstants().userName!.toLowerCase(),
+                    ).toList().length}',
+              ),
               for (var pedido in pedidos)
                 if (pedido.separadorIniciar.toString().toLowerCase() !=
                     UserConstants().userName!.toLowerCase())

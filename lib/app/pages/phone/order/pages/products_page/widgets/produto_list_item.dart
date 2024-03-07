@@ -28,7 +28,6 @@ class ProdutoListItem extends StatelessWidget {
   Color backColorActionPane() {
     Color cor;
     switch (status) {
-      case 'SEPARAR':
       case 'SEPARANDO':
         produto.separado == false ? cor = Colors.blue : cor = Colors.red;
         break;
@@ -47,7 +46,6 @@ class ProdutoListItem extends StatelessWidget {
 
   alteracao() {
     switch (status) {
-      case 'SEPARANDO':
       case 'SEPARAR':
         if (!produto.separado!) {
           return bloc.inputProdutoController.add(
@@ -126,7 +124,6 @@ class ProdutoListItem extends StatelessWidget {
   String texto() {
     String result = '';
     switch (status) {
-      case 'SEPARAR':
       case 'SEPARANDO':
         produto.separado == false
             ? result = 'Separado'
@@ -152,7 +149,6 @@ class ProdutoListItem extends StatelessWidget {
   IconData? icone() {
     IconData? icone;
     switch (status) {
-      case 'SEPARAR':
       case 'SEPARANDO':
         produto.separado == false
             ? icone = Icons.check
@@ -176,7 +172,7 @@ class ProdutoListItem extends StatelessWidget {
   }
 
   Widget item(BuildContext context) {
-    if (status != 'OK') {
+    if (status != 'SEPARAR' && status != 'OK') {
       return Slidable(
         startActionPane: ActionPane(
           motion: const BehindMotion(),

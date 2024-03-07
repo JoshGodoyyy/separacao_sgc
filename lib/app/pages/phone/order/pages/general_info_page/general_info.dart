@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/data/repositories/tipo_entrega.dart';
 import 'package:sgc/app/data/repositories/vendedor_dao.dart';
@@ -9,9 +8,14 @@ import 'widgets/item_field.dart';
 
 class GeneralInfo extends StatefulWidget {
   final int idPedido;
+  final String status;
+  final String usuarioCriador;
+
   const GeneralInfo({
     super.key,
     required this.idPedido,
+    required this.status,
+    required this.usuarioCriador,
   });
 
   @override
@@ -37,6 +41,10 @@ class _GeneralInfoState extends State<GeneralInfo> {
   final nfeVendaController = TextEditingController();
   final nfeRemessaController = TextEditingController();
 
+  bool mostrarNFe() {
+    return widget.status == 'OK' ? true : false;
+  }
+
   DateFormat data = DateFormat('dd/MM/yyyy HH:mm');
 
   _populateFields() async {
@@ -46,7 +54,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
       ),
     );
 
-    final String usuarioCriacao = UserConstants().userName.toString();
+    final String usuarioCriacao = widget.usuarioCriador;
 
     final vendedor = await VendedorDAO().fetchVendedor(
       int.parse(
@@ -204,21 +212,24 @@ class _GeneralInfoState extends State<GeneralInfo> {
                 label: 'Tipo de Entrega:',
                 controller: tipoEntregaController,
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: ItemField(
-                      label: 'NFe Venda:',
-                      controller: nfeVendaController,
+              Visibility(
+                visible: mostrarNFe(),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ItemField(
+                        label: 'NFe Venda:',
+                        controller: nfeVendaController,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: ItemField(
-                      label: 'NFe Remessa:',
-                      controller: nfeRemessaController,
+                    Expanded(
+                      child: ItemField(
+                        label: 'NFe Remessa:',
+                        controller: nfeRemessaController,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           );

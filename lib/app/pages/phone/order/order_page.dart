@@ -89,6 +89,28 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   String durationValue() {
+    if (widget.pedido.dataEnvioSeparacao != null &&
+        widget.pedido.dataLiberacaoSeparacao != null) {
+      String duracao(int n) => n.toString().padLeft(2, '0');
+      DateTime dataInicio = DateTime.parse(
+        widget.pedido.dataEnvioSeparacao.toString(),
+      );
+
+      DateTime dataFinalizacao = DateTime.parse(
+        widget.pedido.dataRetornoSeparacao.toString(),
+      );
+
+      String horas = duracao(
+        dataFinalizacao.difference(dataInicio).inHours,
+      );
+      String minutos = duracao(
+        dataFinalizacao.difference(dataInicio).inMinutes,
+      );
+      String segundos =
+          dataFinalizacao.difference(dataInicio).inSeconds.toString();
+
+      return '$horas:$minutos:$segundos';
+    }
     String result;
     String hours = _hours.toString().padLeft(2, '0');
     String minutes = _minutes.toString().padLeft(2, '0');
@@ -109,12 +131,9 @@ class _OrderPageState extends State<OrderPage> {
         setState(() => iniciarSeparacao = true);
         break;
       case 'SEPARANDO':
+        setState(() => liberarConferencia = true);
         if (config.embalagem) {
           setState(() => liberarEmbalagem = true);
-        } else if (config.conferencia) {
-          setState(() => liberarConferencia = true);
-        } else {
-          setState(() => finalizarSeparacao = true);
         }
         break;
       case 'EMBALAGEM':
@@ -178,6 +197,8 @@ class _OrderPageState extends State<OrderPage> {
               idPedido: int.parse(
                 widget.pedido.id.toString(),
               ),
+              status: widget.pedido.status ?? '',
+              usuarioCriador: widget.pedido.criador ?? '',
             ),
             Products(
               pedido: widget.pedido,

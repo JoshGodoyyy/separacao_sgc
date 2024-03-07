@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
   void alertarBalcao(bool value) async {
     var config = Provider.of<AppConfig>(context, listen: false);
 
-    if (config.balcao) {
+    if (config.balcao && value) {
       FlutterRingtonePlayer().playNotification();
 
       bool vibrator = await Vibration.hasVibrator() ?? false;
@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
   void alertarRetirar(bool value) async {
     var config = Provider.of<AppConfig>(context, listen: false);
 
-    if (config.retirar) {
+    if (config.retirar && value) {
       FlutterRingtonePlayer().playNotification();
 
       bool vibrator = await Vibration.hasVibrator() ?? false;
