@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/enums/icones.dart';
 import 'package:sgc/app/data/enums/situacao_pedido.dart';
-import 'package:sgc/app/pages/phone/order/pages/packaging_page/packaging.dart';
 import 'package:sgc/app/ui/utils/alterar_status_pedido.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import 'package:sgc/app/ui/widgets/loading_dialog.dart';
@@ -33,6 +32,8 @@ class OrderPage extends StatefulWidget {
 class _OrderPageState extends State<OrderPage> {
   final codigoVendedorController = TextEditingController();
   late int tipoProduto;
+  Timer? timer;
+  Duration tempoDecorrido = const Duration();
   bool iniciarSeparacao = false;
   bool liberarEmbalagem = false;
   bool liberarConferencia = false;
@@ -58,69 +59,63 @@ class _OrderPageState extends State<OrderPage> {
     codigoVendedorController.clear();
   }
 
-  int _seconds = 0;
-  int _minutes = 0;
-  int _hours = 0;
-
   final DateFormat _data = DateFormat('yyyy-MM-dd HH:mm:ss');
 
-  late Timer timer;
+  iniciarContador(DateTime dataInicial) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        setState(() {
+          tempoDecorrido = DateTime.now().difference(dataInicial);
+        });
+      }
+    });
+  }
 
-  void startTimer() {
-    const oneSecond = Duration(seconds: 1);
-    timer = Timer.periodic(
-      oneSecond,
-      (timer) {
-        setState(
-          () {
-            _seconds++;
-            if (_seconds == 60) {
-              _seconds = 0;
-              _minutes++;
-              if (_minutes == 60) {
-                _minutes = 0;
-                _hours++;
-              }
-            }
-          },
-        );
-      },
-    );
+  String formatarDuracao(Duration duration) {
+    String duasCasas(int n) {
+      if (n >= 10) {
+        return '$n';
+      } else {
+        return '0$n';
+      }
+    }
+
+    String horas = duasCasas(duration.inHours);
+    String minutos = duasCasas(duration.inMinutes.remainder(60));
+    String segundos = duasCasas(duration.inSeconds.remainder(60));
+
+    return '$horas:$minutos:$segundos';
   }
 
   String durationValue() {
-    if (widget.pedido.dataEnvioSeparacao != null &&
-        widget.pedido.dataLiberacaoSeparacao != null) {
-      String duracao(int n) => n.toString().padLeft(2, '0');
-      DateTime dataInicio = DateTime.parse(
-        widget.pedido.dataEnvioSeparacao.toString(),
-      );
+    switch (widget.pedido.status) {
+      case 'SEPARAR':
+        return 'Não Iniciada';
+      case 'SEPARANDO':
+        iniciarContador(
+          DateTime.parse(
+            widget.pedido.dataEnvioSeparacao.toString(),
+          ),
+        );
+        return formatarDuracao(tempoDecorrido);
+      case 'CONFERENCIA':
+        return 'Conferência';
+      default:
+        final dataInicial = DateTime.parse(
+          widget.pedido.dataEnvioSeparacao.toString(),
+        );
+        final dataTermino = DateTime.parse(
+          widget.pedido.dataRetornoSeparacao.toString(),
+        );
 
-      DateTime dataFinalizacao = DateTime.parse(
-        widget.pedido.dataRetornoSeparacao.toString(),
-      );
+        final prazo = dataTermino.difference(dataInicial);
 
-      String horas = duracao(
-        dataFinalizacao.difference(dataInicio).inHours,
-      );
-      String minutos = duracao(
-        dataFinalizacao.difference(dataInicio).inMinutes,
-      );
-      String segundos =
-          dataFinalizacao.difference(dataInicio).inSeconds.toString();
+        String hh = prazo.inHours.toString().padLeft(2, '0');
+        String mm = prazo.inMinutes.remainder(60).toString().padLeft(2, '0');
+        String ss = prazo.inSeconds.remainder(60).toString().padLeft(2, '0');
 
-      return '$horas:$minutos:$segundos';
+        return '$hh:$mm:$ss';
     }
-    String result;
-    String hours = _hours.toString().padLeft(2, '0');
-    String minutes = _minutes.toString().padLeft(2, '0');
-    String seconds = _seconds.toString().padLeft(2, '0');
-
-    _seconds == 0
-        ? result = 'Não Iniciado'
-        : result = '$hours:$minutes:$seconds';
-
-    return result;
   }
 
   void modificarStatus() {
@@ -131,6 +126,7 @@ class _OrderPageState extends State<OrderPage> {
         setState(() => iniciarSeparacao = true);
         break;
       case 'SEPARANDO':
+        setState(() => iniciarSeparacao = false);
         setState(() => liberarConferencia = true);
         if (config.embalagem) {
           setState(() => liberarEmbalagem = true);
@@ -167,7 +163,7 @@ class _OrderPageState extends State<OrderPage> {
                 '${widget.pedido.id} - ${widget.pedido.nomeCliente}',
               ),
               Text(
-                'Duração: ${durationValue()}',
+                durationValue(),
                 style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
@@ -212,6 +208,11 @@ class _OrderPageState extends State<OrderPage> {
           ],
         ),
         floatingActionButton: SpeedDial(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
           icon: Icons.menu,
           iconTheme: const IconThemeData(color: Colors.white),
           overlayOpacity: 0.6,
@@ -510,6 +511,7 @@ class _OrderPageState extends State<OrderPage> {
                                 int.parse(
                                   widget.pedido.idSituacao.toString(),
                                 ),
+                                widget.pedido.status!,
                                 SituacaoPedido.separando,
                                 int.parse(
                                   widget.pedido.autorizado.toString(),
@@ -556,6 +558,12 @@ class _OrderPageState extends State<OrderPage> {
                                   ).then((value) => Navigator.pop(context));
                                 },
                               );
+
+                              widget.pedido.status = 'SEPARANDO';
+                              widget.pedido.dataEnvioSeparacao =
+                                  DateTime.now().toString();
+                              modificarStatus();
+                              durationValue();
                             } catch (e) {
                               WidgetsBinding.instance.addPostFrameCallback(
                                 (timeStamp) {
@@ -592,16 +600,6 @@ class _OrderPageState extends State<OrderPage> {
                 );
               },
             ),
-            //* Embalagem
-            SpeedDialChild(
-              child: const Icon(Icons.inbox),
-              label: 'Embalagens',
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (builder) => Packaging(pedido: widget.pedido),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -610,6 +608,7 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   void dispose() {
+    timer?.cancel();
     super.dispose();
   }
 }

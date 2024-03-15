@@ -2,7 +2,6 @@ import 'package:intl/intl.dart';
 import 'package:sgc/app/config/configuracoes_sistema.dart';
 import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/repositories/produto.dart';
-import 'package:sgc/app/data/repositories/repository_situacao_pedido.dart';
 import 'package:sgc/app/models/group_model.dart';
 
 import '../../data/blocs/pedido/pedido_bloc.dart';
@@ -20,26 +19,17 @@ class AlterarStatusPedido {
 
   Future<void> enviarSeparacao(
     int idSituacao,
+    String status,
     SituacaoPedido situacao,
     int autorizado,
     int id,
     int tipoProduto,
     String dataEnvioSeparacao,
   ) async {
-    var pedido = await Pedido().fetchOrdersByIdOrder(id);
-
     int sepPerfil = await Pedido().getSeparacao(id, 'sepPerfil');
     int sepAcessorio = await Pedido().getSeparacao(id, 'sepAcessorio');
 
-    String status = (await RepositorySituacaoPedido().situacaoPedido(
-      int.parse(
-        pedido.idSituacao.toString(),
-      ),
-    ))
-        .descricao
-        .toString();
-
-    if (status.toUpperCase() != 'SEPARAR' || status.toUpperCase() != 'NOVO') {
+    if (status.toUpperCase() != 'SEPARAR' && status.toUpperCase() != 'NOVO') {
       throw Exception('Pedido não pode ser alterado');
     }
 

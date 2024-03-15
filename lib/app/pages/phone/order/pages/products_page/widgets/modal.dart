@@ -56,19 +56,6 @@ Future<dynamic> showModal(
                       imagem: getImagem(),
                       label: 'Produto:',
                     ),
-                    //* Cor do Produto
-                    // ItemDetail(
-                    //   label: 'Cor',
-                    //   child: Row(
-                    //     children: [
-                    //       ItemColor(
-                    //         cor: produto.cor,
-                    //       ),
-                    //       const SizedBox(width: 10),
-                    //       Text(produto.cor.nomeCor),
-                    //     ],
-                    //   ),
-                    // ),
                   ),
                   //* Observações do Produto
                   MultiLineText(
@@ -80,6 +67,8 @@ Future<dynamic> showModal(
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: saveButton(
+                      'Salvar',
+                      Icons.save,
                       () {
                         Navigator.pop(context);
                       },

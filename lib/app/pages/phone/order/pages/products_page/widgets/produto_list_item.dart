@@ -46,7 +46,7 @@ class ProdutoListItem extends StatelessWidget {
 
   alteracao() {
     switch (status) {
-      case 'SEPARAR':
+      case 'SEPARANDO':
         if (!produto.separado!) {
           return bloc.inputProdutoController.add(
             UpdateSeparacao(

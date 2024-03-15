@@ -69,6 +69,8 @@ Future<dynamic> showPackagingModal({
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: saveButton(
+                      'Salvar',
+                      Icons.save,
                       () {
                         if (numeroCaixaController.text == '') {
                           showTopSnackBar(

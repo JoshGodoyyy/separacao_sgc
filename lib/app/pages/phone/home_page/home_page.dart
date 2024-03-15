@@ -2,14 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/models/pedido_model.dart';
 import 'package:sgc/app/pages/phone/home_page/widgets/home_header.dart';
 import 'package:sgc/app/pages/phone/main_page/main_page.dart';
-import 'package:vibration/vibration.dart';
+import 'package:sgc/app/ui/utils/notificacao.dart';
 
 import '../login_page/login_page.dart';
 import 'widgets/home_button.dart';
@@ -51,59 +50,81 @@ class _HomePageState extends State<HomePage> {
       orders.pedidosSeparar.any(
         (pedido) => pedido.tipoEntrega == 'BAL',
       ),
+      orders.pedidosSeparar
+          .where((pedido) => pedido.tipoEntrega == 'BAL')
+          .toList(),
     );
 
     alertarRetirar(
       orders.pedidosSeparar.any(
         (pedido) => pedido.tipoEntrega == 'RET',
       ),
+      orders.pedidosSeparar
+          .where((pedido) => pedido.tipoEntrega == 'RET')
+          .toList(),
     );
   }
 
-  void alertarBalcao(bool value) async {
+  void alertarBalcao(bool value, List pedidos) async {
     var config = Provider.of<AppConfig>(context, listen: false);
 
+    String ids = '';
+    String nomes = '';
+
+    for (var pedido in pedidos) {
+      ids += '${pedido.id}\n';
+      nomes += '${pedido.nomeCliente}\n';
+    }
+
     if (config.balcao && value) {
-      FlutterRingtonePlayer().playNotification();
-
-      bool vibrator = await Vibration.hasVibrator() ?? false;
-
-      if (vibrator) {
-        Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 1000));
-        Vibration.vibrate();
-      }
+      Provider.of<NotificacaoService>(context, listen: false).showNotificacao(
+        Notificacao(
+          id: 1,
+          title: 'SGC Separar',
+          body: '$ids $nomes Balcão',
+          payload: null,
+        ),
+      );
     }
   }
 
-  void alertarRetirar(bool value) async {
+  void alertarRetirar(bool value, List pedidos) async {
     var config = Provider.of<AppConfig>(context, listen: false);
+    String ids = '';
+    String nomes = '';
+
+    for (var pedido in pedidos) {
+      ids += '${pedido.id}\n';
+      nomes += '${pedido.nomeCliente}\n';
+    }
 
     if (config.retirar && value) {
-      FlutterRingtonePlayer().playNotification();
-
-      bool vibrator = await Vibration.hasVibrator() ?? false;
-
-      if (vibrator) {
-        Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 1000));
-        Vibration.vibrate();
-      }
+      Provider.of<NotificacaoService>(context, listen: false).showNotificacao(
+        Notificacao(
+          id: 1,
+          title: 'SGC Separar',
+          body: 'Pedido(s): $ids $nomes Retirar',
+          payload: null,
+        ),
+      );
     }
   }
 
   @override
   void initState() {
     super.initState();
-    const Duration duracao = Duration(seconds: 30);
 
-    timer = Timer.periodic(duracao, (timer) {
-      loadData();
-    });
+    if (mounted) {
+      const Duration duracao = Duration(seconds: 30);
 
-    setState(() => carregando = true);
-    _calcularPeso();
-    setState(() => carregando = false);
+      timer = Timer.periodic(duracao, (timer) {
+        loadData();
+      });
+
+      setState(() => carregando = true);
+      _calcularPeso();
+      setState(() => carregando = false);
+    }
   }
 
   _calcularPeso() {
@@ -494,5 +515,11 @@ class _HomePageState extends State<HomePage> {
 
   void _handleMenuButtonPressed() {
     _advancedDrawerController.showDrawer();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:sgc/app/config/app_config.dart';
 
 import '../../../../models/pedido_model.dart';
 
@@ -63,38 +61,38 @@ class ListItem extends StatelessWidget {
       }
     }
 
-    String avancarPedido() {
-      var config = Provider.of<AppConfig>(context, listen: false);
+    // String avancarPedido() {
+    //   var config = Provider.of<AppConfig>(context, listen: false);
 
-      String result = '';
+    //   String result = '';
 
-      switch (pedido.status) {
-        case 'SEPARAR':
-          result = 'Iniciar Separação';
-          break;
-        case 'SEPARANDO':
-          if (config.embalagem) {
-            result = 'Liberar para Embalagem';
-          } else if (config.conferencia) {
-            result = 'Liberar para Conferência';
-          } else if (config.faturar) {
-            result = 'Finalizar Separação';
-          }
-          break;
-        case 'EMBALAGEM':
-          if (config.conferencia) {
-            result = 'Liberar para Conferência';
-          } else if (config.faturar) {
-            result = 'Finalizar Separação';
-          }
-          break;
-        case 'CONFERENCIA':
-          result = 'Finalizar Separação';
-          break;
-      }
+    //   switch (pedido.status) {
+    //     case 'SEPARAR':
+    //       result = 'Iniciar Separação';
+    //       break;
+    //     case 'SEPARANDO':
+    //       if (config.embalagem) {
+    //         result = 'Liberar para Embalagem';
+    //       } else if (config.conferencia) {
+    //         result = 'Liberar para Conferência';
+    //       } else if (config.faturar) {
+    //         result = 'Finalizar Separação';
+    //       }
+    //       break;
+    //     case 'EMBALAGEM':
+    //       if (config.conferencia) {
+    //         result = 'Liberar para Conferência';
+    //       } else if (config.faturar) {
+    //         result = 'Finalizar Separação';
+    //       }
+    //       break;
+    //     case 'CONFERENCIA':
+    //       result = 'Finalizar Separação';
+    //       break;
+    //   }
 
-      return result;
-    }
+    //   return result;
+    // }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
@@ -155,8 +153,18 @@ class ListItem extends StatelessWidget {
                             ),
                           ],
                         ),
+                        Wrap(
+                          children: [
+                            Text(
+                              '${pedido.nomeCliente}',
+                              style: const TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
                         Text(
-                          '${pedido.nomeCliente} ${pedido.cidade}',
+                          '${pedido.cidade}',
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 15,
@@ -193,8 +201,7 @@ class ListItem extends StatelessWidget {
                               ),
                             ),
                             Visibility(
-                              visible: pedido.status == 'SEPARAR' ||
-                                      pedido.status == 'SEPARANDO' ||
+                              visible: pedido.status == 'SEPARANDO' ||
                                       pedido.status == 'EMBALAGEM' ||
                                       pedido.status == 'CONFERENCIA'
                                   ? true
@@ -235,7 +242,7 @@ class ListItem extends StatelessWidget {
                           child: LinearProgressIndicator(
                             value: progressoSeparado(),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),

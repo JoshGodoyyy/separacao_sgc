@@ -13,6 +13,7 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../../../../models/pedido_model.dart';
 import '../../../../../ui/widgets/error_alert.dart';
+import '../packaging_page/packaging.dart';
 import 'widgets/details.dart';
 
 class Separation extends StatefulWidget {
@@ -101,68 +102,88 @@ class _SeparationState extends State<Separation> {
                         ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: saveButton(
-                              () {
-                                if (volumeAcessorioController.text == '') {
-                                  showTopSnackBar(
-                                    Overlay.of(context),
-                                    const CustomSnackBar.error(
-                                        message: 'Preencher Volume Acessório'),
-                                  );
-                                  return;
-                                }
-
-                                if (volumeAluminioController.text == '') {
-                                  showTopSnackBar(
-                                    Overlay.of(context),
-                                    const CustomSnackBar.error(
-                                        message: 'Preencher Volume Aluminio'),
-                                  );
-                                  return;
-                                }
-
-                                if (volumeChapasController.text == '') {
-                                  showTopSnackBar(
-                                    Overlay.of(context),
-                                    const CustomSnackBar.error(
-                                        message: 'Preencher Volume Chapas'),
-                                  );
-                                  return;
-                                }
-
-                                if (pesoAcessorioController.text == '') {
-                                  showTopSnackBar(
-                                    Overlay.of(context),
-                                    const CustomSnackBar.error(
-                                        message: 'Preencher Peso Acessório'),
-                                  );
-                                  return;
-                                }
-
-                                _pedidoBloc.inputPedido.add(
-                                  UpdatePedido(
-                                    volAcessorio: double.parse(
-                                        volumeAcessorioController.text),
-                                    volAlum: double.parse(
-                                        volumeAluminioController.text),
-                                    volChapa: double.parse(
-                                        volumeChapasController.text),
-                                    obsSeparacao:
-                                        observacoesSeparacaoController.text,
-                                    obsSeparador:
-                                        observacoesSeparadorController.text,
-                                    setorEstoque: setorSeparacaoController.text,
-                                    pesoAcessorio: double.parse(
-                                        pesoAcessorioController.text),
-                                    idPedido: int.parse(
-                                      widget.pedido.id.toString(),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: saveButton(
+                                    'Embalagens', Icons.inbox_rounded, () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (builder) =>
+                                          Packaging(pedido: widget.pedido),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
+                                  );
+                                }),
+                              ),
+                              Expanded(
+                                child: saveButton(
+                                  'Salvar',
+                                  Icons.save,
+                                  () {
+                                    if (volumeAcessorioController.text == '') {
+                                      showTopSnackBar(
+                                        Overlay.of(context),
+                                        const CustomSnackBar.error(
+                                            message:
+                                                'Preencher Volume Acessório'),
+                                      );
+                                      return;
+                                    }
+
+                                    if (volumeAluminioController.text == '') {
+                                      showTopSnackBar(
+                                        Overlay.of(context),
+                                        const CustomSnackBar.error(
+                                            message:
+                                                'Preencher Volume Aluminio'),
+                                      );
+                                      return;
+                                    }
+
+                                    if (volumeChapasController.text == '') {
+                                      showTopSnackBar(
+                                        Overlay.of(context),
+                                        const CustomSnackBar.error(
+                                            message: 'Preencher Volume Chapas'),
+                                      );
+                                      return;
+                                    }
+
+                                    if (pesoAcessorioController.text == '') {
+                                      showTopSnackBar(
+                                        Overlay.of(context),
+                                        const CustomSnackBar.error(
+                                            message:
+                                                'Preencher Peso Acessório'),
+                                      );
+                                      return;
+                                    }
+
+                                    _pedidoBloc.inputPedido.add(
+                                      UpdatePedido(
+                                        volAcessorio: double.parse(
+                                            volumeAcessorioController.text),
+                                        volAlum: double.parse(
+                                            volumeAluminioController.text),
+                                        volChapa: double.parse(
+                                            volumeChapasController.text),
+                                        obsSeparacao:
+                                            observacoesSeparacaoController.text,
+                                        obsSeparador:
+                                            observacoesSeparadorController.text,
+                                        setorEstoque:
+                                            setorSeparacaoController.text,
+                                        pesoAcessorio: double.parse(
+                                            pesoAcessorioController.text),
+                                        idPedido: int.parse(
+                                          widget.pedido.id.toString(),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

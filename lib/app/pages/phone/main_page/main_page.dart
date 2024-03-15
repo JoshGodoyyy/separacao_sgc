@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/config/user.dart';
-import 'package:vibration/vibration.dart';
 import '../../../data/blocs/pedido/pedidos_bloc.dart';
 import '../../../data/blocs/pedido/pedido_event.dart';
 import '../../../data/blocs/pedido/pedidos_state.dart';
@@ -98,38 +96,6 @@ class _MainPageState extends State<MainPage> {
     }
 
     return result;
-  }
-
-  void alertarBalcao(bool value) async {
-    var config = Provider.of<AppConfig>(context, listen: false);
-
-    if (config.balcao && value) {
-      FlutterRingtonePlayer().playNotification();
-
-      bool vibrator = await Vibration.hasVibrator() ?? false;
-
-      if (vibrator) {
-        Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 1000));
-        Vibration.vibrate();
-      }
-    }
-  }
-
-  void alertarRetirar(bool value) async {
-    var config = Provider.of<AppConfig>(context, listen: false);
-
-    if (config.retirar && value) {
-      FlutterRingtonePlayer().playNotification();
-
-      bool vibrator = await Vibration.hasVibrator() ?? false;
-
-      if (vibrator) {
-        Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 1000));
-        Vibration.vibrate();
-      }
-    }
   }
 
   @override
@@ -378,15 +344,6 @@ class _MainPageState extends State<MainPage> {
       stream: _pedidosBloc.outputPedido,
       builder: (context, snapshot) {
         if (snapshot.data is PedidosLoadingState) {
-          if (widget.status == 2) {
-            alertarBalcao(
-              pedidos.any((pedido) => pedido.tipoEntrega == 'BAL'),
-            );
-
-            alertarRetirar(
-              pedidos.any((pedido) => pedido.tipoEntrega == 'RET'),
-            );
-          }
           return ListView.builder(
             itemCount: pedidos.length,
             itemBuilder: (context, index) {
@@ -414,15 +371,6 @@ class _MainPageState extends State<MainPage> {
           );
         } else if (snapshot.data is PedidosLoadedState) {
           pedidos = snapshot.data!.pedidos;
-          if (widget.status == 2) {
-            alertarBalcao(
-              pedidos.any((pedido) => pedido.tipoEntrega == 'BAL'),
-            );
-
-            alertarRetirar(
-              pedidos.any((pedido) => pedido.tipoEntrega == 'RET'),
-            );
-          }
           return ListView.builder(
             itemCount: pedidos.length,
             itemBuilder: (context, index) {

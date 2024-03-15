@@ -56,7 +56,7 @@ class _ProductsState extends State<Products> {
       ),
     );
 
-    if (pedido.tratamento == null || pedido.tratamento == '') {
+    if (pedido.tratamento != 'ESP') {
       tratamento = '';
     } else {
       tratamento = pedido.tratamento!;
@@ -72,6 +72,13 @@ class _ProductsState extends State<Products> {
   }
 
   Widget listaProdutos(List produtos) {
+    produtos.sort((a, b) {
+      if (a.setorEstoque != null) {
+        return a.setorEstoque!.compareTo(b.setorEstoque!);
+      } else {
+        return a.idProduto!.compareTo(b.idProduto);
+      }
+    });
     switch (widget.pedido.status) {
       case 'SEPARANDO':
         return Column(
@@ -89,7 +96,7 @@ class _ProductsState extends State<Products> {
                   '${produtos.where((element) => element.separado == true).toList().length}',
             ),
             for (var produto in produtos)
-              if (produto.separado) item(produto)
+              if (produto.separado!) item(produto)
           ],
         );
       case 'EMBALAGEM':
@@ -108,7 +115,7 @@ class _ProductsState extends State<Products> {
                   '${produtos.where((element) => element.separado == true).toList().length}',
             ),
             for (var produto in produtos)
-              if (produto.embalado) item(produto)
+              if (produto.embalado!) item(produto)
           ],
         );
       case 'CONFERENCIA':
@@ -127,7 +134,7 @@ class _ProductsState extends State<Products> {
                   '${produtos.where((element) => element.conferido == true).toList().length}',
             ),
             for (var produto in produtos)
-              if (produto.conferido) item(produto)
+              if (produto.conferido!) item(produto)
           ],
         );
       default:

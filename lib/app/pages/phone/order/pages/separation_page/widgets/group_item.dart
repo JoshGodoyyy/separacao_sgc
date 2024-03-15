@@ -35,9 +35,9 @@ class GroupItem extends StatelessWidget {
                         style: const TextStyle(fontSize: 16),
                       ),
                       const SizedBox(height: 4),
-                      Text('Grupo: ${item.id}'),
-                      Text('Peso Teórico: ${item.pesoTeorico}'),
-                      Text('Peso Real: ${item.pesoReal}'),
+                      Text(
+                          'Peso Teórico: ${item.pesoTeorico!.toStringAsFixed(2)}'),
+                      Text('Peso Real: ${item.pesoReal!.toStringAsFixed(2)}'),
                     ],
                   ),
                 ),
