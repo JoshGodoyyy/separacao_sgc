@@ -5,8 +5,8 @@ import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/pages/tablet/login_page/login_page.dart';
 import 'package:sgc/app/ui/utils/notificacao.dart';
 import 'app/config/app_config.dart';
-import 'app/pages/phone/login_page/login_page.dart';
 import '/app/ui/theme/theme_config.dart';
+import 'app/pages/phone/separacao/login_page/login_page.dart';
 
 void main() {
   runApp(

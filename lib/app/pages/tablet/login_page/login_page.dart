@@ -13,7 +13,7 @@ import '../../../data/repositories/user_dao.dart';
 import '../../../models/user_model.dart';
 import '../../../ui/widgets/button.dart';
 import '../../../ui/widgets/textfield.dart';
-import '../../phone/initial_setup_page/initial_setup.dart';
+import '../../initial_setup_page/initial_setup.dart';
 
 class TLoginPage extends StatefulWidget {
   const TLoginPage({super.key});

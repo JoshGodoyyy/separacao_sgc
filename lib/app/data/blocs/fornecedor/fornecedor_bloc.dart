@@ -27,7 +27,7 @@ class FornecedorBloc {
     _outputController.add(FornecedorLoadingState());
 
     if (event is GetFornecedor) {
-      //fornecedor = await _repository.fetchFornecedor(event.idFornecedor);
+      fornecedor = await _repository.fetchFornecedor(event.idFornecedor);
     }
 
     _outputController.add(
