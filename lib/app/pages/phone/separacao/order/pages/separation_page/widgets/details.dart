@@ -48,9 +48,9 @@ class _DetailsState extends State<Details> {
     widget.volumeAcessorio.text = pedido.volumeAcessorio.toString();
     widget.volumeAluminio.text = pedido.volumePerfil.toString();
     widget.volumeChapa.text = pedido.volumeChapa.toString();
-    widget.observacoesSeparacao.text = pedido.observacoesSeparacao.toString();
-    widget.observacoesSeparador.text = pedido.observacoesSeparador.toString();
-    widget.setorSeparacao.text = pedido.setorEstoque.toString();
+    widget.observacoesSeparacao.text = pedido.observacoesSeparacao ?? '';
+    widget.observacoesSeparador.text = pedido.observacoesSeparador ?? '';
+    widget.setorSeparacao.text = pedido.setorEstoque ?? '';
     widget.pesoAcessorio.text = pedido.pesoAcessorios.toString();
   }
 

@@ -4,7 +4,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
 
-import 'separacao/home_page/home_page.dart';
+import 'home_page/home_page.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});

@@ -7,13 +7,13 @@ import 'package:sgc/app/data/repositories/configuracoes.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-import '../../../../config/app_config.dart';
-import '../../../../data/repositories/user_dao.dart';
-import '../../../../models/user_model.dart';
-import '../../../../ui/widgets/button.dart';
-import '../../../../ui/widgets/textfield.dart';
-import '../../../initial_setup_page/initial_setup.dart';
-import '../../loading_screen.dart';
+import '../../../config/app_config.dart';
+import '../../../data/repositories/user_dao.dart';
+import '../../../models/user_model.dart';
+import '../../../ui/widgets/button.dart';
+import '../../../ui/widgets/textfield.dart';
+import '../../initial_setup_page/initial_setup.dart';
+import '../loading_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

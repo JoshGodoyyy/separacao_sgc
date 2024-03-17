@@ -6,7 +6,7 @@ import 'package:sgc/app/pages/tablet/login_page/login_page.dart';
 import 'package:sgc/app/ui/utils/notificacao.dart';
 import 'app/config/app_config.dart';
 import '/app/ui/theme/theme_config.dart';
-import 'app/pages/phone/separacao/login_page/login_page.dart';
+import 'app/pages/phone/login_page/login_page.dart';
 
 void main() {
   runApp(
@@ -36,6 +36,12 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: (context, child) {
+        ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+          return ErrorWidget(errorDetails.exception);
+        };
+        return child!;
+      },
       debugShowCheckedModeBanner: false,
       home: MediaQuery.of(context).size.shortestSide >= 600
           ? const TLoginPage()

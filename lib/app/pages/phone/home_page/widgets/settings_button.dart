@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sgc/app/pages/phone/settings_page/settings.dart';
 
-import '../../../../../ui/styles/colors_app.dart';
-import '../../../../../ui/widgets/gradient_icon.dart';
+import '../../../../ui/styles/colors_app.dart';
+import '../../../../ui/widgets/gradient_icon.dart';
 
 class SettingsButton extends StatelessWidget {
   const SettingsButton({
