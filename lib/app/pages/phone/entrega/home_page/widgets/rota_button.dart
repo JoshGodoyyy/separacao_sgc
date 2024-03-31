@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sgc/app/data/blocs/roteiro_entrega/roteiro_bloc.dart';
+import 'package:sgc/app/data/blocs/roteiro_entrega/roteiro_event.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
 
 import '../../../../../config/app_config.dart';
@@ -11,7 +14,14 @@ class RotaButton extends StatelessWidget {
   final Widget page;
   final Color begin;
   final Color end;
-  final Function refresh;
+  final RoteiroBloc bloc;
+
+  final BorderRadius border = const BorderRadius.only(
+    topLeft: Radius.circular(5),
+    topRight: Radius.circular(5),
+    bottomLeft: Radius.circular(5),
+    bottomRight: Radius.circular(20),
+  );
 
   const RotaButton({
     super.key,
@@ -20,45 +30,47 @@ class RotaButton extends StatelessWidget {
     required this.page,
     required this.begin,
     required this.end,
-    required this.refresh,
+    required this.bloc,
   });
 
   @override
   Widget build(BuildContext context) {
     var config = Provider.of<AppConfig>(context);
 
+    double percent(num amount, num total) {
+      if (total == 0) {
+        return 0;
+      } else {
+        return amount / total;
+      }
+    }
+
+    DateFormat data = DateFormat('dd/MM/yyyy');
+
     return Padding(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.only(left: 5),
         decoration: BoxDecoration(
           color: begin,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(5),
-            topRight: Radius.circular(5),
-            bottomLeft: Radius.circular(5),
-            bottomRight: Radius.circular(20),
-          ),
+          borderRadius: border,
         ),
         child: Material(
           elevation: 5,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(5),
-            topRight: Radius.circular(5),
-            bottomLeft: Radius.circular(5),
-            bottomRight: Radius.circular(20),
-          ),
+          borderRadius: border,
           color: Theme.of(context).primaryColor,
           child: InkWell(
             onTap: () => Navigator.of(context)
                 .push(
                   MaterialPageRoute(builder: (builder) => page),
                 )
-                .then((value) => refresh()),
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10),
-            ),
+                .then(
+                  (value) => bloc.inputRoteiroController.add(
+                    GetRoteiros(),
+                  ),
+                ),
+            borderRadius: border,
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(
@@ -104,13 +116,15 @@ class RotaButton extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  dados.dataEntrega ?? '',
+                                  data.format(
+                                    DateTime.parse(dados.dataEntrega!),
+                                  ),
                                   style: const TextStyle(
                                     fontSize: 14,
                                   ),
                                 ),
                                 Text(
-                                  dados.motorista ?? '',
+                                  dados.nomeMotorista ?? '',
                                   style: const TextStyle(
                                     fontSize: 14,
                                   ),
@@ -128,77 +142,83 @@ class RotaButton extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  'R\$ ${dados.valorTotal!.toStringAsFixed(2)}',
+                                  'R\$ ${dados.valor!.toStringAsFixed(2)}',
                                 ),
                               ],
                             ),
                           ],
                         ),
                         const SizedBox(height: 8),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Carregamento'),
-                            Text('50%'),
+                            const Text('Carregamento'),
+                            Text(
+                              '${(percent(
+                                    dados.quantidadePedidosCarregados!,
+                                    dados.quantidadePedidos!,
+                                  ) * 100).toStringAsFixed(0)} %',
+                            ),
                           ],
                         ),
                         const SizedBox(height: 4),
-                        const LinearProgressIndicator(
-                          value: .5,
+                        LinearProgressIndicator(
+                          value: percent(
+                            dados.quantidadePedidosCarregados!,
+                            dados.quantidadePedidos!,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                                color: Colors.blue,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                  horizontal: 10,
+                                ),
+                                child: Text(
+                                  '${dados.quantidadeClientes} Clientes',
+                                  style: TextStyle(
+                                    color: config.isDarkMode
+                                        ? Colors.white70
+                                        : Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                                color: Color(0xFF4951A2),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                  horizontal: 10,
+                                ),
+                                child: Text(
+                                  '${dados.quantidadePedidos} Pedidos',
+                                  style: TextStyle(
+                                    color: config.isDarkMode
+                                        ? Colors.white70
+                                        : Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(50),
-                              ),
-                              color: Color(0xFF4951A2),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 4,
-                                horizontal: 10,
-                              ),
-                              child: Text(
-                                '${dados.totalClientes} Clientes',
-                                style: TextStyle(
-                                  color: config.isDarkMode
-                                      ? Colors.white70
-                                      : Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(50),
-                              ),
-                              color: Color(0xFF4951A2),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 4,
-                                horizontal: 10,
-                              ),
-                              child: Text(
-                                '${dados.totalPedidos} Pedidos',
-                                style: TextStyle(
-                                  color: config.isDarkMode
-                                      ? Colors.white70
-                                      : Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
                   ],
                 ),

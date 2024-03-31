@@ -1,25 +1,23 @@
 class ClienteModel {
-  final int id;
-  final String fantasia;
-  final String razaoSocial;
-  final String cep;
-  final String endereco;
-  final int numero;
-  final String? complemento;
-  final String bairro;
-  final String cidade;
-  final String uf;
+  num? id;
+  String? fantasia;
+  String? razaoSocial;
+  num? quantidadePedidos;
+  num? pedidosCarregados;
 
   ClienteModel(
     this.id,
     this.fantasia,
     this.razaoSocial,
-    this.cep,
-    this.endereco,
-    this.numero,
-    this.complemento,
-    this.bairro,
-    this.cidade,
-    this.uf,
+    this.quantidadePedidos,
+    this.pedidosCarregados,
   );
+
+  ClienteModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    razaoSocial = json['razaoSocial'];
+    fantasia = json['fantasia'];
+    quantidadePedidos = json['quantidadePedidos'];
+    pedidosCarregados = json['pedidosCarregados'];
+  }
 }

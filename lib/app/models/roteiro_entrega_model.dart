@@ -3,26 +3,32 @@ class RoteiroEntregaModel {
   String? nome;
   String? dataCriacao;
   String? dataEntrega;
-  String? motorista;
+  num? idMotorista;
+  String? nomeMotorista;
+  num? idVeiculo;
   String? placa;
   num? peso;
-  num? valorTotal;
-  num? totalClientes;
-  num? totalPedidos;
   String? dataFinalizacao;
+  num? valor;
+  num? quantidadePedidos;
+  num? quantidadeClientes;
+  num? quantidadePedidosCarregados;
 
   RoteiroEntregaModel({
     this.id,
     this.nome,
     this.dataCriacao,
     this.dataEntrega,
-    this.motorista,
+    this.idMotorista,
+    this.nomeMotorista,
+    this.idVeiculo,
     this.placa,
     this.peso,
-    this.valorTotal,
-    this.totalClientes,
-    this.totalPedidos,
     this.dataFinalizacao,
+    this.valor,
+    this.quantidadePedidos,
+    this.quantidadeClientes,
+    this.quantidadePedidosCarregados,
   });
 
   RoteiroEntregaModel.fromJson(Map<String, dynamic> json) {
@@ -30,28 +36,15 @@ class RoteiroEntregaModel {
     nome = json['nome'];
     dataCriacao = json['dataCriacao'];
     dataEntrega = json['dataEntrega'];
-    motorista = json['motorista'];
+    idMotorista = json['idMotorista'];
+    nomeMotorista = json['nomeMotorista'];
+    idVeiculo = json['idVeiculo'];
     placa = json['placa'];
     peso = json['peso'];
-    valorTotal = json['valorTotal'];
-    totalClientes = json['totalClientes'];
-    totalPedidos = json['totalPedidos'];
+    valor = json['valor'];
     dataFinalizacao = json['dataFinalizacao'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['nome'] = nome;
-    data['dataCriacao'] = dataCriacao;
-    data['dataEntrega'] = dataEntrega;
-    data['motorista'] = motorista;
-    data['placa'] = placa;
-    data['peso'] = peso;
-    data['valorTotal'] = valorTotal;
-    data['totalClientes'] = totalClientes;
-    data['totalPedidos'] = totalPedidos;
-    data['dataFinalizacao'] = dataFinalizacao;
-    return data;
+    quantidadeClientes = json['quantidadeClientes'];
+    quantidadePedidos = json['quantidadePedidos'];
+    quantidadePedidosCarregados = json['quantidadePedidosCarregados'];
   }
 }

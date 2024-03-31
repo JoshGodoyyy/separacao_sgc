@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sgc/app/data/blocs/cliente/cliente_bloc.dart';
+import 'package:sgc/app/data/blocs/cliente/cliente_event.dart';
+import 'package:sgc/app/data/blocs/cliente/cliente_state.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
 import 'package:sgc/app/pages/phone/entrega/cliente_page/widgets/cliente_list_item.dart';
+
+import '../../../../ui/widgets/error_alert.dart';
 
 class Clientes extends StatefulWidget {
   final RoteiroEntregaModel dados;
@@ -11,6 +16,25 @@ class Clientes extends StatefulWidget {
 }
 
 class _ClientesState extends State<Clientes> {
+  late ClienteBloc _clienteBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _clienteBloc = ClienteBloc();
+    _fetchClientes();
+  }
+
+  _fetchClientes() {
+    _clienteBloc.inputClienteController.add(
+      GetClientes(
+        idRoteiroEntrega: int.parse(
+          widget.dados.id.toString(),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,17 +43,35 @@ class _ClientesState extends State<Clientes> {
         title: Text(widget.dados.nome!),
         centerTitle: true,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: const [
-          ClienteListItem(),
-          ClienteListItem(),
-          ClienteListItem(),
-          ClienteListItem(),
-          ClienteListItem(),
-          ClienteListItem(),
-          ClienteListItem(),
-        ],
+      body: StreamBuilder<ClienteState>(
+        stream: _clienteBloc.outputClienteController,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              snapshot.data is ClienteLoadingState) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 46),
+                child: LinearProgressIndicator(),
+              ),
+            );
+          } else if (snapshot.data is ClienteLoadedState) {
+            List clientes = snapshot.data?.clientes ?? [];
+            return ListView(
+              children: [
+                for (var cliente in clientes)
+                  ClienteListItem(
+                    cliente: cliente,
+                    roteiroEntrega: widget.dados,
+                    bloc: _clienteBloc,
+                  ),
+              ],
+            );
+          } else {
+            return ErrorAlert(
+              message: snapshot.error.toString(),
+            );
+          }
+        },
       ),
     );
   }

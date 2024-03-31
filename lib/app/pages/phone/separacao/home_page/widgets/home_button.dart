@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
 
@@ -29,6 +30,11 @@ class HomeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var config = Provider.of<AppConfig>(context);
+
+    String formatValue(num value) {
+      final formatter = NumberFormat('#,##0.00', 'pt_BR');
+      return formatter.format(value);
+    }
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -141,7 +147,7 @@ class HomeButton extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Text('${weight.toStringAsFixed(2)} Kg'),
+                          Text('${formatValue(weight)} Kg'),
                         ],
                       ),
                     ),
