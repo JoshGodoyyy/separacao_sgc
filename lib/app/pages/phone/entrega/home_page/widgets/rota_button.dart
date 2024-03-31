@@ -141,9 +141,9 @@ class RotaButton extends StatelessWidget {
                                     fontSize: 14,
                                   ),
                                 ),
-                                Text(
-                                  'R\$ ${dados.valor!.toStringAsFixed(2)}',
-                                ),
+                                // Text(
+                                //   'R\$ ${dados.valor!.toStringAsFixed(2)}',
+                                // ),
                               ],
                             ),
                           ],
