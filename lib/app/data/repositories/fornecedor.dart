@@ -24,4 +24,22 @@ class Fornecedor {
       throw Exception(ex);
     }
   }
+
+  Future<FornecedorModel> fetchCliente(int id) async {
+    final response = await http.post(
+      Uri.parse('$url/Client'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'id': id,
+      }),
+    );
+
+    try {
+      return FornecedorModel.fromJson(
+        jsonDecode(response.body),
+      );
+    } catch (ex) {
+      throw Exception(ex);
+    }
+  }
 }

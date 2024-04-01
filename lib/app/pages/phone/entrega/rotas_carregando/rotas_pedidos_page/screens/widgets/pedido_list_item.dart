@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
 import 'package:sgc/app/models/pedido_roteiro_model.dart';
 
-import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
+import '../../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
 
 class PedidoListItem extends StatefulWidget {
   final PedidoRoteiroModel pedido;

@@ -3,9 +3,9 @@ import 'package:sgc/app/data/blocs/cliente/cliente_bloc.dart';
 import 'package:sgc/app/data/blocs/cliente/cliente_event.dart';
 import 'package:sgc/app/data/blocs/cliente/cliente_state.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
-import 'package:sgc/app/pages/phone/entrega/cliente_page/widgets/cliente_list_item.dart';
+import 'package:sgc/app/pages/phone/entrega/rotas_carregando/cliente_page/widgets/cliente_list_item.dart';
 
-import '../../../../ui/widgets/error_alert.dart';
+import '../../../../../ui/widgets/error_alert.dart';
 
 class Clientes extends StatefulWidget {
   final RoteiroEntregaModel dados;

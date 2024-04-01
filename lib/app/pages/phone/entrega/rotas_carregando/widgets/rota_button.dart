@@ -136,14 +136,14 @@ class RotaButton extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${dados.peso} Kg',
+                                  '${dados.peso?.toStringAsFixed(2) ?? 0.00} Kg',
                                   style: const TextStyle(
                                     fontSize: 14,
                                   ),
                                 ),
-                                Text(
-                                  'R\$ ${dados.valor!.toStringAsFixed(2)}',
-                                ),
+                                // Text(
+                                //   'R\$ ${dados.valor!.toStringAsFixed(2)}',
+                                // ),
                               ],
                             ),
                           ],

@@ -35,9 +35,13 @@ class NavigationButton extends StatelessWidget {
               children: [
                 Icon(
                   icon,
+                  color: isActive ? Colors.white : null,
                 ),
                 Text(
                   label,
+                  style: TextStyle(
+                    color: isActive ? Colors.white : null,
+                  ),
                 ),
               ],
             ),
