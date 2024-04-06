@@ -49,14 +49,11 @@ class _RotasEntregandoState extends State<RotasEntregando> {
             if (data.isEmpty)
               const Center(
                 child: Text(
-                  'Nada por aqui 👀',
+                  'Nada por aqui',
                   style: TextStyle(fontSize: 24),
                 ),
               )
-            else if (roteiro.quantidadePedidosCarregados ==
-                    roteiro.quantidadePedidos &&
-                roteiro.dataFinalizacao == null &&
-                roteiro.quantidadePedidos > 0)
+            else if (roteiro.carregamentoConcluido == 1)
               PedidoEntregando(
                 dados: roteiro,
                 icon: Icons.local_shipping_rounded,

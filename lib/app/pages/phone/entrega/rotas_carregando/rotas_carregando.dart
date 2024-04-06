@@ -49,17 +49,18 @@ class _RotasCarregandoState extends State<RotasCarregando> {
             if (data.isEmpty)
               const Center(
                 child: Text(
-                  'Nada por aqui 👀',
+                  'Nada por aqui',
                   style: TextStyle(fontSize: 24),
                 ),
               )
-            else if (roteiro.quantidadePedidosCarregados <
-                    roteiro.quantidadePedidos &&
-                roteiro.dataFinalizacao == null)
+            else if (roteiro.carregamentoConcluido == 0)
               RotaButton(
                 dados: roteiro,
                 icon: Icons.roundabout_right_outlined,
-                page: Clientes(dados: roteiro),
+                page: Clientes(
+                  dados: roteiro,
+                  bloc: _roteiroBloc,
+                ),
                 begin: Colors.green,
                 end: Colors.greenAccent,
                 bloc: _roteiroBloc,

@@ -55,7 +55,7 @@ class _PedidoListItemState extends State<PedidoListItem> {
               backgroundColor:
                   widget.pedido.carregado == 1 ? Colors.red : Colors.green,
               foregroundColor: Colors.white,
-              icon: Icons.check,
+              icon: widget.pedido.carregado == 1 ? Icons.close : Icons.check,
               label: label(),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10),

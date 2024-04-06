@@ -47,7 +47,7 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
     if (pedidos.isEmpty) {
       return const Center(
         child: Text(
-          'Nada por aqui 👀',
+          'Nenhum pedido',
           style: TextStyle(fontSize: 24),
         ),
       );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_entregando/rotas_entregando.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_carregando/rotas_carregando.dart';
+import 'package:sgc/app/pages/phone/entrega/rotas_finalizadas/rotas_finalizadas.dart';
 
 import 'widgets/navigation_button.dart';
 
@@ -12,11 +13,19 @@ class RotasHome extends StatefulWidget {
 }
 
 class _RotasHomeState extends State<RotasHome> {
-  final _telas = [
-    const RotasCarregando(),
-    const RotasEntregando(),
-    const RotasEntregando(),
-  ];
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   int _tela = 0;
 
@@ -41,19 +50,37 @@ class _RotasHomeState extends State<RotasHome> {
                 child: Row(
                   children: [
                     NavigationButton(
-                      onTap: () => setState(() => _tela = 0),
+                      onTap: () {
+                        _pageController.animateToPage(
+                          0,
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.easeIn,
+                        );
+                      },
                       icon: Icons.indeterminate_check_box,
                       label: 'Carregando',
                       isActive: _tela == 0,
                     ),
                     NavigationButton(
-                      onTap: () => setState(() => _tela = 1),
+                      onTap: () {
+                        _pageController.animateToPage(
+                          1,
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.easeIn,
+                        );
+                      },
                       icon: Icons.route,
                       label: 'Entregando',
                       isActive: _tela == 1,
                     ),
                     NavigationButton(
-                      onTap: () => setState(() => _tela = 2),
+                      onTap: () {
+                        _pageController.animateToPage(
+                          2,
+                          duration: const Duration(milliseconds: 100),
+                          curve: Curves.easeIn,
+                        );
+                      },
                       icon: Icons.check_circle_outline_rounded,
                       label: 'Concluídas',
                       isActive: _tela == 2,
@@ -66,8 +93,15 @@ class _RotasHomeState extends State<RotasHome> {
         ),
         Expanded(
           child: PageView(
-            children: [
-              _telas[_tela],
+            controller: _pageController,
+            scrollDirection: Axis.horizontal,
+            onPageChanged: (index) {
+              setState(() => _tela = index);
+            },
+            children: const [
+              RotasCarregando(),
+              RotasEntregando(),
+              RotasFinalizadas(),
             ],
           ),
         ),

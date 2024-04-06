@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 import 'package:sgc/app/data/blocs/roteiro_entrega/roteiro_bloc.dart';
 import 'package:sgc/app/data/blocs/roteiro_entrega/roteiro_event.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
 
-import '../../../../../config/app_config.dart';
+// import '../../../../../config/app_config.dart';
 import '../../../../../ui/widgets/gradient_icon.dart';
 
 class PedidoEntregando extends StatelessWidget {
@@ -34,15 +34,15 @@ class PedidoEntregando extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var config = Provider.of<AppConfig>(context);
+    // var config = Provider.of<AppConfig>(context);
 
-    double percent(num amount, num total) {
-      if (total == 0) {
-        return 0;
-      } else {
-        return amount / total;
-      }
-    }
+    // double percent(num amount, num total) {
+    //   if (total == 0) {
+    //     return 0;
+    //   } else {
+    //     return amount / total;
+    //   }
+    // }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

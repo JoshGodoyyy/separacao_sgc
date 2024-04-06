@@ -27,6 +27,7 @@ class CustomIcon extends StatelessWidget {
         return const Icon(
           Icons.assignment_late_rounded,
           color: Colors.white,
+          size: 100,
         );
       } else if (tipo == Icones.erro) {
         return const Icon(
