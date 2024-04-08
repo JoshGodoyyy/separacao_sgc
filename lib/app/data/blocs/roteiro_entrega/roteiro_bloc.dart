@@ -27,6 +27,8 @@ class RoteiroBloc {
 
     if (event is GetRoteiros) {
       roteiros = await _repository.fetchRoteiros();
+    } else if (event is ConcluirCarregamento) {
+      roteiros = await _repository.concluirCarregamento(event.idRoteiro);
     }
 
     _outputRoteiroController.add(RoteiroLoadedState(roteiros: roteiros));

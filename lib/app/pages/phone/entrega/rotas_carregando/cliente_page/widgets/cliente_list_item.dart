@@ -3,7 +3,7 @@ import 'package:sgc/app/data/blocs/cliente/cliente_bloc.dart';
 import 'package:sgc/app/data/blocs/cliente/cliente_event.dart';
 import 'package:sgc/app/models/client_model.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
-import 'package:sgc/app/pages/phone/entrega/rotas_pedidos_page/rotas_pedidos.dart';
+import 'package:sgc/app/pages/phone/entrega/rotas_carregando/rotas_pedidos_page/rotas_pedidos.dart';
 
 class ClienteListItem extends StatelessWidget {
   final ClienteModel cliente;

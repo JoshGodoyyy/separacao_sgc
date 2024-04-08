@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
 import 'package:sgc/app/models/pedido_roteiro_model.dart';
 
-import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
+import '../../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
 
 class PedidoListItem extends StatefulWidget {
   final PedidoRoteiroModel pedido;
@@ -55,7 +55,7 @@ class _PedidoListItemState extends State<PedidoListItem> {
               backgroundColor:
                   widget.pedido.carregado == 1 ? Colors.red : Colors.green,
               foregroundColor: Colors.white,
-              icon: Icons.check,
+              icon: widget.pedido.carregado == 1 ? Icons.close : Icons.check,
               label: label(),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10),

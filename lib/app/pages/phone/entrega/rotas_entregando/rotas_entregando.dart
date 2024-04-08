@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:sgc/app/pages/phone/entrega/home_page/widgets/rota_button.dart';
+import 'package:sgc/app/pages/phone/entrega/rotas_entregando/dados_entrega/dados_entrega.dart';
+import 'package:sgc/app/pages/phone/entrega/rotas_entregando/widgets/pedido_entregando.dart';
 
-import '../../../../../data/blocs/roteiro_entrega/roteiro_bloc.dart';
-import '../../../../../data/blocs/roteiro_entrega/roteiro_event.dart';
-import '../../../../../data/blocs/roteiro_entrega/roteiro_state.dart';
-import '../../../../../ui/widgets/error_alert.dart';
-import '../../cliente_page/clientes.dart';
+import '../../../../data/blocs/roteiro_entrega/roteiro_bloc.dart';
+import '../../../../data/blocs/roteiro_entrega/roteiro_event.dart';
+import '../../../../data/blocs/roteiro_entrega/roteiro_state.dart';
+import '../../../../ui/widgets/error_alert.dart';
 
-class RotasCarregando extends StatefulWidget {
-  const RotasCarregando({super.key});
+class RotasEntregando extends StatefulWidget {
+  const RotasEntregando({super.key});
 
   @override
-  State<RotasCarregando> createState() => _RotasCarregandoState();
+  State<RotasEntregando> createState() => _RotasEntregandoState();
 }
 
-class _RotasCarregandoState extends State<RotasCarregando> {
+class _RotasEntregandoState extends State<RotasEntregando> {
   late RoteiroBloc _roteiroBloc;
   bool carregando = false;
 
@@ -46,14 +46,24 @@ class _RotasCarregandoState extends State<RotasCarregando> {
       child: ListView(
         children: [
           for (var roteiro in data)
-            RotaButton(
-              dados: roteiro,
-              icon: Icons.roundabout_right_outlined,
-              page: Clientes(dados: roteiro),
-              begin: Colors.green,
-              end: Colors.greenAccent,
-              bloc: _roteiroBloc,
-            ),
+            if (data.isEmpty)
+              const Center(
+                child: Text(
+                  'Nada por aqui',
+                  style: TextStyle(fontSize: 24),
+                ),
+              )
+            else if (roteiro.carregamentoConcluido == 1)
+              PedidoEntregando(
+                dados: roteiro,
+                icon: Icons.local_shipping_rounded,
+                page: DadosEntrega(
+                  roteiro: roteiro,
+                ),
+                begin: Colors.blue,
+                end: Colors.blue[300]!,
+                bloc: _roteiroBloc,
+              )
         ],
       ),
     );

@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                           _tela == 1 ? ColorsApp.secondaryColor : Colors.white,
                     ),
                     title: Text(
-                      'Rotas de Entrega',
+                      'Roteiros de Entrega',
                       style: TextStyle(
                         color: _tela == 1
                             ? ColorsApp.secondaryColor

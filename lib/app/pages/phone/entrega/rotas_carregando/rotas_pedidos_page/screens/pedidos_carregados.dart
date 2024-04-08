@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
-import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
-import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_state.dart';
-import 'package:sgc/app/models/pedido_roteiro_model.dart';
-import 'package:sgc/app/pages/phone/entrega/rotas_pedidos_page/screens/widgets/pedido_list_item.dart';
 
-import '../../../../../ui/widgets/error_alert.dart';
+import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
+import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
+import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_state.dart';
+import '../../../../../../models/pedido_roteiro_model.dart';
+import '../../../../../../ui/widgets/error_alert.dart';
+import 'widgets/pedido_list_item.dart';
 
-class PedidosNaoCarregados extends StatefulWidget {
+class PedidosCarregados extends StatefulWidget {
   final int idRoteiro;
   final int idCliente;
-  const PedidosNaoCarregados({
+  const PedidosCarregados({
     super.key,
     required this.idRoteiro,
     required this.idCliente,
   });
 
   @override
-  State<PedidosNaoCarregados> createState() => _PedidosNaoCarregadosState();
+  State<PedidosCarregados> createState() => _PedidosCarregadosState();
 }
 
-class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
+class _PedidosCarregadosState extends State<PedidosCarregados> {
   late PedidoRoteiroBloc _bloc;
 
   @override
@@ -39,7 +39,7 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
     );
 
     _bloc.inputProdutoRoteiroController.add(
-      GetPedidosNaoCarregados(pedido: pedido),
+      GetPedidosCarregados(pedido: pedido),
     );
   }
 
@@ -47,7 +47,7 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
     if (pedidos.isEmpty) {
       return const Center(
         child: Text(
-          'Nada por aqui 👀',
+          'Nenhum pedido',
           style: TextStyle(fontSize: 24),
         ),
       );

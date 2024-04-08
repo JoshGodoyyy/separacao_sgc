@@ -20,4 +20,17 @@ class RoteiroEntrega {
       throw Exception(ex);
     }
   }
+
+  Future<List> concluirCarregamento(int idRoteiro) async {
+    await http.post(
+      Uri.parse(url),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'id': idRoteiro,
+        },
+      ),
+    );
+    return fetchRoteiros();
+  }
 }

@@ -3,6 +3,15 @@ class RoteiroEntregaModel {
   String? nome;
   String? dataCriacao;
   String? dataEntrega;
+  String? ajudante;
+  num? kmInicial;
+  num? kmFinal;
+  String? horaSaida;
+  String? horaChegada;
+  num? combustivel;
+  num? pedagio;
+  num? refeicao;
+  num? carregamentoConcluido;
   num? idMotorista;
   String? nomeMotorista;
   num? idVeiculo;
@@ -19,6 +28,15 @@ class RoteiroEntregaModel {
     this.nome,
     this.dataCriacao,
     this.dataEntrega,
+    this.ajudante,
+    this.kmInicial,
+    this.kmFinal,
+    this.horaSaida,
+    this.horaChegada,
+    this.combustivel,
+    this.pedagio,
+    this.refeicao,
+    this.carregamentoConcluido,
     this.idMotorista,
     this.nomeMotorista,
     this.idVeiculo,
@@ -36,15 +54,24 @@ class RoteiroEntregaModel {
     nome = json['nome'];
     dataCriacao = json['dataCriacao'];
     dataEntrega = json['dataEntrega'];
+    ajudante = json['ajudante'];
+    kmInicial = json['kmInicial'];
+    kmFinal = json['kmFinal'];
+    horaSaida = json['horaSaida'];
+    horaChegada = json['horaChegada'];
+    combustivel = json['combustivel'];
+    pedagio = json['pedagio'];
+    refeicao = json['refeicao'];
+    carregamentoConcluido = json['carregamentoConcluido'];
     idMotorista = json['idMotorista'];
     nomeMotorista = json['nomeMotorista'];
     idVeiculo = json['idVeiculo'];
     placa = json['placa'];
     peso = json['peso'];
-    valor = json['valor'];
     dataFinalizacao = json['dataFinalizacao'];
-    quantidadeClientes = json['quantidadeClientes'];
+    valor = json['valor'];
     quantidadePedidos = json['quantidadePedidos'];
+    quantidadeClientes = json['quantidadeClientes'];
     quantidadePedidosCarregados = json['quantidadePedidosCarregados'];
   }
 }
