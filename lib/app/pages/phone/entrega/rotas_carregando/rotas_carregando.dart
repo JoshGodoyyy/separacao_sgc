@@ -46,14 +46,7 @@ class _RotasCarregandoState extends State<RotasCarregando> {
       child: ListView(
         children: [
           for (var roteiro in data)
-            if (data.isEmpty)
-              const Center(
-                child: Text(
-                  'Nada por aqui',
-                  style: TextStyle(fontSize: 24),
-                ),
-              )
-            else if (roteiro.carregamentoConcluido == 0)
+            if (roteiro.carregamentoConcluido == 0)
               RotaButton(
                 dados: roteiro,
                 icon: Icons.roundabout_right_outlined,
@@ -64,6 +57,13 @@ class _RotasCarregandoState extends State<RotasCarregando> {
                 begin: Colors.green,
                 end: Colors.greenAccent,
                 bloc: _roteiroBloc,
+              )
+            else
+              const Center(
+                child: Text(
+                  'Nenhum roteiro',
+                  style: TextStyle(fontSize: 24),
+                ),
               ),
         ],
       ),

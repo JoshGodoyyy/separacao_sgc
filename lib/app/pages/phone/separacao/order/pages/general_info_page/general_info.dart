@@ -6,7 +6,7 @@ import 'package:sgc/app/data/repositories/tipo_entrega.dart';
 import 'package:sgc/app/data/repositories/vendedor_dao.dart';
 import 'package:sgc/app/models/fornecedor_model.dart';
 import 'package:sgc/app/models/pedido_model.dart';
-import 'widgets/item_field.dart';
+import '../../../../../../ui/widgets/item_field.dart';
 
 class GeneralInfo extends StatefulWidget {
   final int idPedido;

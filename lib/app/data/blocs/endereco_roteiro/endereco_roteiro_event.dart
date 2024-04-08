@@ -1,5 +1,3 @@
-import 'package:sgc/app/models/endereco_roteiro_entrega_model.dart';
-
 abstract class EnderecoRoteiroEvent {}
 
 class GetEnderecosRoteiro extends EnderecoRoteiroEvent {
@@ -8,8 +6,34 @@ class GetEnderecosRoteiro extends EnderecoRoteiroEvent {
   GetEnderecosRoteiro({required this.idRoteiro});
 }
 
-class EntregarPedido extends EnderecoRoteiroEvent {
-  final EnderecoRoteiroEntregaModel pedido;
+class GetPedidos extends EnderecoRoteiroEvent {
+  final String cep;
+  final String numero;
+  final int idRoteiro;
 
-  EntregarPedido({required this.pedido});
+  GetPedidos({
+    required this.cep,
+    required this.numero,
+    required this.idRoteiro,
+  });
+}
+
+class AtualizarPosicao extends EnderecoRoteiroEvent {
+  final int idRoteiro;
+  final List enderecos;
+
+  AtualizarPosicao({
+    required this.idRoteiro,
+    required this.enderecos,
+  });
+}
+
+class EntregarPedido extends EnderecoRoteiroEvent {
+  final int idRoteiro;
+  final int idPedido;
+
+  EntregarPedido({
+    required this.idRoteiro,
+    required this.idPedido,
+  });
 }

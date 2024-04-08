@@ -4,6 +4,7 @@ class ClienteModel {
   String? razaoSocial;
   num? quantidadePedidos;
   num? pedidosCarregados;
+  num? posicao;
 
   ClienteModel(
     this.id,
@@ -11,6 +12,7 @@ class ClienteModel {
     this.razaoSocial,
     this.quantidadePedidos,
     this.pedidosCarregados,
+    this.posicao,
   );
 
   ClienteModel.fromJson(Map<String, dynamic> json) {
@@ -19,5 +21,6 @@ class ClienteModel {
     fantasia = json['fantasia'];
     quantidadePedidos = json['quantidadePedidos'];
     pedidosCarregados = json['pedidosCarregados'];
+    posicao = json['posicao'];
   }
 }

@@ -3,11 +3,9 @@ import 'package:sgc/app/data/blocs/cliente/cliente_bloc.dart';
 import 'package:sgc/app/data/blocs/cliente/cliente_event.dart';
 import 'package:sgc/app/data/blocs/cliente/cliente_state.dart';
 import 'package:sgc/app/data/blocs/roteiro_entrega/roteiro_bloc.dart';
-import 'package:sgc/app/data/blocs/roteiro_entrega/roteiro_event.dart';
-import 'package:sgc/app/data/enums/icones.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
-import 'package:sgc/app/pages/phone/entrega/rotas_carregando/cliente_page/widgets/cliente_list_item.dart';
-import 'package:sgc/app/ui/widgets/custom_dialog.dart';
+import 'package:sgc/app/pages/phone/entrega/rotas_carregando/cliente_page/pages/clientes_page.dart';
+import 'package:sgc/app/pages/phone/entrega/rotas_carregando/cliente_page/pages/ordem_entrega.dart';
 
 import '../../../../../ui/widgets/error_alert.dart';
 
@@ -45,41 +43,26 @@ class _ClientesState extends State<Clientes> {
     );
   }
 
-  _concluirCarregamento() async {
-    for (var cliente in clientes) {
-      if (cliente.pedidosCarregados < cliente.quantidadePedidos) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const CustomDialog(
-              titulo: 'Sistema SGC',
-              descricao: 'Ainda existem pedidos não carregados',
-              tipo: Icones.alerta,
-            );
-          },
-        );
-      } else {
-        widget.bloc.inputRoteiroController.add(
-          ConcluirCarregamento(
-            idRoteiro: int.parse(
-              widget.dados.id.toString(),
-            ),
-          ),
-        );
+  Widget _mostrarDados(List clientes) {
+    int quantidadeEnderecoNaoOrdenado = 0;
 
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const CustomDialog(
-              titulo: 'Sistema SGC',
-              descricao: 'Roteiro carregado com sucesso! Liberado para entrega',
-              tipo: Icones.sucesso,
-            );
-          },
-        ).then(
-          (value) => Navigator.pop(context),
-        );
+    for (var cliente in clientes) {
+      if (cliente.posicao == 0) {
+        quantidadeEnderecoNaoOrdenado++;
       }
+    }
+
+    if (quantidadeEnderecoNaoOrdenado > 1) {
+      return OrdemEntrega(
+        dados: widget.dados,
+      );
+    } else {
+      return ClientesPage(
+        clientes: clientes,
+        dados: widget.dados,
+        roteiroBloc: widget.bloc,
+        clienteBloc: _clienteBloc,
+      );
     }
   }
 
@@ -104,28 +87,14 @@ class _ClientesState extends State<Clientes> {
             );
           } else if (snapshot.data is ClienteLoadedState) {
             clientes = snapshot.data?.clientes ?? [];
-            return ListView(
-              children: [
-                for (var cliente in clientes)
-                  ClienteListItem(
-                    cliente: cliente,
-                    roteiroEntrega: widget.dados,
-                    bloc: _clienteBloc,
-                  ),
-              ],
-            );
+
+            return _mostrarDados(clientes);
           } else {
             return ErrorAlert(
               message: snapshot.error.toString(),
             );
           }
         },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _concluirCarregamento(),
-        backgroundColor: Colors.green,
-        label: const Text('Concluir'),
-        icon: const Icon(Icons.check),
       ),
     );
   }

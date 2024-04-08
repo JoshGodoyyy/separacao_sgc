@@ -28,6 +28,16 @@ class EnderecoRoteiroBloc {
 
     if (event is GetEnderecosRoteiro) {
       enderecos = await _repository.fetchEnderecosRoteiro(event.idRoteiro);
+    } else if (event is AtualizarPosicao) {
+      enderecos = await _repository.atualizarOrdem(
+        event.idRoteiro,
+        event.enderecos,
+      );
+    } else if (event is EntregarPedido) {
+      enderecos = await _repository.entregarPedido(
+        event.idRoteiro,
+        event.idPedido,
+      );
     }
 
     _outputEnderecoController
