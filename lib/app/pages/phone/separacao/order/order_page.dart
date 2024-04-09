@@ -127,9 +127,14 @@ class _OrderPageState extends State<OrderPage> {
         break;
       case 'SEPARANDO':
         setState(() => iniciarSeparacao = false);
-        setState(() => liberarConferencia = true);
+        if (config.conferencia) {
+          setState(() => liberarConferencia = true);
+        }
         if (config.embalagem) {
           setState(() => liberarEmbalagem = true);
+        }
+        if (!config.embalagem || config.conferencia) {
+          setState(() => finalizarSeparacao = true);
         }
         break;
       case 'EMBALAGEM':

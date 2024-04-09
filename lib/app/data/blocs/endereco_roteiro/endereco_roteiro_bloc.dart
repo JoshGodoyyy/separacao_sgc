@@ -36,7 +36,9 @@ class EnderecoRoteiroBloc {
     } else if (event is EntregarPedido) {
       enderecos = await _repository.entregarPedido(
         event.idRoteiro,
-        event.idPedido,
+        event.cep,
+        event.numero,
+        event.entregue,
       );
     }
 

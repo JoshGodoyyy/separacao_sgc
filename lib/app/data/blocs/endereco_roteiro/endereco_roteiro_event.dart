@@ -30,10 +30,14 @@ class AtualizarPosicao extends EnderecoRoteiroEvent {
 
 class EntregarPedido extends EnderecoRoteiroEvent {
   final int idRoteiro;
-  final int idPedido;
+  final String cep;
+  final String numero;
+  final int entregue;
 
   EntregarPedido({
     required this.idRoteiro,
-    required this.idPedido,
+    required this.cep,
+    required this.numero,
+    required this.entregue,
   });
 }

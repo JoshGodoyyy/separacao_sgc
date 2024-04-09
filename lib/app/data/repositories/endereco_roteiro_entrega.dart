@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:sgc/app/config/api_config.dart';
 import 'package:sgc/app/models/endereco_roteiro_entrega_model.dart';
+import 'package:sgc/app/models/item_endereco_rota_model.dart';
 
 class EnderecoRoteiroEntrega {
   String url = '${ApiConfig().url}/AdressOrderRoute';
@@ -48,13 +49,18 @@ class EnderecoRoteiroEntrega {
     return fetchEnderecosRoteiro(idRoteiro);
   }
 
-  Future<List> entregarPedido(int idRoteiro, int idPedido) async {
+  Future<List> entregarPedido(
+      int idRoteiro, String cep, String numero, int entregue) async {
     await http.post(
       Uri.parse('$url/Deliver'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
-          'id': idPedido,
+          'id': 0,
+          'entregue': entregue,
+          'cep': cep,
+          'numero': numero,
+          'idRoteiro': idRoteiro,
         },
       ),
     );
@@ -77,7 +83,7 @@ class EnderecoRoteiroEntrega {
 
     try {
       var data = jsonDecode(response.body);
-      return data.toList();
+      return data.map((json) => ItemEnderecoRotaModel.fromJson(json)).toList();
     } catch (ex) {
       throw Exception(ex);
     }

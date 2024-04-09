@@ -16,6 +16,7 @@ class AppConfig with ChangeNotifier {
   static const String _keyLogistica = 'keyLogistica';
   static const String _keyBalcao = 'keyBalcao';
   static const String _keyRetirar = 'keyRetirar';
+  static const String _keyAgrupamento = 'keyAgrupamento';
 
   bool _salvarDados = false;
   bool _isDarkMode = false;
@@ -29,6 +30,7 @@ class AppConfig with ChangeNotifier {
   bool _logistica = true;
   bool _balcao = true;
   bool _retirar = true;
+  bool _separarAgrupamento = false;
 
   AppConfig() {
     _loadData();
@@ -46,6 +48,7 @@ class AppConfig with ChangeNotifier {
   bool get logistica => _logistica;
   bool get balcao => _balcao;
   bool get retirar => _retirar;
+  bool get separarAgrupamento => _separarAgrupamento;
 
   void setSalvarDados(bool value) {
     _salvarDados = value;
@@ -119,6 +122,12 @@ class AppConfig with ChangeNotifier {
     notifyListeners();
   }
 
+  void setAgrupamento(bool value) {
+    _separarAgrupamento = value;
+    preferences.setBool(_keyAgrupamento, _separarAgrupamento);
+    notifyListeners();
+  }
+
   Future<void> _loadData() async {
     preferences = await SharedPreferences.getInstance();
     _salvarDados = preferences.getBool(_keySalvarDados) ?? false;
@@ -133,6 +142,7 @@ class AppConfig with ChangeNotifier {
     _logistica = preferences.getBool(_keyLogistica) ?? true;
     _balcao = preferences.getBool(_keyBalcao) ?? true;
     _retirar = preferences.getBool(_keyRetirar) ?? true;
+    _separarAgrupamento = preferences.getBool(_keyAgrupamento) ?? false;
     notifyListeners();
   }
 }

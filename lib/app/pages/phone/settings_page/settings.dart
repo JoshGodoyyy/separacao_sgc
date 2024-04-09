@@ -122,6 +122,17 @@ class _SettingsState extends State<Settings> {
         ),
         group(
           context,
+          'Agrupamento',
+          ToggleSwitch(
+            label: 'Separar pedidos Agrupados',
+            value: config.separarAgrupamento,
+            onChanged: () {
+              config.setAgrupamento(!config.separarAgrupamento);
+            },
+          ),
+        ),
+        group(
+          context,
           'Tema',
           ToggleSwitch(
             label: 'Modo escuro',

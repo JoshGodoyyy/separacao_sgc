@@ -53,7 +53,8 @@ class _RotasEntregandoState extends State<RotasEntregando> {
                   style: TextStyle(fontSize: 24),
                 ),
               )
-            else if (roteiro.carregamentoConcluido == 1)
+            else if (roteiro.carregamentoConcluido == 1 &&
+                roteiro.dataFinalizacao == null)
               PedidoEntregando(
                 dados: roteiro,
                 icon: Icons.local_shipping_rounded,

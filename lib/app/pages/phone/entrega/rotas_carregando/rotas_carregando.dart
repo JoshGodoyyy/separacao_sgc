@@ -58,13 +58,6 @@ class _RotasCarregandoState extends State<RotasCarregando> {
                 end: Colors.greenAccent,
                 bloc: _roteiroBloc,
               )
-            else
-              const Center(
-                child: Text(
-                  'Nenhum roteiro',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
         ],
       ),
     );
