@@ -55,6 +55,7 @@ class _ClientesState extends State<Clientes> {
     if (quantidadeEnderecoNaoOrdenado > 1) {
       return OrdemEntrega(
         dados: widget.dados,
+        pedidosNaoOrdenados: true,
       );
     } else {
       return ClientesPage(

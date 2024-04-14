@@ -1,4 +1,4 @@
-package br.com.wgcode.separacao_sgc
+package br.com.mobisync.separacao_sgc
 
 import io.flutter.embedding.android.FlutterActivity
 

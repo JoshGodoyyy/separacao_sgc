@@ -8,17 +8,31 @@ class PedidoRoteiro {
   String url = '${ApiConfig().url}/OrderRoute';
 
   Future<List> fetchPedidosNaoCarregados(
-      PedidoRoteiroModel pedido, bool separarPedidos) async {
+    String numeroEntrega,
+    String cepEntrega,
+    int idCliente,
+    int idRoteiro,
+    bool separarPedidos,
+  ) async {
     final response = await http.post(
       Uri.parse('$url/Unloaded'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
           'id': 0,
-          'idRoteiroEntrega': pedido.idRoteiroEntrega,
-          'idCliente': pedido.idCliente,
+          'idRoteiroEntrega': idRoteiro,
+          'volumeAcessorio': 0,
+          'volumeChapa': 0,
+          'volumePerfil': 0,
+          'pedidosAgrupados': "",
+          'idCliente': idCliente,
           'carregado': 0,
+          'setorEstoque': "",
+          'idStatus': 0,
+          'status': "",
           'separarPedidos': separarPedidos,
+          'numeroEntrega': numeroEntrega,
+          'cepEntrega': cepEntrega,
         },
       ),
     );
@@ -32,17 +46,31 @@ class PedidoRoteiro {
   }
 
   Future<List> fetchPedidosCarregados(
-      PedidoRoteiroModel pedido, bool separarPedidos) async {
+    String numeroEntrega,
+    String cepEntrega,
+    int idCliente,
+    int idRoteiro,
+    bool separarPedidos,
+  ) async {
     final response = await http.post(
       Uri.parse('$url/Loaded'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
           'id': 0,
-          'idRoteiroEntrega': pedido.idRoteiroEntrega,
-          'idCliente': pedido.idCliente,
+          'idRoteiroEntrega': idRoteiro,
+          'volumeAcessorio': 0,
+          'volumeChapa': 0,
+          'volumePerfil': 0,
+          'pedidosAgrupados': "",
+          'idCliente': idCliente,
           'carregado': 0,
+          'setorEstoque': "",
+          'idStatus': 0,
+          'status': "",
           'separarPedidos': separarPedidos,
+          'numeroEntrega': numeroEntrega,
+          'cepEntrega': cepEntrega,
         },
       ),
     );
@@ -56,39 +84,63 @@ class PedidoRoteiro {
   }
 
   Future<List> carregarPedido(
-      PedidoRoteiroModel pedido, bool separarPedidos) async {
+    int idPedido,
+    String numeroEntrega,
+    String cepEntrega,
+    int idCliente,
+    int idRoteiro,
+    bool separarPedidos,
+  ) async {
     await http.post(
       Uri.parse('$url/UpdateStatus'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
-          'id': pedido.id,
-          'idRoteiroEntrega': pedido.idRoteiroEntrega,
-          'idCliente': pedido.idCliente,
+          'id': idPedido,
+          'idRoteiroEntrega': idRoteiro,
+          'idCliente': idCliente,
           'carregado': 1,
         },
       ),
     );
 
-    return fetchPedidosNaoCarregados(pedido, separarPedidos);
+    return fetchPedidosNaoCarregados(
+      numeroEntrega,
+      cepEntrega,
+      idCliente,
+      idRoteiro,
+      separarPedidos,
+    );
   }
 
   Future<List> descarregarPedido(
-      PedidoRoteiroModel pedido, bool separarPedidos) async {
+    int idPedido,
+    String numeroEntrega,
+    String cepEntrega,
+    int idCliente,
+    int idRoteiro,
+    bool separarPedidos,
+  ) async {
     await http.post(
       Uri.parse('$url/UpdateStatus'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
-          'id': pedido.id,
-          'idRoteiroEntrega': pedido.idRoteiroEntrega,
-          'idCliente': pedido.idCliente,
+          'id': idPedido,
+          'idRoteiroEntrega': idRoteiro,
+          'idCliente': idCliente,
           'carregado': 0,
         },
       ),
     );
 
-    return fetchPedidosCarregados(pedido, separarPedidos);
+    return fetchPedidosCarregados(
+      numeroEntrega,
+      cepEntrega,
+      idCliente,
+      idRoteiro,
+      separarPedidos,
+    );
   }
 
   Future fetchPedido(int idPedido) async {

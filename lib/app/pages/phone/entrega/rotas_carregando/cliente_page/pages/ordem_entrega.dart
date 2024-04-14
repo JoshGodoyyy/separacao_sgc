@@ -13,9 +13,12 @@ import '../../../../../../ui/widgets/error_alert.dart';
 
 class OrdemEntrega extends StatefulWidget {
   final RoteiroEntregaModel dados;
+  final bool pedidosNaoOrdenados;
+
   const OrdemEntrega({
     super.key,
     required this.dados,
+    required this.pedidosNaoOrdenados,
   });
 
   @override
@@ -81,6 +84,15 @@ class _OrdemEntregaState extends State<OrdemEntrega> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: widget.pedidosNaoOrdenados
+          ? null
+          : AppBar(
+              backgroundColor: Theme.of(context).primaryColor,
+              title: Text(
+                widget.dados.nome!,
+              ),
+              centerTitle: true,
+            ),
       body: SafeArea(
         child: StreamBuilder<EnderecoRoteiroState>(
           stream: _bloc.outputRoteiroEntregaController,

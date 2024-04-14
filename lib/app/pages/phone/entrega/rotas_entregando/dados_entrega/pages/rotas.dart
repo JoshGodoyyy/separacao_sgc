@@ -61,7 +61,7 @@ class _RotasState extends State<Rotas> {
         ),
         cep: endereco.cep.toString(),
         numero: endereco.numero.toString(),
-        entregue: 11,
+        idSituacao: 11,
       ),
     );
   }
@@ -74,7 +74,7 @@ class _RotasState extends State<Rotas> {
         ),
         cep: endereco.cep.toString(),
         numero: endereco.numero.toString(),
-        entregue: 5,
+        idSituacao: 5,
       ),
     );
   }
@@ -114,7 +114,7 @@ class _RotasState extends State<Rotas> {
                               children: [
                                 Material(
                                   elevation: 5,
-                                  color: endereco.entregue == 11
+                                  color: endereco.idSituacao == 11
                                       ? Colors.green
                                       : Theme.of(context).primaryColor,
                                   shape: const CircleBorder(),
@@ -131,18 +131,18 @@ class _RotasState extends State<Rotas> {
                                       children: [
                                         SlidableAction(
                                           onPressed: (_) =>
-                                              endereco.entregue == 5
+                                              endereco.idSituacao == 5
                                                   ? _entregarPedido(endereco)
                                                   : _retornarPedido(endereco),
                                           backgroundColor:
-                                              endereco.entregue == 11
+                                              endereco.idSituacao == 11
                                                   ? Colors.red
                                                   : Colors.green,
                                           foregroundColor: Colors.white,
-                                          icon: endereco.entregue == 11
+                                          icon: endereco.idSituacao == 11
                                               ? Icons.undo
                                               : Icons.check,
-                                          label: endereco.entregue == 11
+                                          label: endereco.idSituacao == 11
                                               ? 'Retornar'
                                               : 'Entregue',
                                           borderRadius: const BorderRadius.only(
@@ -157,7 +157,7 @@ class _RotasState extends State<Rotas> {
                                       borderRadius: const BorderRadius.all(
                                         Radius.circular(10),
                                       ),
-                                      color: endereco.entregue == 11
+                                      color: endereco.idSituacao == 11
                                           ? Colors.green
                                           : Theme.of(context).primaryColor,
                                       child: InkWell(

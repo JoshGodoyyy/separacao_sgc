@@ -28,22 +28,36 @@ class PedidoRoteiroBloc {
 
     if (event is GetPedidosNaoCarregados) {
       pedidos = await _repository.fetchPedidosNaoCarregados(
-        event.pedido,
+        event.numeroEntrega,
+        event.cepEntrega,
+        event.idCliente,
+        event.idRoteiro,
         event.separarAgrupamento,
       );
     } else if (event is GetPedidosCarregados) {
       pedidos = await _repository.fetchPedidosCarregados(
-        event.pedido,
+        event.numeroEntrega,
+        event.cepEntrega,
+        event.idCliente,
+        event.idRoteiro,
         event.separarAgrupamento,
       );
     } else if (event is CarregarPedido) {
       pedidos = await _repository.carregarPedido(
-        event.pedido,
+        event.idPedido,
+        event.numeroEntrega,
+        event.cepEntrega,
+        event.idCliente,
+        event.idRoteiro,
         event.separarAgrupamento,
       );
     } else if (event is DescarregarPedido) {
       pedidos = await _repository.descarregarPedido(
-        event.pedido,
+        event.idPedido,
+        event.numeroEntrega,
+        event.cepEntrega,
+        event.idCliente,
+        event.idRoteiro,
         event.separarAgrupamento,
       );
     }

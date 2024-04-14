@@ -166,6 +166,7 @@ class _ClientesPageState extends State<ClientesPage> {
                   MaterialPageRoute(
                     builder: (context) => OrdemEntrega(
                       dados: widget.dados,
+                      pedidosNaoOrdenados: false,
                     ),
                   ),
                 );

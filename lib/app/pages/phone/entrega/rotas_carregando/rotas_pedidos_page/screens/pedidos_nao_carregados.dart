@@ -3,17 +3,21 @@ import 'package:provider/provider.dart';
 import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
 import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
 import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_state.dart';
-import 'package:sgc/app/models/pedido_roteiro_model.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_carregando/rotas_pedidos_page/screens/widgets/pedido_list_item.dart';
 
 import '../../../../../../config/app_config.dart';
 import '../../../../../../ui/widgets/error_alert.dart';
 
 class PedidosNaoCarregados extends StatefulWidget {
+  final String numeroEntrega;
+  final String cepEntrega;
   final int idRoteiro;
   final int idCliente;
+
   const PedidosNaoCarregados({
     super.key,
+    required this.numeroEntrega,
+    required this.cepEntrega,
     required this.idRoteiro,
     required this.idCliente,
   });
@@ -35,16 +39,12 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
   _fetchData() {
     final settings = Provider.of<AppConfig>(context, listen: false);
 
-    var pedido = PedidoRoteiroModel(
-      id: 0,
-      idRoteiroEntrega: widget.idRoteiro,
-      idCliente: widget.idCliente,
-      carregado: 0,
-    );
-
     _bloc.inputProdutoRoteiroController.add(
       GetPedidosNaoCarregados(
-        pedido: pedido,
+        numeroEntrega: widget.numeroEntrega,
+        cepEntrega: widget.cepEntrega,
+        idCliente: widget.idCliente,
+        idRoteiro: widget.idRoteiro,
         separarAgrupamento: settings.separarAgrupamento,
       ),
     );
@@ -63,7 +63,18 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
         children: [
           for (var pedido in pedidos)
             PedidoListItem(
-              pedido: pedido,
+              idPedido: pedido.id,
+              numeroEntrega: widget.numeroEntrega,
+              cepEntrega: widget.cepEntrega,
+              idCliente: widget.idCliente,
+              idRoteiro: widget.idRoteiro,
+              carregado: pedido.carregado,
+              idStatus: pedido.idStatus,
+              setorEstoque: pedido.setorEstoque,
+              status: pedido.status,
+              volumeAcessorio: pedido.volumeAcessorio,
+              volumeChapa: pedido.volumeChapa,
+              volumePerfil: pedido.volumePerfil,
               bloc: _bloc,
             ),
         ],

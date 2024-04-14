@@ -50,14 +50,14 @@ class EnderecoRoteiroEntrega {
   }
 
   Future<List> entregarPedido(
-      int idRoteiro, String cep, String numero, int entregue) async {
+      int idRoteiro, String cep, String numero, int idSituacao) async {
     await http.post(
       Uri.parse('$url/Deliver'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
           'id': 0,
-          'entregue': entregue,
+          'idSicuacao': idSituacao,
           'cep': cep,
           'numero': numero,
           'idRoteiro': idRoteiro,

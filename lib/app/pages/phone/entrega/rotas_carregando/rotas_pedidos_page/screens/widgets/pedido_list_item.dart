@@ -3,7 +3,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
 import 'package:sgc/app/data/enums/icones.dart';
-import 'package:sgc/app/models/pedido_roteiro_model.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_carregando/rotas_pedidos_page/screens/produtos_pedido.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 
@@ -11,12 +10,34 @@ import '../../../../../../../config/app_config.dart';
 import '../../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
 
 class PedidoListItem extends StatefulWidget {
-  final PedidoRoteiroModel pedido;
+  final int idPedido;
+  final String numeroEntrega;
+  final String cepEntrega;
+  final int idCliente;
+  final int idRoteiro;
+  final int carregado;
+  final int idStatus;
+  final String setorEstoque;
+  final String status;
+  final int volumeAcessorio;
+  final int volumeChapa;
+  final int volumePerfil;
   final PedidoRoteiroBloc bloc;
 
   const PedidoListItem({
     super.key,
-    required this.pedido,
+    required this.idPedido,
+    required this.numeroEntrega,
+    required this.cepEntrega,
+    required this.idCliente,
+    required this.idRoteiro,
+    required this.carregado,
+    required this.idStatus,
+    required this.setorEstoque,
+    required this.status,
+    required this.volumeAcessorio,
+    required this.volumeChapa,
+    required this.volumePerfil,
     required this.bloc,
   });
 
@@ -27,15 +48,13 @@ class PedidoListItem extends StatefulWidget {
 class _PedidoListItemState extends State<PedidoListItem> {
   String label() {
     String result;
-    widget.pedido.carregado == 1
-        ? result = 'Não Carregado'
-        : result = 'Carregado';
+    widget.carregado == 1 ? result = 'Não Carregado' : result = 'Carregado';
     return result;
   }
 
   void update() {
     final settings = Provider.of<AppConfig>(context, listen: false);
-    if (widget.pedido.idStatus! <= 5 && widget.pedido.carregado == 0) {
+    if (widget.idStatus <= 5 && widget.carregado == 0) {
       showDialog(
         context: context,
         builder: (context) {
@@ -47,17 +66,25 @@ class _PedidoListItemState extends State<PedidoListItem> {
         },
       );
     } else {
-      if (widget.pedido.carregado == 1) {
+      if (widget.carregado == 1) {
         widget.bloc.inputProdutoRoteiroController.add(
           DescarregarPedido(
-            pedido: widget.pedido,
+            idPedido: widget.idPedido,
+            numeroEntrega: widget.numeroEntrega,
+            cepEntrega: widget.cepEntrega,
+            idCliente: widget.idCliente,
+            idRoteiro: widget.idRoteiro,
             separarAgrupamento: settings.separarAgrupamento,
           ),
         );
       } else {
         widget.bloc.inputProdutoRoteiroController.add(
           CarregarPedido(
-            pedido: widget.pedido,
+            idPedido: widget.idPedido,
+            numeroEntrega: widget.numeroEntrega,
+            cepEntrega: widget.cepEntrega,
+            idCliente: widget.idCliente,
+            idRoteiro: widget.idRoteiro,
             separarAgrupamento: settings.separarAgrupamento,
           ),
         );
@@ -78,9 +105,9 @@ class _PedidoListItemState extends State<PedidoListItem> {
                 update();
               },
               backgroundColor:
-                  widget.pedido.carregado == 1 ? Colors.red : Colors.green,
+                  widget.carregado == 1 ? Colors.red : Colors.green,
               foregroundColor: Colors.white,
-              icon: widget.pedido.carregado == 1 ? Icons.close : Icons.check,
+              icon: widget.carregado == 1 ? Icons.close : Icons.check,
               label: label(),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10),
@@ -99,9 +126,7 @@ class _PedidoListItemState extends State<PedidoListItem> {
             onTap: () => Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ProdutosPedido(
-                  idPedido: int.parse(
-                    widget.pedido.id.toString(),
-                  ),
+                  idPedido: widget.idPedido,
                 ),
               ),
             ),
@@ -130,7 +155,7 @@ class _PedidoListItemState extends State<PedidoListItem> {
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Text(
-                                  'Pedido ${widget.pedido.id}',
+                                  'Pedido ${widget.idPedido}',
                                   style: const TextStyle(
                                     fontSize: 15,
                                   ),
@@ -140,7 +165,7 @@ class _PedidoListItemState extends State<PedidoListItem> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Setor Estoque: ${widget.pedido.setorEstoque ?? ''}',
+                              'Setor Estoque: ${widget.setorEstoque}',
                             ),
                             const SizedBox(height: 4),
                           ],
@@ -154,7 +179,7 @@ class _PedidoListItemState extends State<PedidoListItem> {
                             ),
                           ),
                           padding: const EdgeInsets.all(4),
-                          child: Text('${widget.pedido.status}'),
+                          child: Text(widget.status),
                         ),
                       ],
                     ),
@@ -181,12 +206,11 @@ class _PedidoListItemState extends State<PedidoListItem> {
                     Row(
                       children: [
                         volumeContainer(
-                            'Acessórios: ${widget.pedido.volumeAcessorio}'),
+                            'Acessórios: ${widget.volumeAcessorio}'),
                         const SizedBox(width: 8),
-                        volumeContainer('Chapas: ${widget.pedido.volumeChapa}'),
+                        volumeContainer('Chapas: ${widget.volumeChapa}'),
                         const SizedBox(width: 8),
-                        volumeContainer(
-                            'Perfis: ${widget.pedido.volumePerfil}'),
+                        volumeContainer('Perfis: ${widget.volumePerfil}'),
                       ],
                     ),
                   ],

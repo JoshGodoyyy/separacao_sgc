@@ -38,7 +38,7 @@ class EnderecoRoteiroBloc {
         event.idRoteiro,
         event.cep,
         event.numero,
-        event.entregue,
+        event.idSituacao,
       );
     }
 
