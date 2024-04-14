@@ -27,13 +27,25 @@ class PedidoRoteiroBloc {
     _outputProdutoRoteiroController.add(ProdutoRoteiroLoadingState());
 
     if (event is GetPedidosNaoCarregados) {
-      pedidos = await _repository.fetchPedidosNaoCarregados(event.pedido);
+      pedidos = await _repository.fetchPedidosNaoCarregados(
+        event.pedido,
+        event.separarAgrupamento,
+      );
     } else if (event is GetPedidosCarregados) {
-      pedidos = await _repository.fetchPedidosCarregados(event.pedido);
+      pedidos = await _repository.fetchPedidosCarregados(
+        event.pedido,
+        event.separarAgrupamento,
+      );
     } else if (event is CarregarPedido) {
-      pedidos = await _repository.carregarPedido(event.pedido);
+      pedidos = await _repository.carregarPedido(
+        event.pedido,
+        event.separarAgrupamento,
+      );
     } else if (event is DescarregarPedido) {
-      pedidos = await _repository.descarregarPedido(event.pedido);
+      pedidos = await _repository.descarregarPedido(
+        event.pedido,
+        event.separarAgrupamento,
+      );
     }
 
     _outputProdutoRoteiroController

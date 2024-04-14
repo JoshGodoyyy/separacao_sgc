@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sgc/app/config/app_config.dart';
 
 import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
 import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
@@ -31,6 +33,8 @@ class _PedidosCarregadosState extends State<PedidosCarregados> {
   }
 
   _fetchData() {
+    final settings = Provider.of<AppConfig>(context, listen: false);
+
     var pedido = PedidoRoteiroModel(
       id: 0,
       idRoteiroEntrega: widget.idRoteiro,
@@ -39,7 +43,10 @@ class _PedidosCarregadosState extends State<PedidosCarregados> {
     );
 
     _bloc.inputProdutoRoteiroController.add(
-      GetPedidosCarregados(pedido: pedido),
+      GetPedidosCarregados(
+        pedido: pedido,
+        separarAgrupamento: settings.separarAgrupamento,
+      ),
     );
   }
 
@@ -79,6 +86,7 @@ class _PedidosCarregadosState extends State<PedidosCarregados> {
           );
         } else if (snapshot.data is ProdutoRoteiroLoadedState) {
           List pedidos = snapshot.data?.produtos ?? [];
+
           return _pedidos(pedidos);
         } else {
           return ErrorAlert(
