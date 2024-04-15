@@ -17,4 +17,15 @@ class Configuracoes {
 
     ConfiguracoesSistema().setFechamento(value);
   }
+
+  Future<int> verificaConfiguracaoAgrupamento() async {
+    var response = await http.get(
+      Uri.parse(_url),
+    );
+
+    Map<String, dynamic> data = jsonDecode(response.body);
+    int value = data['imprimirPedidoSeparadoAgrupado'];
+
+    return value;
+  }
 }

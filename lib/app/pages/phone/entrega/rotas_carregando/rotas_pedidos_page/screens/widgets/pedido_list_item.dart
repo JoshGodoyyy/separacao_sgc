@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:provider/provider.dart';
 import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
 import 'package:sgc/app/data/enums/icones.dart';
+import 'package:sgc/app/data/repositories/configuracoes.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_carregando/rotas_pedidos_page/screens/produtos_pedido.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 
-import '../../../../../../../config/app_config.dart';
 import '../../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
 
 class PedidoListItem extends StatefulWidget {
@@ -52,8 +51,7 @@ class _PedidoListItemState extends State<PedidoListItem> {
     return result;
   }
 
-  void update() {
-    final settings = Provider.of<AppConfig>(context, listen: false);
+  void update() async {
     if (widget.idStatus <= 5 && widget.carregado == 0) {
       showDialog(
         context: context,
@@ -66,6 +64,11 @@ class _PedidoListItemState extends State<PedidoListItem> {
         },
       );
     } else {
+      bool separarAgrupamento =
+          await Configuracoes().verificaConfiguracaoAgrupamento() == 1
+              ? true
+              : false;
+
       if (widget.carregado == 1) {
         widget.bloc.inputProdutoRoteiroController.add(
           DescarregarPedido(
@@ -74,7 +77,7 @@ class _PedidoListItemState extends State<PedidoListItem> {
             cepEntrega: widget.cepEntrega,
             idCliente: widget.idCliente,
             idRoteiro: widget.idRoteiro,
-            separarAgrupamento: settings.separarAgrupamento,
+            separarAgrupamento: separarAgrupamento,
           ),
         );
       } else {
@@ -85,7 +88,7 @@ class _PedidoListItemState extends State<PedidoListItem> {
             cepEntrega: widget.cepEntrega,
             idCliente: widget.idCliente,
             idRoteiro: widget.idRoteiro,
-            separarAgrupamento: settings.separarAgrupamento,
+            separarAgrupamento: separarAgrupamento,
           ),
         );
       }

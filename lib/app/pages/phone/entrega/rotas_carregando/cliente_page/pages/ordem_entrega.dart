@@ -113,22 +113,23 @@ class _OrdemEntregaState extends State<OrdemEntrega> {
                   child: Text('Nada por aqui'),
                 );
               } else {
-                bool naoOrdenados = false;
+                int posicao = 0;
+
                 for (var endereco in enderecos) {
-                  if (endereco.posicao == 0) {
-                    naoOrdenados = true;
-                  } else {
-                    naoOrdenados = false;
+                  if (endereco.posicao == 0 && posicao == 0) {
+                    endereco.posicao = posicao;
                   }
+
+                  posicao++;
                 }
-                if (naoOrdenados) {
-                  EnderecoRoteiroEntrega().atualizarOrdem(
-                    int.parse(
-                      widget.dados.id.toString(),
-                    ),
-                    enderecos,
-                  );
-                }
+
+                EnderecoRoteiroEntrega().atualizarOrdem(
+                  int.parse(
+                    widget.dados.id.toString(),
+                  ),
+                  enderecos,
+                );
+
                 return Padding(
                   padding: const EdgeInsets.all(8),
                   child: Column(
