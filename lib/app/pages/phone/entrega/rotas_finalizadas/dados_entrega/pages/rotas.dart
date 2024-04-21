@@ -87,7 +87,7 @@ class _RotasState extends State<Rotas> {
                               children: [
                                 Material(
                                   elevation: 5,
-                                  color: endereco.entregue == 11
+                                  color: endereco.idSituacao == 11
                                       ? Colors.green
                                       : Theme.of(context).primaryColor,
                                   shape: const CircleBorder(),
@@ -103,7 +103,7 @@ class _RotasState extends State<Rotas> {
                                     borderRadius: const BorderRadius.all(
                                       Radius.circular(10),
                                     ),
-                                    color: endereco.entregue == 11
+                                    color: endereco.idSituacao == 11
                                         ? Colors.green
                                         : Theme.of(context).primaryColor,
                                     child: InkWell(

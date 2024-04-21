@@ -23,7 +23,7 @@ class RoteiroEntrega {
 
   Future<List> concluirCarregamento(int idRoteiro) async {
     await http.post(
-      Uri.parse(url),
+      Uri.parse('$url/FinishLoading'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {

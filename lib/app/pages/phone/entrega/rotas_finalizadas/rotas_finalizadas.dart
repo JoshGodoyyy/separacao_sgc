@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_finalizadas/dados_entrega/dados_entrega.dart';
-import 'package:sgc/app/pages/phone/entrega/rotas_finalizadas/widgets/pedido_entregando.dart';
+import 'package:sgc/app/pages/phone/entrega/rotas_finalizadas/widgets/pedido_entregue.dart';
 
 import '../../../../data/blocs/roteiro_entrega/roteiro_bloc.dart';
 import '../../../../data/blocs/roteiro_entrega/roteiro_event.dart';
@@ -54,7 +54,7 @@ class _RotasFinalizadasState extends State<RotasFinalizadas> {
                 ),
               )
             else if (roteiro.dataFinalizacao != null)
-              PedidoEntregando(
+              PedidoEntregue(
                 dados: roteiro,
                 icon: Icons.info,
                 page: DadosEntrega(

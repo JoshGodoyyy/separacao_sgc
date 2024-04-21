@@ -49,6 +49,7 @@ class ClienteModel {
     complemento = json['complemento'];
     bairro = json['bairro'];
     cidade = json['cidade'];
+    estado = json['estado'];
     cep = json['cep'];
   }
 }

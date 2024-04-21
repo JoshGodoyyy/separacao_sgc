@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:sgc/app/pages/phone/entrega/home_page/rotas_home.dart';
+import 'package:sgc/app/pages/phone/estoque/consultar_estoque.dart';
 import 'package:sgc/app/pages/phone/separacao/home_page/separacao_home.dart';
 import 'package:sgc/app/pages/phone/settings_page/settings.dart';
 import 'package:sgc/app/ui/styles/colors_app.dart';
+
 import '../login_page/login_page.dart';
 import 'widgets/home_header.dart';
 
@@ -20,10 +22,17 @@ class _HomePageState extends State<HomePage> {
   int _tela = 0;
 
   final _telas = const [
+    ConsultarEstoque(),
     SeparacaoHome(),
     RotasHome(),
     Settings(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _tela = 1;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,13 +100,14 @@ class _HomePageState extends State<HomePage> {
                   // ListTile(
                   //   onTap: () {
                   //     _advancedDrawerController.hideDrawer();
+                  //     setState(() => _tela = 0);
                   //   },
                   //   leading: const Icon(
-                  //     Icons.assignment_add,
+                  //     Icons.search_rounded,
                   //     color: Colors.white,
                   //   ),
                   //   title: const Text(
-                  //     'Novo Orçamento',
+                  //     'Consultar Estoque',
                   //     style: TextStyle(
                   //       color: Colors.white,
                   //     ),
@@ -106,17 +116,17 @@ class _HomePageState extends State<HomePage> {
                   ListTile(
                     onTap: () {
                       _advancedDrawerController.hideDrawer();
-                      setState(() => _tela = 0);
+                      setState(() => _tela = 1);
                     },
                     leading: Icon(
                       Icons.add_shopping_cart_rounded,
                       color:
-                          _tela == 0 ? ColorsApp.secondaryColor : Colors.white,
+                          _tela == 1 ? ColorsApp.secondaryColor : Colors.white,
                     ),
                     title: Text(
                       'Separação',
                       style: TextStyle(
-                        color: _tela == 0
+                        color: _tela == 1
                             ? ColorsApp.secondaryColor
                             : Colors.white,
                       ),
@@ -125,17 +135,17 @@ class _HomePageState extends State<HomePage> {
                   ListTile(
                     onTap: () {
                       _advancedDrawerController.hideDrawer();
-                      setState(() => _tela = 1);
+                      setState(() => _tela = 2);
                     },
                     leading: Icon(
                       Icons.route_rounded,
                       color:
-                          _tela == 1 ? ColorsApp.secondaryColor : Colors.white,
+                          _tela == 2 ? ColorsApp.secondaryColor : Colors.white,
                     ),
                     title: Text(
                       'Roteiros de Entrega',
                       style: TextStyle(
-                        color: _tela == 1
+                        color: _tela == 2
                             ? ColorsApp.secondaryColor
                             : Colors.white,
                       ),
@@ -145,17 +155,17 @@ class _HomePageState extends State<HomePage> {
                   ListTile(
                     onTap: () {
                       _advancedDrawerController.hideDrawer();
-                      setState(() => _tela = 2);
+                      setState(() => _tela = 3);
                     },
                     leading: Icon(
                       Icons.settings,
                       color:
-                          _tela == 2 ? ColorsApp.secondaryColor : Colors.white,
+                          _tela == 3 ? ColorsApp.secondaryColor : Colors.white,
                     ),
                     title: Text(
                       'Configurações',
                       style: TextStyle(
-                        color: _tela == 2
+                        color: _tela == 3
                             ? ColorsApp.secondaryColor
                             : Colors.white,
                       ),

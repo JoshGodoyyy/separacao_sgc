@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../../../../data/blocs/endereco_roteiro/endereco_roteiro_event.dart';
-import '../../../../data/blocs/endereco_roteiro/pedido_endereco_bloc.dart';
-import '../../../../data/blocs/endereco_roteiro/pedido_endereco_roteiro_state.dart';
+import '../../../../data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
+import '../../../../data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
+import '../../../../data/blocs/pedido_roteiro/pedido_roteiro_state.dart';
+import '../../../../data/repositories/configuracoes.dart';
 import '../../../../ui/widgets/error_alert.dart';
 
 class PedidosRota extends StatefulWidget {
   final dynamic endereco;
   final int idRoteiro;
+
   const PedidosRota({
     super.key,
     required this.endereco,
@@ -19,39 +21,47 @@ class PedidosRota extends StatefulWidget {
 }
 
 class _PedidosRotaState extends State<PedidosRota> {
-  late PedidoEnderecoRoteiroBloc _pedidoEnderecoRoteiroBloc;
+  late PedidoRoteiroBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    _pedidoEnderecoRoteiroBloc = PedidoEnderecoRoteiroBloc();
+    _bloc = PedidoRoteiroBloc();
     _fetchPedidos();
   }
 
-  _fetchPedidos() {
-    _pedidoEnderecoRoteiroBloc.inputRoteiroEntregaController.add(
-      GetPedidos(
-          cep: widget.endereco.cep,
-          numero: widget.endereco.numero,
-          idRoteiro: widget.idRoteiro),
+  _fetchPedidos() async {
+    bool separarAgrupamento =
+        await Configuracoes().verificaConfiguracaoAgrupamento() == 1
+            ? true
+            : false;
+
+    _bloc.inputProdutoRoteiroController.add(
+      GetPedidosCarregados(
+        numeroEntrega: widget.endereco.numero,
+        cepEntrega: widget.endereco.cep,
+        idCliente: widget.endereco.idCliente,
+        idRoteiro: widget.idRoteiro,
+        separarAgrupamento: separarAgrupamento,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PedidoEnderecoRoteiroState>(
-      stream: _pedidoEnderecoRoteiroBloc.outputRoteiroEntregaController,
+    return StreamBuilder<ProdutoRoteiroState>(
+      stream: _bloc.outputProdutoRoteiroController,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting ||
-            snapshot.data is PedidoEnderecoRoteiroLoadingState) {
+            snapshot.data is ProdutoRoteiroLoadingState) {
           return const Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 46),
               child: LinearProgressIndicator(),
             ),
           );
-        } else if (snapshot.data is PedidoEnderecoRoteiroLoadedState) {
-          List pedidos = snapshot.data?.pedidos ?? [];
+        } else if (snapshot.data is ProdutoRoteiroLoadedState) {
+          List pedidos = snapshot.data?.produtos ?? [];
 
           return SingleChildScrollView(
             child: Container(

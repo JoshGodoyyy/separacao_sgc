@@ -7,7 +7,7 @@ import 'package:sgc/app/models/roteiro_entrega_model.dart';
 // import '../../../../../config/app_config.dart';
 import '../../../../../ui/widgets/gradient_icon.dart';
 
-class PedidoEntregando extends StatelessWidget {
+class PedidoEntregue extends StatelessWidget {
   final RoteiroEntregaModel dados;
   final IconData icon;
   final Widget page;
@@ -22,7 +22,7 @@ class PedidoEntregando extends StatelessWidget {
     bottomRight: Radius.circular(20),
   );
 
-  const PedidoEntregando({
+  const PedidoEntregue({
     super.key,
     required this.dados,
     required this.icon,

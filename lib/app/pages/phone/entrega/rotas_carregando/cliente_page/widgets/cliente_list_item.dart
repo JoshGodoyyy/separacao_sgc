@@ -35,6 +35,16 @@ class ClienteListItem extends StatelessWidget {
       }
     }
 
+    String endereco(ClienteModel cliente){
+      String value;
+      if (cliente.complemento!.isEmpty){
+        value = '${cliente.logradouro} ${cliente.endereco}, ${cliente.numero} - ${cliente.bairro} - ${cliente.cidade} - ${cliente.estado}. ${cliente.cep}';
+      } else {
+        value = '${cliente.logradouro} ${cliente.endereco}, ${cliente.numero} ${cliente.complemento} - ${cliente.bairro} - ${cliente.cidade} - ${cliente.estado}. ${cliente.cep}';
+      }
+        return value;
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
       child: Material(
@@ -94,7 +104,7 @@ class ClienteListItem extends StatelessWidget {
                         Wrap(
                           children: [
                             Text(
-                              cliente.razaoSocial!,
+                              endereco(cliente),
                               style: const TextStyle(
                                 fontSize: 14,
                               ),

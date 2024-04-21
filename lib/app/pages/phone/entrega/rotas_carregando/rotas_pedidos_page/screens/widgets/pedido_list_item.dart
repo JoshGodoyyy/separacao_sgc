@@ -208,12 +208,32 @@ class _PedidoListItemState extends State<PedidoListItem> {
                     ),
                     Row(
                       children: [
-                        volumeContainer(
-                            'Acessórios: ${widget.volumeAcessorio}'),
-                        const SizedBox(width: 8),
-                        volumeContainer('Chapas: ${widget.volumeChapa}'),
-                        const SizedBox(width: 8),
-                        volumeContainer('Perfis: ${widget.volumePerfil}'),
+                        Visibility(
+                          visible: widget.volumeAcessorio == 0 ? false : true,
+                          child: volumeContainer(
+                            'Acessórios: ${widget.volumeAcessorio}',
+                          ),
+                        ),
+                        Visibility(
+                          visible: widget.volumeAcessorio == 0 ? false : true,
+                          child: const SizedBox(width: 8),
+                        ),
+                        Visibility(
+                          visible: widget.volumeChapa == 0 ? false : true,
+                          child: volumeContainer(
+                            'Chapas: ${widget.volumeChapa}',
+                          ),
+                        ),
+                        Visibility(
+                          visible: widget.volumeChapa == 0 ? false : true,
+                          child: const SizedBox(width: 8),
+                        ),
+                        Visibility(
+                          visible: widget.volumePerfil == 0 ? false : true,
+                          child: volumeContainer(
+                            'Perfis: ${widget.volumePerfil}',
+                          ),
+                        ),
                       ],
                     ),
                   ],

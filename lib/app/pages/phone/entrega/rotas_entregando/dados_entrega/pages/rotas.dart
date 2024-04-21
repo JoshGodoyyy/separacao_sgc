@@ -11,6 +11,7 @@ import '../../pedidos_rota.dart';
 
 class Rotas extends StatefulWidget {
   final RoteiroEntregaModel roteiro;
+
   const Rotas({
     super.key,
     required this.roteiro,
@@ -62,6 +63,9 @@ class _RotasState extends State<Rotas> {
         cep: endereco.cep.toString(),
         numero: endereco.numero.toString(),
         idSituacao: 11,
+        idCliente: int.parse(
+          endereco.idCliente.toString(),
+        ),
       ),
     );
   }
@@ -74,7 +78,10 @@ class _RotasState extends State<Rotas> {
         ),
         cep: endereco.cep.toString(),
         numero: endereco.numero.toString(),
-        idSituacao: 5,
+        idSituacao: 6,
+        idCliente: int.parse(
+          endereco.idCliente.toString(),
+        ),
       ),
     );
   }
@@ -131,7 +138,8 @@ class _RotasState extends State<Rotas> {
                                       children: [
                                         SlidableAction(
                                           onPressed: (_) =>
-                                              endereco.idSituacao == 5
+                                              endereco.idSituacao >= 6 &&
+                                                      endereco.idSituacao < 11
                                                   ? _entregarPedido(endereco)
                                                   : _retornarPedido(endereco),
                                           backgroundColor:

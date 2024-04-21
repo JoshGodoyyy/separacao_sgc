@@ -73,7 +73,7 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
               carregado: pedido.carregado,
               idStatus: pedido.idStatus,
               setorEstoque: pedido.setorEstoque,
-              status: pedido.status,
+              status: pedido.status ?? '',
               volumeAcessorio: pedido.volumeAcessorio,
               volumeChapa: pedido.volumeChapa,
               volumePerfil: pedido.volumePerfil,

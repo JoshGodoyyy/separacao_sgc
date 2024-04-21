@@ -33,11 +33,13 @@ class EntregarPedido extends EnderecoRoteiroEvent {
   final String cep;
   final String numero;
   final int idSituacao;
+  final int idCliente;
 
   EntregarPedido({
     required this.idRoteiro,
     required this.cep,
     required this.numero,
     required this.idSituacao,
+    required this.idCliente,
   });
 }
