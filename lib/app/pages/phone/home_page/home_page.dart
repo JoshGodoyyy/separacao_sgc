@@ -97,22 +97,22 @@ class _HomePageState extends State<HomePage> {
                   //     ),
                   //   ),
                   // ),
-                  // ListTile(
-                  //   onTap: () {
-                  //     _advancedDrawerController.hideDrawer();
-                  //     setState(() => _tela = 0);
-                  //   },
-                  //   leading: const Icon(
-                  //     Icons.search_rounded,
-                  //     color: Colors.white,
-                  //   ),
-                  //   title: const Text(
-                  //     'Consultar Estoque',
-                  //     style: TextStyle(
-                  //       color: Colors.white,
-                  //     ),
-                  //   ),
-                  // ),
+                  ListTile(
+                    onTap: () {
+                      _advancedDrawerController.hideDrawer();
+                      setState(() => _tela = 0);
+                    },
+                    leading: const Icon(
+                      Icons.search_rounded,
+                      color: Colors.white,
+                    ),
+                    title: const Text(
+                      'Consultar Estoque',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   ListTile(
                     onTap: () {
                       _advancedDrawerController.hideDrawer();
@@ -222,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            const Text('1.1.0'),
+            const Text('1.2.3'),
           ],
         ),
       ),
