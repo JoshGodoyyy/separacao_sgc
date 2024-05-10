@@ -52,7 +52,7 @@ class _PedidoListItemState extends State<PedidoListItem> {
   }
 
   void update() async {
-    if (widget.idStatus <= 5 && widget.carregado == 0) {
+    if (widget.idStatus < 5 && widget.carregado == 0) {
       showDialog(
         context: context,
         builder: (context) {
