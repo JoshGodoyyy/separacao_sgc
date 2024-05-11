@@ -3,6 +3,7 @@ import 'package:sgc/app/data/blocs/cliente/cliente_bloc.dart';
 import 'package:sgc/app/data/blocs/cliente/cliente_event.dart';
 import 'package:sgc/app/data/blocs/cliente/cliente_state.dart';
 import 'package:sgc/app/data/blocs/roteiro_entrega/roteiro_bloc.dart';
+import 'package:sgc/app/data/repositories/configuracoes.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_carregando/cliente_page/pages/clientes_page.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_carregando/cliente_page/pages/ordem_entrega.dart';
@@ -25,6 +26,7 @@ class Clientes extends StatefulWidget {
 class _ClientesState extends State<Clientes> {
   late ClienteBloc _clienteBloc;
   late List clientes;
+  late bool agrupamentoPedidos;
 
   @override
   void initState() {
@@ -33,12 +35,15 @@ class _ClientesState extends State<Clientes> {
     _fetchClientes();
   }
 
-  _fetchClientes() {
+  _fetchClientes() async {
+    agrupamentoPedidos =
+        await Configuracoes().verificaConfiguracaoAgrupamento() == 1;
     _clienteBloc.inputClienteController.add(
       GetClientes(
         idRoteiroEntrega: int.parse(
           widget.dados.id.toString(),
         ),
+        pedidosAgrupados: agrupamentoPedidos,
       ),
     );
   }
@@ -63,6 +68,7 @@ class _ClientesState extends State<Clientes> {
         dados: widget.dados,
         roteiroBloc: widget.bloc,
         clienteBloc: _clienteBloc,
+        agrupamentoPedidos: agrupamentoPedidos,
       );
     }
   }

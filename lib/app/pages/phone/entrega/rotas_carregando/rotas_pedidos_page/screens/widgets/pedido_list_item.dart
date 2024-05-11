@@ -194,9 +194,13 @@ class _PedidoListItemState extends State<PedidoListItem> {
                             height: 0.5,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.all(8),
-                          child: Text('Volumes'),
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(widget.volumeAcessorio == 0 &&
+                                  widget.volumeChapa == 0 &&
+                                  widget.volumePerfil == 0
+                              ? 'Nenhum Volume'
+                              : 'Volumes'),
                         ),
                         Expanded(
                           child: Container(

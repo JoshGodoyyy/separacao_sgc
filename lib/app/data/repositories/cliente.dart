@@ -7,14 +7,15 @@ import 'package:sgc/app/models/client_model.dart';
 class Cliente {
   String url = '${ApiConfig().url}/Client';
 
-  Future<List> fetchClientes(int idRoteiroEntrega) async {
+  Future<List> fetchClientes(
+    int idRoteiroEntrega,
+    bool pedidosAgrupados,
+  ) async {
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
-        {
-          'id': idRoteiroEntrega,
-        },
+        {'id': idRoteiroEntrega, 'pedidosAgrupados': pedidosAgrupados},
       ),
     );
 

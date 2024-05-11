@@ -26,7 +26,10 @@ class ClienteBloc {
     _outputClienteController.add(ClienteLoadingState());
 
     if (event is GetClientes) {
-      clientes = await _repository.fetchClientes(event.idRoteiroEntrega);
+      clientes = await _repository.fetchClientes(
+        event.idRoteiroEntrega,
+        event.pedidosAgrupados,
+      );
     }
 
     _outputClienteController.add(ClienteLoadedState(clientes: clientes));

@@ -16,6 +16,7 @@ class ClientesPage extends StatefulWidget {
   final RoteiroBloc roteiroBloc;
   final ClienteBloc clienteBloc;
   final List clientes;
+  final bool agrupamentoPedidos;
 
   const ClientesPage({
     super.key,
@@ -23,6 +24,7 @@ class ClientesPage extends StatefulWidget {
     required this.dados,
     required this.roteiroBloc,
     required this.clienteBloc,
+    required this.agrupamentoPedidos,
   });
 
   @override
@@ -94,6 +96,7 @@ class _ClientesPageState extends State<ClientesPage> {
               cliente: cliente,
               roteiroEntrega: widget.dados,
               bloc: widget.clienteBloc,
+              agrupamentoPedidos: widget.agrupamentoPedidos,
             ),
         ],
       ),

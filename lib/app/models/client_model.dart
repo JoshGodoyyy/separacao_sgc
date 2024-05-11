@@ -4,6 +4,7 @@ class ClienteModel {
   String? razaoSocial;
   num? posicao;
   num? quantidadePedidos;
+  num? pedidosAgrupados;
   num? pedidosCarregados;
   num? idCliente;
   num? idSituacao;
@@ -22,6 +23,7 @@ class ClienteModel {
     this.razaoSocial,
     this.posicao,
     this.quantidadePedidos,
+    this.pedidosAgrupados,
     this.pedidosCarregados,
     this.idCliente,
     this.idSituacao,
@@ -40,6 +42,7 @@ class ClienteModel {
     razaoSocial = json['razaoSocial'];
     posicao = json['posicao'];
     quantidadePedidos = json['quantidadePedidos'];
+    pedidosAgrupados = json['pedidosAgrupados'];
     pedidosCarregados = json['pedidosCarregados'];
     idCliente = json['idCliente'];
     idSituacao = json['idSituacao'];

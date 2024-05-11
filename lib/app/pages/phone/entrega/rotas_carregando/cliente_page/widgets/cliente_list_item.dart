@@ -9,12 +9,14 @@ class ClienteListItem extends StatelessWidget {
   final ClienteModel cliente;
   final RoteiroEntregaModel roteiroEntrega;
   final ClienteBloc bloc;
+  final bool agrupamentoPedidos;
 
   const ClienteListItem({
     super.key,
     required this.cliente,
     required this.roteiroEntrega,
     required this.bloc,
+    required this.agrupamentoPedidos,
   });
 
   @override
@@ -28,21 +30,51 @@ class ClienteListItem extends StatelessWidget {
     }
 
     double percent() {
-      if (cliente.quantidadePedidos == 0) {
-        return 0;
+      if (agrupamentoPedidos) {
+        if (cliente.pedidosAgrupados! > 0) {
+          if (cliente.quantidadePedidos == 0) {
+            return 0;
+          } else {
+            return cliente.pedidosCarregados! / cliente.pedidosAgrupados!;
+          }
+        } else {
+          if (cliente.quantidadePedidos == 0) {
+            return 0;
+          } else {
+            return cliente.pedidosCarregados! / cliente.quantidadePedidos!;
+          }
+        }
       } else {
-        return cliente.pedidosCarregados! / cliente.quantidadePedidos!;
+        if (cliente.quantidadePedidos == 0) {
+          return 0;
+        } else {
+          return cliente.pedidosCarregados! / cliente.quantidadePedidos!;
+        }
       }
     }
 
-    String endereco(ClienteModel cliente){
-      String value;
-      if (cliente.complemento!.isEmpty){
-        value = '${cliente.logradouro} ${cliente.endereco}, ${cliente.numero} - ${cliente.bairro} - ${cliente.cidade} - ${cliente.estado}. ${cliente.cep}';
+    String quantidadePedidos(ClienteModel cliente) {
+      if (agrupamentoPedidos) {
+        if (int.parse(cliente.pedidosAgrupados.toString()) > 0) {
+          return quantidade(cliente.pedidosAgrupados!);
+        } else {
+          return quantidade(cliente.quantidadePedidos!);
+        }
       } else {
-        value = '${cliente.logradouro} ${cliente.endereco}, ${cliente.numero} ${cliente.complemento} - ${cliente.bairro} - ${cliente.cidade} - ${cliente.estado}. ${cliente.cep}';
+        return quantidade(cliente.quantidadePedidos!);
       }
-        return value;
+    }
+
+    String endereco(ClienteModel cliente) {
+      String value;
+      if (cliente.complemento!.isEmpty) {
+        value =
+            '${cliente.logradouro} ${cliente.endereco}, ${cliente.numero} - ${cliente.bairro} - ${cliente.cidade} - ${cliente.estado}. ${cliente.cep}';
+      } else {
+        value =
+            '${cliente.logradouro} ${cliente.endereco}, ${cliente.numero} ${cliente.complemento} - ${cliente.bairro} - ${cliente.cidade} - ${cliente.estado}. ${cliente.cep}';
+      }
+      return value;
     }
 
     return Padding(
@@ -51,7 +83,7 @@ class ClienteListItem extends StatelessWidget {
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
-        elevation: 3,
+        elevation: 5,
         color: Theme.of(context).primaryColor,
         child: InkWell(
           onTap: () => Navigator.of(context)
@@ -66,10 +98,10 @@ class ClienteListItem extends StatelessWidget {
               .then(
                 (value) => bloc.inputClienteController.add(
                   GetClientes(
-                    idRoteiroEntrega: int.parse(
-                      roteiroEntrega.id.toString(),
-                    ),
-                  ),
+                      idRoteiroEntrega: int.parse(
+                        roteiroEntrega.id.toString(),
+                      ),
+                      pedidosAgrupados: agrupamentoPedidos),
                 ),
               ),
           borderRadius: const BorderRadius.all(
@@ -112,7 +144,7 @@ class ClienteListItem extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          quantidade(cliente.quantidadePedidos!),
+                          quantidadePedidos(cliente),
                           style: const TextStyle(
                             fontSize: 14,
                           ),
