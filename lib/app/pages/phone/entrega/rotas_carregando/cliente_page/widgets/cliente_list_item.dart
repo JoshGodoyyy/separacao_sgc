@@ -126,7 +126,7 @@ class ClienteListItem extends StatelessWidget {
                         Wrap(
                           children: [
                             Text(
-                              cliente.fantasia!,
+                              '[${cliente.idCliente}] ${cliente.fantasia}',
                               style: const TextStyle(
                                 fontSize: 18,
                               ),

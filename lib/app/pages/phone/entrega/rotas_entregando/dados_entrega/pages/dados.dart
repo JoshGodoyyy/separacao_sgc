@@ -33,6 +33,8 @@ class _DadosState extends State<Dados> {
   final ajudanteController = TextEditingController();
   final placaController = TextEditingController();
 
+  String horario = '';
+
   @override
   void initState() {
     super.initState();
@@ -71,17 +73,9 @@ class _DadosState extends State<Dados> {
             nomeMotoristaController.text = data.roteiro!.nomeMotorista ?? '';
             kmInicialController.text = data.roteiro!.kmInicial.toString();
             ajudanteController.text = data.roteiro!.ajudante ?? '';
-
-            String horario = '';
-
-            if (data.roteiro!.horaSaida != null) {
-              horario = horarioFormatter.format(
-                DateTime.parse(
-                  data.roteiro!.horaSaida.toString(),
-                ),
-              );
-            }
-            horaSaidaController.text = horario;
+            horaSaidaController.text = horarioFormatter.format(
+              DateTime.parse(data.roteiro!.horaSaida ?? '00:00'),
+            );
             placaController.text = data.roteiro!.placa ?? '';
             return ListView(
               children: [
@@ -118,53 +112,11 @@ class _DadosState extends State<Dados> {
                       flex: 2,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8.0),
-                              child: Text(
-                                'Horário de Saída',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Material(
-                              elevation: 5,
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                              child: InkWell(
-                                onTap: () async {
-                                  TimeOfDay? time = await showTimePicker(
-                                    context: context,
-                                    initialTime: TimeOfDay.now(),
-                                  );
-
-                                  if (time != null) {
-                                    var minute = time.minute;
-                                    String value =
-                                        '${time.hour}:${minute.toString().padLeft(2, '0')}';
-                                    setState(
-                                      () => horaSaidaController.text = value,
-                                    );
-                                  }
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(22),
-                                  child: Row(
-                                    children: [
-                                      Text(horaSaidaController.text),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                          horizontal: 4,
+                          vertical: 8,
+                        ),
+                        child: HorarioSaida(
+                          horaSaidaController: horaSaidaController,
                         ),
                       ),
                     )
@@ -221,6 +173,72 @@ class _DadosState extends State<Dados> {
           }
         },
       ),
+    );
+  }
+}
+
+class HorarioSaida extends StatefulWidget {
+  const HorarioSaida({
+    super.key,
+    required this.horaSaidaController,
+  });
+
+  final TextEditingController horaSaidaController;
+
+  @override
+  State<HorarioSaida> createState() => _HorarioSaidaState();
+}
+
+class _HorarioSaidaState extends State<HorarioSaida> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Text(
+            'Horário de Saída',
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Material(
+          elevation: 5,
+          color: Theme.of(context).primaryColor,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(10),
+          ),
+          child: InkWell(
+            onTap: () async {
+              TimeOfDay? time = await showTimePicker(
+                context: context,
+                initialTime: TimeOfDay.now(),
+              );
+
+              if (time != null) {
+                var minute = time.minute;
+                String value =
+                    '${time.hour}:${minute.toString().padLeft(2, '0')}';
+
+                setState(() {
+                  widget.horaSaidaController.text = value;
+                });
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(22),
+              child: Row(
+                children: [
+                  Text(widget.horaSaidaController.text),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

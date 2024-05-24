@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sgc/app/data/enums/icones.dart';
 import 'package:sgc/app/data/repositories/endereco_roteiro_entrega.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
-import 'package:sgc/app/ui/styles/colors_app.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_bloc.dart';
@@ -56,16 +55,20 @@ class _OrdemEntregaState extends State<OrdemEntrega> {
 
         final item = enderecos.removeAt(oldIndex);
         enderecos.insert(newIndex, item);
-
-        _bloc.inputRoteiroEntregaController.add(
-          AtualizarPosicao(
-            idRoteiro: int.parse(
-              widget.dados.id.toString(),
-            ),
-            enderecos: enderecos,
-          ),
-        );
       },
+    );
+
+    _salvarPosicoes();
+  }
+
+  _salvarPosicoes() {
+    _bloc.inputRoteiroEntregaController.add(
+      AtualizarPosicao(
+        idRoteiro: int.parse(
+          widget.dados.id.toString(),
+        ),
+        enderecos: enderecos,
+      ),
     );
   }
 
@@ -134,104 +137,9 @@ class _OrdemEntregaState extends State<OrdemEntrega> {
                   padding: const EdgeInsets.all(8),
                   child: Column(
                     children: [
-                      Material(
-                        elevation: 5,
-                        color: ColorsApp.primaryColor,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 4),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Ordem de entrega',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const Spacer(),
-                                IconButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return const CustomDialog(
-                                          titulo: 'Sistema SGC',
-                                          descricao:
-                                              'Arraste os itens para ordenar a rota de entrega. Isso impactará na ordem de carregamento do caminhão',
-                                          tipo: Icones.info,
-                                        );
-                                      },
-                                    );
-                                  },
-                                  icon: const Icon(
-                                    Icons.question_mark_rounded,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
                       Expanded(
                         child: ReorderableListView(
-                          children: [
-                            for (var endereco in enderecos)
-                              Padding(
-                                key: ValueKey(endereco),
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).primaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      padding: const EdgeInsets.all(12),
-                                      child: Text('${endereco.posicao + 1}'),
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Expanded(
-                                      child: Material(
-                                        elevation: 5,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                        color: Theme.of(context).primaryColor,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                _endereco(endereco),
-                                                overflow: TextOverflow.ellipsis,
-                                                softWrap: true,
-                                                maxLines: 5,
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Text(endereco.fantasia),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                          ],
+                          children: showList(context),
                           onReorder: (oldIndex, newIndex) =>
                               reordenarEnderecos(oldIndex, newIndex),
                         ),
@@ -248,13 +156,105 @@ class _OrdemEntregaState extends State<OrdemEntrega> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        label: const Text('Concluído'),
-        icon: const Icon(Icons.check),
+      bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).primaryColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Ordem de entrega',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const CustomDialog(
+                          titulo: 'SGC Mobile',
+                          descricao:
+                              'Arraste os itens para ordenar a rota de entrega. Isso impactará na ordem de carregamento do caminhão',
+                          tipo: Icones.info,
+                        );
+                      },
+                    );
+                  },
+                  child: const Icon(
+                    Icons.question_mark_rounded,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: () {
+                    _salvarPosicoes();
+                    Navigator.pop(context);
+                  },
+                  child: const Icon(
+                    Icons.check,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  List<Widget> showList(BuildContext context) {
+    return [
+      for (var endereco in enderecos)
+        Padding(
+          key: ValueKey(endereco),
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Material(
+                elevation: 5,
+                shape: const CircleBorder(),
+                color: Theme.of(context).primaryColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text('${endereco.posicao + 1}'),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Material(
+                  elevation: 5,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  color: Theme.of(context).primaryColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _endereco(endereco),
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                          maxLines: 5,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(endereco.fantasia),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+    ];
   }
 }

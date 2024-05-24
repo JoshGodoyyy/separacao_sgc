@@ -225,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            const Text('1.1.3'),
+            const Text('1.1.5'),
           ],
         ),
       ),
