@@ -156,7 +156,7 @@ class ListItem extends StatelessWidget {
                         Wrap(
                           children: [
                             Text(
-                              '${pedido.nomeCliente}',
+                              '[${pedido.idCliente}] ${pedido.nomeCliente}',
                               style: const TextStyle(
                                 fontSize: 15,
                               ),

@@ -160,6 +160,39 @@ class ClienteListItem extends StatelessWidget {
                         LinearProgressIndicator(
                           value: percent(),
                         ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Visibility(
+                              visible:
+                                  cliente.volumeAcessorio == 0 ? false : true,
+                              child: volumeContainer(
+                                'Acessórios: ${cliente.volumeAcessorio}',
+                              ),
+                            ),
+                            Visibility(
+                              visible:
+                                  cliente.volumeAcessorio == 0 ? false : true,
+                              child: const SizedBox(width: 8),
+                            ),
+                            Visibility(
+                              visible: cliente.volumeChapa == 0 ? false : true,
+                              child: volumeContainer(
+                                'Chapas: ${cliente.volumeChapa}',
+                              ),
+                            ),
+                            Visibility(
+                              visible: cliente.volumeChapa == 0 ? false : true,
+                              child: const SizedBox(width: 8),
+                            ),
+                            Visibility(
+                              visible: cliente.volumePerfil == 0 ? false : true,
+                              child: volumeContainer(
+                                'Perfis: ${cliente.volumePerfil}',
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -168,6 +201,21 @@ class ClienteListItem extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Container volumeContainer(String label) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.purple,
+        borderRadius: BorderRadius.all(
+          Radius.circular(6),
+        ),
+      ),
+      padding: const EdgeInsets.all(4),
+      child: Text(
+        label,
       ),
     );
   }

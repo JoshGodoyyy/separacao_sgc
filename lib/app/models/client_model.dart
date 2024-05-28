@@ -16,25 +16,31 @@ class ClienteModel {
   String? cidade;
   String? estado;
   String? cep;
+  num? volumeAcessorio;
+  num? volumeChapa;
+  num? volumePerfil;
 
   ClienteModel(
-    this.id,
-    this.fantasia,
-    this.razaoSocial,
-    this.posicao,
-    this.quantidadePedidos,
-    this.pedidosAgrupados,
-    this.pedidosCarregados,
-    this.idCliente,
-    this.idSituacao,
-    this.logradouro,
-    this.endereco,
-    this.numero,
-    this.complemento,
-    this.bairro,
-    this.cidade,
-    this.cep,
-  );
+      this.id,
+      this.fantasia,
+      this.razaoSocial,
+      this.posicao,
+      this.quantidadePedidos,
+      this.pedidosAgrupados,
+      this.pedidosCarregados,
+      this.idCliente,
+      this.idSituacao,
+      this.logradouro,
+      this.endereco,
+      this.numero,
+      this.complemento,
+      this.bairro,
+      this.cidade,
+      this.estado,
+      this.cep,
+      this.volumeAcessorio,
+      this.volumeChapa,
+      this.volumePerfil);
 
   ClienteModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -54,5 +60,8 @@ class ClienteModel {
     cidade = json['cidade'];
     estado = json['estado'];
     cep = json['cep'];
+    volumeAcessorio = json['volumeAcessorio'];
+    volumeChapa = json['volumeChapa'];
+    volumePerfil = json['volumePerfil'];
   }
 }
