@@ -7,17 +7,18 @@ import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_bloc.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_event.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_state.dart';
-import '../../../../../../models/endereco_roteiro_entrega_model.dart';
 import '../../../../../../ui/widgets/error_alert.dart';
 
 class OrdemEntrega extends StatefulWidget {
   final RoteiroEntregaModel dados;
   final bool pedidosNaoOrdenados;
+  final List? enderecos;
 
   const OrdemEntrega({
     super.key,
     required this.dados,
     required this.pedidosNaoOrdenados,
+    this.enderecos,
   });
 
   @override
@@ -70,18 +71,6 @@ class _OrdemEntregaState extends State<OrdemEntrega> {
         enderecos: enderecos,
       ),
     );
-  }
-
-  String _endereco(EnderecoRoteiroEntregaModel data) {
-    if (data.endereco == null) {
-      return '';
-    } else {
-      if (data.complemento != '') {
-        return '${data.logradouro} ${data.endereco}, ${data.numero} - ${data.complemento} - ${data.bairro} - ${data.cidade} - ${data.estado} - ${data.cep}.';
-      } else {
-        return '${data.logradouro} ${data.endereco}, ${data.numero} - ${data.bairro} - ${data.cidade} - ${data.estado} - ${data.cep}.';
-      }
-    }
   }
 
   @override
@@ -237,7 +226,7 @@ class _OrdemEntregaState extends State<OrdemEntrega> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _endereco(endereco),
+                          endereco.enderecoCompleto(),
                           overflow: TextOverflow.ellipsis,
                           softWrap: true,
                           maxLines: 5,
@@ -246,7 +235,7 @@ class _OrdemEntregaState extends State<OrdemEntrega> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Text(endereco.fantasia),
+                        Text('[${endereco.idCliente}] ${endereco.fantasia}'),
                       ],
                     ),
                   ),

@@ -65,18 +65,6 @@ class ClienteListItem extends StatelessWidget {
       }
     }
 
-    String endereco(ClienteModel cliente) {
-      String value;
-      if (cliente.complemento!.isEmpty) {
-        value =
-            '${cliente.logradouro} ${cliente.endereco}, ${cliente.numero} - ${cliente.bairro} - ${cliente.cidade} - ${cliente.estado}. ${cliente.cep}';
-      } else {
-        value =
-            '${cliente.logradouro} ${cliente.endereco}, ${cliente.numero} ${cliente.complemento} - ${cliente.bairro} - ${cliente.cidade} - ${cliente.estado}. ${cliente.cep}';
-      }
-      return value;
-    }
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
       child: Material(
@@ -98,10 +86,11 @@ class ClienteListItem extends StatelessWidget {
               .then(
                 (value) => bloc.inputClienteController.add(
                   GetClientes(
-                      idRoteiroEntrega: int.parse(
-                        roteiroEntrega.id.toString(),
-                      ),
-                      pedidosAgrupados: agrupamentoPedidos),
+                    idRoteiroEntrega: int.parse(
+                      roteiroEntrega.id.toString(),
+                    ),
+                    pedidosAgrupados: agrupamentoPedidos,
+                  ),
                 ),
               ),
           borderRadius: const BorderRadius.all(
@@ -136,7 +125,7 @@ class ClienteListItem extends StatelessWidget {
                         Wrap(
                           children: [
                             Text(
-                              endereco(cliente),
+                              cliente.enderecoCompleto(),
                               style: const TextStyle(
                                 fontSize: 14,
                               ),

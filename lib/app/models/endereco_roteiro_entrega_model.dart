@@ -66,4 +66,16 @@ class EnderecoRoteiroEntregaModel {
       'cep': cep,
     };
   }
+
+  String enderecoCompleto() {
+    if (endereco == null) {
+      return '';
+    } else {
+      if (complemento != '') {
+        return '$logradouro $endereco, $numero - $complemento - $bairro - $cidade - $estado - $cep.';
+      } else {
+        return '$logradouro $endereco, $numero - $bairro - $cidade - $estado - $cep.';
+      }
+    }
+  }
 }

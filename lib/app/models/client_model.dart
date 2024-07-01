@@ -5,6 +5,7 @@ class ClienteModel {
   num? posicao;
   num? quantidadePedidos;
   num? pedidosAgrupados;
+  String? idPedidosAgrupados;
   num? pedidosCarregados;
   num? idCliente;
   num? idSituacao;
@@ -27,6 +28,7 @@ class ClienteModel {
       this.posicao,
       this.quantidadePedidos,
       this.pedidosAgrupados,
+      this.idPedidosAgrupados,
       this.pedidosCarregados,
       this.idCliente,
       this.idSituacao,
@@ -49,6 +51,7 @@ class ClienteModel {
     posicao = json['posicao'];
     quantidadePedidos = json['quantidadePedidos'];
     pedidosAgrupados = json['pedidosAgrupados'];
+    idPedidosAgrupados = json['idPedidosAgrupados'];
     pedidosCarregados = json['pedidosCarregados'];
     idCliente = json['idCliente'];
     idSituacao = json['idSituacao'];
@@ -63,5 +66,17 @@ class ClienteModel {
     volumeAcessorio = json['volumeAcessorio'];
     volumeChapa = json['volumeChapa'];
     volumePerfil = json['volumePerfil'];
+  }
+
+  String enderecoCompleto() {
+    if (endereco == null) {
+      return '';
+    } else {
+      if (complemento != '') {
+        return '$logradouro $endereco, $numero - $complemento - $bairro - $cidade - $estado - $cep.';
+      } else {
+        return '$logradouro $endereco, $numero - $bairro - $cidade - $estado - $cep.';
+      }
+    }
   }
 }

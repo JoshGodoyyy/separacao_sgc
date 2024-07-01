@@ -100,6 +100,7 @@ class PedidoRoteiro {
           'idRoteiroEntrega': idRoteiro,
           'idCliente': idCliente,
           'carregado': 1,
+          'separarPedidos': separarPedidos,
         },
       ),
     );
@@ -130,6 +131,7 @@ class PedidoRoteiro {
           'idRoteiroEntrega': idRoteiro,
           'idCliente': idCliente,
           'carregado': 0,
+          'separarPedidos': separarPedidos,
         },
       ),
     );
