@@ -1,13 +1,13 @@
 class ClienteModel {
   num? id;
+  num? idRoteiroEntrega;
   String? fantasia;
   String? razaoSocial;
   num? posicao;
   num? quantidadePedidos;
-  num? pedidosAgrupados;
-  String? idPedidosAgrupados;
-  num? pedidosCarregados;
+  String? pedidosAgrupados;
   num? idCliente;
+  num? pedidosCarregados;
   num? idSituacao;
   String? logradouro;
   String? endereco;
@@ -28,7 +28,6 @@ class ClienteModel {
       this.posicao,
       this.quantidadePedidos,
       this.pedidosAgrupados,
-      this.idPedidosAgrupados,
       this.pedidosCarregados,
       this.idCliente,
       this.idSituacao,
@@ -51,7 +50,6 @@ class ClienteModel {
     posicao = json['posicao'];
     quantidadePedidos = json['quantidadePedidos'];
     pedidosAgrupados = json['pedidosAgrupados'];
-    idPedidosAgrupados = json['idPedidosAgrupados'];
     pedidosCarregados = json['pedidosCarregados'];
     idCliente = json['idCliente'];
     idSituacao = json['idSituacao'];

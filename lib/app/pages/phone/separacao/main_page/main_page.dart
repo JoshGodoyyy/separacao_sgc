@@ -168,11 +168,11 @@ class _MainPageState extends State<MainPage> {
                       bottomRight: Radius.circular(10),
                     ),
                     child: const Padding(
-                      padding: EdgeInsets.all(18.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Icon(
                         Icons.search,
                         color: Colors.white,
-                        size: 28,
+                        size: 20,
                       ),
                     ),
                   ),

@@ -40,6 +40,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
   final cepController = TextEditingController();
   final dataHoraEntregueController = TextEditingController();
   final tipoEntregaController = TextEditingController();
+  final setorEntregaController = TextEditingController();
   final nfeVendaController = TextEditingController();
   final nfeRemessaController = TextEditingController();
   String titulo = '';
@@ -96,6 +97,7 @@ class _GeneralInfoState extends State<GeneralInfo> {
     );
 
     tipoEntregaController.text = tipoEntrega.descricao.toString();
+    setorEntregaController.text = pedido.setorEntrega.toString();
     nfeVendaController.text = pedido.nnFeVenda.toString();
     nfeRemessaController.text = pedido.nnFeRemessa.toString();
 
@@ -433,6 +435,10 @@ class _GeneralInfoState extends State<GeneralInfo> {
               ItemField(
                 label: 'Tipo de Entrega:',
                 controller: tipoEntregaController,
+              ),
+              ItemField(
+                label: 'Setor Entrega:',
+                controller: setorEntregaController,
               ),
               Visibility(
                 visible: mostrarNFe(),

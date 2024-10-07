@@ -4,6 +4,7 @@ class User {
   String? password;
   String? apelido;
   String? idLiberacao;
+  String? nivelSenha;
 
   User({
     id,
@@ -11,6 +12,7 @@ class User {
     password,
     apelido,
     idLiberacao,
+    this.nivelSenha,
   });
 
   User.fromJson(Map<String, dynamic> json) {
@@ -19,6 +21,7 @@ class User {
     password = json['senha'];
     apelido = json['apelido'];
     idLiberacao = json['idLiberacao'];
+    nivelSenha = json['nivelSenha'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +31,7 @@ class User {
     data['senha'] = password;
     data['apelido'] = apelido;
     data['idLiberacao'] = idLiberacao;
+    data['nivelSenha'] = nivelSenha;
 
     return data;
   }

@@ -58,7 +58,10 @@ class _PedidoListItemState extends State<PedidoListItem> {
         builder: (context) {
           return const CustomDialog(
             titulo: 'Atenção',
-            descricao: 'O pedido deve estar liberado para poder ser carregado',
+            conteudo: Text(
+              'O pedido deve estar liberado para poder ser carregado',
+              textAlign: TextAlign.center,
+            ),
             tipo: Icones.alerta,
           );
         },

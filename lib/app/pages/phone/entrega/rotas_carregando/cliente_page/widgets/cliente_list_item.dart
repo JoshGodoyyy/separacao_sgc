@@ -30,39 +30,11 @@ class ClienteListItem extends StatelessWidget {
     }
 
     double percent() {
-      if (agrupamentoPedidos) {
-        if (cliente.pedidosAgrupados! > 0) {
-          if (cliente.quantidadePedidos == 0) {
-            return 0;
-          } else {
-            return cliente.pedidosCarregados! / cliente.pedidosAgrupados!;
-          }
-        } else {
-          if (cliente.quantidadePedidos == 0) {
-            return 0;
-          } else {
-            return cliente.pedidosCarregados! / cliente.quantidadePedidos!;
-          }
-        }
-      } else {
-        if (cliente.quantidadePedidos == 0) {
-          return 0;
-        } else {
-          return cliente.pedidosCarregados! / cliente.quantidadePedidos!;
-        }
-      }
+      return cliente.pedidosCarregados! / cliente.quantidadePedidos!;
     }
 
     String quantidadePedidos(ClienteModel cliente) {
-      if (agrupamentoPedidos) {
-        if (int.parse(cliente.pedidosAgrupados.toString()) > 0) {
-          return quantidade(cliente.pedidosAgrupados!);
-        } else {
-          return quantidade(cliente.quantidadePedidos!);
-        }
-      } else {
-        return quantidade(cliente.quantidadePedidos!);
-      }
+      return quantidade(cliente.quantidadePedidos!);
     }
 
     return Padding(

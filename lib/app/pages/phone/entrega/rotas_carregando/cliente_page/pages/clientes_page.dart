@@ -51,12 +51,17 @@ class _ClientesPageState extends State<ClientesPage> {
         builder: (context) {
           return const CustomDialog(
             titulo: 'Sistema SGC',
-            descricao: 'Ainda existem pedidos não carregados',
+            conteudo: Text(
+              'Ainda existem pedidos não carregados',
+              textAlign: TextAlign.center,
+            ),
             tipo: Icones.alerta,
           );
         },
       ).then(
-        (value) => Navigator.pop(context),
+        (value) => WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pop(context);
+        }),
       );
     } else {
       widget.roteiroBloc.inputRoteiroController.add(
@@ -72,16 +77,23 @@ class _ClientesPageState extends State<ClientesPage> {
         builder: (context) {
           return const CustomDialog(
             titulo: 'Sistema SGC',
-            descricao: 'Roteiro carregado com sucesso! Liberado para entrega',
+            conteudo: Text(
+              'Roteiro carregado com sucesso! Liberado para entrega',
+              textAlign: TextAlign.center,
+            ),
             tipo: Icones.sucesso,
           );
         },
       )
           .then(
-            (value) => Navigator.pop(context),
+            (value) => WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.pop(context);
+            }),
           )
           .then(
-            (value) => Navigator.pop(context),
+            (value) => WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.pop(context);
+            }),
           );
     }
   }
@@ -126,12 +138,12 @@ class _ClientesPageState extends State<ClientesPage> {
                         const Text('Deseja mesmo concluir o carregamento?'),
                     actions: [
                       TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Não'),
-                      ),
-                      TextButton(
                         onPressed: () => _concluirCarregamento(),
                         child: const Text('Sim'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Não'),
                       ),
                     ],
                   );
@@ -158,8 +170,10 @@ class _ClientesPageState extends State<ClientesPage> {
                   builder: (context) {
                     return const CustomDialog(
                       titulo: 'Sistema SGC',
-                      descricao:
-                          'Não é possível reordenar a rota, já existem pedidos carregados',
+                      conteudo: Text(
+                        'Não é possível reordenar a rota, já existem pedidos carregados',
+                        textAlign: TextAlign.center,
+                      ),
                       tipo: Icones.erro,
                     );
                   },

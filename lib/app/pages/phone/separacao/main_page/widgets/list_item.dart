@@ -61,39 +61,6 @@ class ListItem extends StatelessWidget {
       }
     }
 
-    // String avancarPedido() {
-    //   var config = Provider.of<AppConfig>(context, listen: false);
-
-    //   String result = '';
-
-    //   switch (pedido.status) {
-    //     case 'SEPARAR':
-    //       result = 'Iniciar Separação';
-    //       break;
-    //     case 'SEPARANDO':
-    //       if (config.embalagem) {
-    //         result = 'Liberar para Embalagem';
-    //       } else if (config.conferencia) {
-    //         result = 'Liberar para Conferência';
-    //       } else if (config.faturar) {
-    //         result = 'Finalizar Separação';
-    //       }
-    //       break;
-    //     case 'EMBALAGEM':
-    //       if (config.conferencia) {
-    //         result = 'Liberar para Conferência';
-    //       } else if (config.faturar) {
-    //         result = 'Finalizar Separação';
-    //       }
-    //       break;
-    //     case 'CONFERENCIA':
-    //       result = 'Finalizar Separação';
-    //       break;
-    //   }
-
-    //   return result;
-    // }
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
       child: Material(
@@ -123,6 +90,17 @@ class ListItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Wrap(
+                          children: [
+                            Text(
+                              pedido.tratamentoItens ?? '',
+                              style: const TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

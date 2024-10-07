@@ -166,8 +166,10 @@ class _OrdemEntregaState extends State<OrdemEntrega> {
                       builder: (context) {
                         return const CustomDialog(
                           titulo: 'SGC Mobile',
-                          descricao:
-                              'Arraste os itens para ordenar a rota de entrega. Isso impactará na ordem de carregamento do caminhão',
+                          conteudo: Text(
+                            'Arraste os itens para ordenar a rota de entrega. Isso impactará na ordem de carregamento do caminhão',
+                            textAlign: TextAlign.center,
+                          ),
                           tipo: Icones.info,
                         );
                       },

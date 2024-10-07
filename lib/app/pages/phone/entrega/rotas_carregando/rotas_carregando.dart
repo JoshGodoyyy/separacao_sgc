@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:sgc/app/pages/phone/entrega/rotas_carregando/widgets/rota_button.dart';
-
+import 'package:intl/intl.dart';
 import '../../../../data/blocs/roteiro_entrega/roteiro_bloc.dart';
 import '../../../../data/blocs/roteiro_entrega/roteiro_event.dart';
 import '../../../../data/blocs/roteiro_entrega/roteiro_state.dart';
 import '../../../../ui/widgets/error_alert.dart';
 import 'cliente_page/clientes.dart';
+import 'widgets/rota_button.dart';
 
 class RotasCarregando extends StatefulWidget {
-  const RotasCarregando({super.key});
+  final String dataEntrega;
+
+  const RotasCarregando({super.key, required this.dataEntrega});
 
   @override
   State<RotasCarregando> createState() => _RotasCarregandoState();
@@ -17,6 +19,8 @@ class RotasCarregando extends StatefulWidget {
 class _RotasCarregandoState extends State<RotasCarregando> {
   late RoteiroBloc _roteiroBloc;
   bool carregando = false;
+
+  final DateFormat _data = DateFormat('dd/MM/yyyy');
 
   List roteiros = [];
 
@@ -41,23 +45,29 @@ class _RotasCarregandoState extends State<RotasCarregando> {
   }
 
   Padding _roteiros(List data) {
+    var dataEntrega = widget.dataEntrega == ''
+        ? DateTime.utc(0)
+        : _data.parse(widget.dataEntrega);
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: ListView(
         children: [
-          for (var roteiro in data)
-            if (roteiro.carregamentoConcluido == 0)
-              RotaButton(
+          for (var roteiro in data.where((item) =>
+              item.carregamentoConcluido == 0 &&
+              (DateTime.parse(item.dataEntrega).isAfter(dataEntrega) ||
+                  DateTime.parse(item.dataEntrega)
+                      .isAtSameMomentAs(dataEntrega))))
+            RotaButton(
+              dados: roteiro,
+              icon: Icons.roundabout_right_outlined,
+              page: Clientes(
                 dados: roteiro,
-                icon: Icons.roundabout_right_outlined,
-                page: Clientes(
-                  dados: roteiro,
-                  bloc: _roteiroBloc,
-                ),
-                begin: Colors.green,
-                end: Colors.greenAccent,
                 bloc: _roteiroBloc,
-              )
+              ),
+              begin: Colors.green,
+              end: Colors.greenAccent,
+              bloc: _roteiroBloc,
+            )
         ],
       ),
     );

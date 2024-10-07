@@ -204,6 +204,7 @@ class _OrderPageState extends State<OrderPage> {
             Products(
               pedido: widget.pedido,
               tipoProduto: tipoProduto,
+              tratamentoEspecial: widget.pedido.tratamentoItens == 'ESP',
             ),
             Separation(
               ancestralContext: context,
@@ -292,11 +293,20 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return const CustomDialog(
                             titulo: 'SGC Mobile',
-                            descricao: 'Pedido separado com sucesso',
+                            conteudo: Text(
+                              'Pedido separado com sucesso',
+                              textAlign: TextAlign.center,
+                            ),
                             tipo: Icones.sucesso,
                           );
                         },
-                      ).then((value) => Navigator.pop(context));
+                      ).then(
+                        (value) => WidgetsBinding.instance.addPostFrameCallback(
+                          (_) {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      );
                     },
                   );
                 } catch (e) {
@@ -307,12 +317,19 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return CustomDialog(
                             titulo: 'SGC Mobile',
-                            descricao: e.toString().substring(11),
+                            conteudo: Text(
+                              e.toString().substring(11),
+                              textAlign: TextAlign.center,
+                            ),
                             tipo: Icones.erro,
                           );
                         },
                       ).then(
-                        (value) => Navigator.pop(context),
+                        (value) => WidgetsBinding.instance.addPostFrameCallback(
+                          (_) {
+                            Navigator.pop(context);
+                          },
+                        ),
                       );
                     },
                   );
@@ -321,11 +338,7 @@ class _OrderPageState extends State<OrderPage> {
             ),
             //* Liberar para Conferência
             SpeedDialChild(
-              visible: UserConstants().idLiberacao == ''
-                  ? false
-                  : liberarConferencia
-                      ? true
-                      : false,
+              visible: widget.pedido.status != 'SEPARAR',
               child: const Icon(Icons.checklist_rtl_rounded),
               label: 'Liberar para Conferência',
               onTap: () async {
@@ -372,11 +385,20 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return const CustomDialog(
                             titulo: 'SGC Mobile',
-                            descricao: 'Pedido separado com sucesso',
+                            conteudo: Text(
+                              'Pedido separado com sucesso',
+                              textAlign: TextAlign.center,
+                            ),
                             tipo: Icones.sucesso,
                           );
                         },
-                      ).then((value) => Navigator.pop(context));
+                      ).then(
+                        (value) => WidgetsBinding.instance.addPostFrameCallback(
+                          (_) {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      );
                     },
                   );
                 } catch (e) {
@@ -387,12 +409,19 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return CustomDialog(
                             titulo: 'SGC Mobile',
-                            descricao: e.toString().substring(11),
+                            conteudo: Text(
+                              e.toString().substring(11),
+                              textAlign: TextAlign.center,
+                            ),
                             tipo: Icones.erro,
                           );
                         },
                       ).then(
-                        (value) => Navigator.pop(context),
+                        (value) => WidgetsBinding.instance.addPostFrameCallback(
+                          (_) {
+                            Navigator.pop(context);
+                          },
+                        ),
                       );
                     },
                   );
@@ -453,11 +482,20 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return const CustomDialog(
                             titulo: 'SGC Mobile',
-                            descricao: 'Pedido separado com sucesso',
+                            conteudo: Text(
+                              'Pedido separado com sucesso',
+                              textAlign: TextAlign.center,
+                            ),
                             tipo: Icones.sucesso,
                           );
                         },
-                      ).then((value) => Navigator.pop(context));
+                      ).then(
+                        (value) => WidgetsBinding.instance.addPostFrameCallback(
+                          (_) {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      );
                     },
                   );
                 } catch (e) {
@@ -468,12 +506,19 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return CustomDialog(
                             titulo: 'SGC Mobile',
-                            descricao: e.toString().substring(11),
+                            conteudo: Text(
+                              e.toString().substring(11),
+                              textAlign: TextAlign.center,
+                            ),
                             tipo: Icones.erro,
                           );
                         },
                       ).then(
-                        (value) => Navigator.pop(context),
+                        (value) => WidgetsBinding.instance.addPostFrameCallback(
+                          (_) {
+                            Navigator.pop(context);
+                          },
+                        ),
                       );
                     },
                   );
@@ -555,12 +600,21 @@ class _OrderPageState extends State<OrderPage> {
                                     builder: (BuildContext context) {
                                       return const CustomDialog(
                                         titulo: 'SGC Mobile',
-                                        descricao:
-                                            'Processo iniciado com sucesso',
+                                        conteudo: Text(
+                                          'Processo iniciado com sucesso',
+                                          textAlign: TextAlign.center,
+                                        ),
                                         tipo: Icones.sucesso,
                                       );
                                     },
-                                  ).then((value) => Navigator.pop(context));
+                                  ).then(
+                                    (value) => WidgetsBinding.instance
+                                        .addPostFrameCallback(
+                                      (_) {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  );
                                 },
                               );
 
@@ -577,12 +631,20 @@ class _OrderPageState extends State<OrderPage> {
                                     builder: (BuildContext context) {
                                       return CustomDialog(
                                         titulo: 'SGC Mobile',
-                                        descricao: e.toString().substring(11),
+                                        conteudo: Text(
+                                          e.toString().substring(11),
+                                          textAlign: TextAlign.center,
+                                        ),
                                         tipo: Icones.erro,
                                       );
                                     },
                                   ).then(
-                                    (value) => Navigator.pop(context),
+                                    (value) => WidgetsBinding.instance
+                                        .addPostFrameCallback(
+                                      (_) {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
                                   );
                                 },
                               );

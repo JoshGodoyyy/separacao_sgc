@@ -277,7 +277,7 @@ class Pedido with ChangeNotifier {
     int id,
   ) async {
     await http.post(
-      Uri.parse('$url/SendToConference'),
+      Uri.parse('$url/FinishSeparation'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {

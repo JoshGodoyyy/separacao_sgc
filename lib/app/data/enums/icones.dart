@@ -3,4 +3,5 @@ enum Icones {
   alerta,
   info,
   sucesso,
+  filtro,
 }

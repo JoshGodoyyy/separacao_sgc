@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:sgc/app/config/user.dart';
+import 'package:sgc/app/models/nivel_senha_model.dart';
 import 'package:sgc/app/pages/phone/entrega/home_page/rotas_home.dart';
 import 'package:sgc/app/pages/phone/estoque/consultar_estoque.dart';
 import 'package:sgc/app/pages/phone/separacao/home_page/separacao_home.dart';
 import 'package:sgc/app/pages/phone/settings_page/settings.dart';
 import 'package:sgc/app/ui/styles/colors_app.dart';
 
+import '../../../data/enums/icones.dart';
+import '../../../data/repositories/nivel_senha.dart';
+import '../../../ui/widgets/custom_dialog.dart';
 import '../login_page/login_page.dart';
 import 'widgets/home_header.dart';
 
@@ -19,6 +25,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _advancedDrawerController = AdvancedDrawerController();
 
+  String _version = '';
+
   int _tela = 0;
 
   final _telas = const [
@@ -31,7 +39,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _getVersion();
     _tela = 1;
+  }
+
+  _getVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(
+        () => _version = '${packageInfo.version}+${packageInfo.buildNumber}');
   }
 
   @override
@@ -158,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                   ListTile(
                     onTap: () {
                       _advancedDrawerController.hideDrawer();
-                      setState(() => _tela = 3);
+                      _verificarNivelSenha();
                     },
                     leading: Icon(
                       Icons.settings,
@@ -225,7 +240,10 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            const Text('1.1.5'),
+            Text(
+              _version,
+              style: const TextStyle(color: Colors.white),
+            ),
           ],
         ),
       ),
@@ -267,5 +285,35 @@ class _HomePageState extends State<HomePage> {
 
   void _handleMenuButtonPressed() {
     _advancedDrawerController.showDrawer();
+  }
+
+  _verificarNivelSenha() async {
+    final nivel = NivelSenhaModel(
+      nivel: 'AppConfiguracoes',
+      idUsuario: UserConstants().idUsuario,
+    );
+
+    await NivelSenha().verificarAcesso(nivel);
+    bool response = await NivelSenha().verificarNivelSenha(nivel);
+
+    if (!mounted) return;
+
+    if (response) {
+      setState(() => _tela = 3);
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return CustomDialog(
+            titulo: 'Acesso restrito',
+            conteudo: Text(
+              'Nivel de senha requerido: ${nivel.nivel}',
+              textAlign: TextAlign.center,
+            ),
+            tipo: Icones.erro,
+          );
+        },
+      );
+    }
   }
 }

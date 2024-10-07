@@ -11,15 +11,28 @@ class CustomIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color cor() {
-      if (tipo == Icones.alerta) {
-        return Colors.yellow;
-      } else if (tipo == Icones.erro) {
-        return Colors.red;
-      } else if (tipo == Icones.info) {
-        return Colors.blue;
-      } else {
-        return Colors.green;
+      Color cor;
+      switch (tipo) {
+        case Icones.alerta:
+          cor = Colors.yellow;
+          break;
+        case Icones.erro:
+          cor = Colors.red;
+          break;
+        case Icones.info:
+          cor = Colors.blue;
+          break;
+        case Icones.filtro:
+          cor = Colors.deepPurple[700]!;
+          break;
+        case Icones.sucesso:
+          cor = Colors.green;
+          break;
+        default:
+          cor = Colors.grey;
+          break;
       }
+      return cor;
     }
 
     Icon icone() {
@@ -41,9 +54,15 @@ class CustomIcon extends StatelessWidget {
           color: Colors.white,
           size: 125,
         );
-      } else {
+      } else if (tipo == Icones.sucesso) {
         return const Icon(
           Icons.assignment_turned_in,
+          color: Colors.white,
+          size: 100,
+        );
+      } else {
+        return const Icon(
+          Icons.filter_list_alt,
           color: Colors.white,
           size: 100,
         );

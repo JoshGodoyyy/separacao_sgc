@@ -105,46 +105,50 @@ class RotaButton extends StatelessWidget {
                               color: Theme.of(context).dividerColor,
                             ),
                             const SizedBox(width: 15),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  dados.nome ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    dados.nome ?? '',
+                                    overflow: TextOverflow.visible,
+                                    maxLines: 2,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  data.format(
-                                    DateTime.parse(dados.dataEntrega!),
+                                  Text(
+                                    data.format(
+                                      DateTime.parse(dados.dataEntrega!),
+                                    ),
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                  style: const TextStyle(
-                                    fontSize: 14,
+                                  Text(
+                                    dados.nomeMotorista ?? '',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  dados.nomeMotorista ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 14,
+                                  Text(
+                                    dados.placa ?? '',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  dados.placa ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 14,
+                                  Text(
+                                    '${dados.peso?.toStringAsFixed(2) ?? 0.00} Kg',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  '${dados.peso?.toStringAsFixed(2) ?? 0.00} Kg',
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                // Text(
-                                //   'R\$ ${dados.valor!.toStringAsFixed(2)}',
-                                // ),
-                              ],
+                                  // Text(
+                                  //   'R\$ ${dados.valor!.toStringAsFixed(2)}',
+                                  // ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

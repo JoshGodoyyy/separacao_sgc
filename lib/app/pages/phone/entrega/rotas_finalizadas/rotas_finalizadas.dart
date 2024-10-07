@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_finalizadas/dados_entrega/dados_entrega.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_finalizadas/widgets/pedido_entregue.dart';
 
@@ -8,7 +9,8 @@ import '../../../../data/blocs/roteiro_entrega/roteiro_state.dart';
 import '../../../../ui/widgets/error_alert.dart';
 
 class RotasFinalizadas extends StatefulWidget {
-  const RotasFinalizadas({super.key});
+  final String dataEntrega;
+  const RotasFinalizadas({super.key, required this.dataEntrega});
 
   @override
   State<RotasFinalizadas> createState() => _RotasFinalizadasState();
@@ -17,6 +19,8 @@ class RotasFinalizadas extends StatefulWidget {
 class _RotasFinalizadasState extends State<RotasFinalizadas> {
   late RoteiroBloc _roteiroBloc;
   bool carregando = false;
+
+  final DateFormat _data = DateFormat('dd/MM/yyyy');
 
   List roteiros = [];
 
@@ -41,6 +45,9 @@ class _RotasFinalizadasState extends State<RotasFinalizadas> {
   }
 
   Padding _roteiros(List data) {
+    var dataEntrega = widget.dataEntrega == ''
+        ? DateTime.utc(0)
+        : _data.parse(widget.dataEntrega);
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: ListView(
@@ -53,7 +60,10 @@ class _RotasFinalizadasState extends State<RotasFinalizadas> {
                   style: TextStyle(fontSize: 24),
                 ),
               )
-            else if (roteiro.dataFinalizacao != null)
+            else if (roteiro.dataFinalizacao != null &&
+                (DateTime.parse(roteiro.dataFinalizacao).isAfter(dataEntrega) ||
+                    DateTime.parse(roteiro.dataFinalizacao)
+                        .isAtSameMomentAs(dataEntrega)))
               PedidoEntregue(
                 dados: roteiro,
                 icon: Icons.info,

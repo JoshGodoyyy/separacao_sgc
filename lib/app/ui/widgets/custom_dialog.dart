@@ -3,12 +3,13 @@ import 'package:sgc/app/data/enums/icones.dart';
 import 'package:sgc/app/ui/widgets/custom_icons.dart';
 
 class CustomDialog extends StatelessWidget {
-  final String titulo, descricao;
+  final String titulo;
+  final Widget conteudo;
   final Icones tipo;
   const CustomDialog({
     super.key,
     required this.titulo,
-    required this.descricao,
+    required this.conteudo,
     required this.tipo,
   });
 
@@ -50,7 +51,7 @@ class CustomDialog extends StatelessWidget {
                       style: const TextStyle(fontSize: 24),
                     ),
                   ),
-                  Text(descricao, textAlign: TextAlign.center),
+                  conteudo,
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();

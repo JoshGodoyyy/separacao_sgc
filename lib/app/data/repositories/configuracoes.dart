@@ -13,7 +13,7 @@ class Configuracoes {
     );
 
     Map<String, dynamic> data = jsonDecode(response.body);
-    int value = data["fechamentoPedAntSeparacao"];
+    int value = data['fechamentoPedAntSeparacao'];
 
     ConfiguracoesSistema().setFechamento(value);
   }
@@ -24,7 +24,7 @@ class Configuracoes {
     );
 
     Map<String, dynamic> data = jsonDecode(response.body);
-    int value = data['imprimirPedidoSeparadoAgrupado'];
+    int value = data['impPedidoAgrupadoSep'];
 
     return value;
   }

@@ -14,11 +14,13 @@ import 'widgets/produto_list_item.dart';
 class Products extends StatefulWidget {
   final PedidoModel pedido;
   final int tipoProduto;
+  final bool tratamentoEspecial;
 
   const Products({
     super.key,
     required this.pedido,
     required this.tipoProduto,
+    required this.tratamentoEspecial,
   });
 
   @override
@@ -56,19 +58,13 @@ class _ProductsState extends State<Products> {
       ),
     );
 
-    if (pedido.tratamento != 'ESP') {
-      tratamento = '';
-    } else {
-      tratamento = pedido.tratamento!;
+    tratamento = pedido.tratamento!;
 
-      final tratamentoInicial = await Tratamento().fetchTratamentoById(
-        tratamento,
-      );
+    final tratamentoInicial = await Tratamento().fetchTratamentoById(
+      tratamento,
+    );
 
-      tratamentoController.text = tratamentoInicial.descricao.toString();
-    }
-
-    setState(() {});
+    tratamentoController.text = tratamentoInicial.descricao.toString();
   }
 
   Widget listaProdutos(List produtos) {
@@ -79,6 +75,7 @@ class _ProductsState extends State<Products> {
         return a.idProduto!.compareTo(b.idProduto);
       }
     });
+
     switch (widget.pedido.status) {
       case 'SEPARANDO':
         return Column(
@@ -169,7 +166,7 @@ class _ProductsState extends State<Products> {
       children: [
         const SizedBox(height: 12),
         Visibility(
-          visible: tratamentoController.text == '' ? false : true,
+          visible: widget.tratamentoEspecial,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,

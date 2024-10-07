@@ -35,7 +35,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void loadData() async {
-    idLiberacaoController.text = await SecureStorage().ler('chave');
     usuarioController.text = await SecureStorage().ler('usuario');
     senhaController.text = await SecureStorage().ler('senha');
   }
@@ -65,14 +64,14 @@ class _LoginPageState extends State<LoginPage> {
         await Configuracoes().verificaFechamentoPedAntSeparacao();
 
         if (config.salvarDados) {
-          SecureStorage().salvar('chave', idLiberacaoController.text);
           SecureStorage().salvar('usuario', usuarioController.text);
           SecureStorage().salvar('senha', senhaController.text);
         } else {
-          SecureStorage().apagar('chave');
           SecureStorage().apagar('usuario');
           SecureStorage().apagar('senha');
         }
+
+        idLiberacaoController.clear();
 
         navigator.pushReplacement(
           MaterialPageRoute(

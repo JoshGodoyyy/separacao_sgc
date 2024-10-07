@@ -28,4 +28,16 @@ class NivelSenha {
       );
     }
   }
+
+  Future<bool> verificarAcesso(NivelSenhaModel nivelSenha) async {
+    var response = await http.post(
+      Uri.parse('$_url/GetPasswordLevel'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {'nivel': nivelSenha.nivel},
+      ),
+    );
+
+    return response.statusCode == 200;
+  }
 }

@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:sgc/app/config/configuracoes_sistema.dart';
 import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/repositories/produto.dart';
 import 'package:sgc/app/models/group_model.dart';
@@ -209,29 +208,17 @@ class AlterarStatusPedido {
     int sepPerfil = await Pedido().getSeparacao(id, 'sepPerfil');
     int sepAcessorio = await Pedido().getSeparacao(id, 'sepAcessorio');
 
-    int situacao = 5;
-
-    int idNovoStatus =
-        ConfiguracoesSistema().fechamentoPedAntSeparacao == 1 ? 10 : 5;
-
-    if (tipoProduto == 2) {
-      sepPerfil = situacao;
-
-      if (sepAcessorio == 0) {
-        situacao = idNovoStatus;
-      } else if (sepAcessorio != idNovoStatus) {
-        situacao = 3;
-      }
-    } else if (tipoProduto == 3) {
-      sepAcessorio = situacao;
-
-      if (sepPerfil == 0) {
-        situacao = idNovoStatus;
-      } else if (sepPerfil != idNovoStatus) {
-        situacao = 3;
-      }
-    } else {
-      situacao = idNovoStatus;
+    switch (tipoProduto) {
+      case 2:
+        sepPerfil = 5;
+        break;
+      case 3:
+        sepAcessorio = 5;
+        break;
+      default:
+        sepAcessorio = 5;
+        sepPerfil = 5;
+        break;
     }
 
     double pesoTotalReal = 0;
