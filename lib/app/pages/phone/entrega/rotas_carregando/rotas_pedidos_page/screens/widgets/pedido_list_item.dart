@@ -21,6 +21,10 @@ class PedidoListItem extends StatefulWidget {
   final int volumeAcessorio;
   final int volumeChapa;
   final int volumePerfil;
+  final bool selecionado;
+  final num pesoTotal;
+  final String tratamento;
+  final String tratamentoItens;
   final PedidoRoteiroBloc bloc;
 
   const PedidoListItem({
@@ -37,6 +41,10 @@ class PedidoListItem extends StatefulWidget {
     required this.volumeAcessorio,
     required this.volumeChapa,
     required this.volumePerfil,
+    required this.selecionado,
+    required this.pesoTotal,
+    required this.tratamento,
+    required this.tratamentoItens,
     required this.bloc,
   });
 
@@ -45,6 +53,7 @@ class PedidoListItem extends StatefulWidget {
 }
 
 class _PedidoListItemState extends State<PedidoListItem> {
+  bool selecionado = false;
   String label() {
     String result;
     widget.carregado == 1 ? result = 'Não Carregado' : result = 'Carregado';
@@ -144,6 +153,7 @@ class _PedidoListItemState extends State<PedidoListItem> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -156,6 +166,15 @@ class _PedidoListItemState extends State<PedidoListItem> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Visibility(
+                              visible: widget.tratamentoItens == 'ESP',
+                              child: Text(
+                                'ESP.: ${widget.tratamento}',
+                              ),
+                            ),
+                            Text(
+                              widget.tratamentoItens,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               mainAxisSize: MainAxisSize.max,
@@ -188,6 +207,19 @@ class _PedidoListItemState extends State<PedidoListItem> {
                           child: Text(widget.status),
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(6),
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(4),
+                      child: Text(
+                        '${widget.pesoTotal} Kg',
+                      ),
                     ),
                     Row(
                       children: [

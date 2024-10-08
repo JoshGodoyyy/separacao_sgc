@@ -84,6 +84,24 @@ class ClienteListItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Visibility(
+                          visible: cliente.tratamentoItens == 'ESP',
+                          child: Text('ESP.: ${cliente.tratamentoEspecial}'),
+                        ),
+                        Visibility(
+                          visible: cliente.tratamentoItens != '' ||
+                              cliente.tratamentoItens != null,
+                          child: Wrap(
+                            children: [
+                              Text(
+                                cliente.tratamentoItens ?? '',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         Wrap(
                           children: [
                             Text(
@@ -120,6 +138,20 @@ class ClienteListItem extends StatelessWidget {
                         ),
                         LinearProgressIndicator(
                           value: percent(),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(6),
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(4),
+                          child: Text(
+                            'Peso Total: ${cliente.pesoTotal} Kg',
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ),
                         const SizedBox(height: 8),
                         Row(
@@ -177,6 +209,7 @@ class ClienteListItem extends StatelessWidget {
       padding: const EdgeInsets.all(4),
       child: Text(
         label,
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }

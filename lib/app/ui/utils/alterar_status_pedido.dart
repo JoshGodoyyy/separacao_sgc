@@ -5,7 +5,6 @@ import 'package:sgc/app/models/group_model.dart';
 
 import '../../data/blocs/pedido/pedido_bloc.dart';
 import '../../data/blocs/pedido/pedido_event.dart';
-import '../../data/enums/situacao_pedido.dart';
 import '../../data/repositories/grupo.dart';
 import '../../data/repositories/grupo_pedido.dart';
 import '../../data/repositories/nivel_senha.dart';
@@ -19,7 +18,6 @@ class AlterarStatusPedido {
   Future<void> enviarSeparacao(
     int idSituacao,
     String status,
-    SituacaoPedido situacao,
     int autorizado,
     int id,
     int tipoProduto,
@@ -49,14 +47,14 @@ class AlterarStatusPedido {
     }
 
     if (tipoProduto == 2) {
-      sepPerfil = situacao.index + 1;
+      sepPerfil = 3;
     } else {
-      sepAcessorio = situacao.index + 1;
+      sepAcessorio = 3;
     }
 
     _pedido.inputPedido.add(
       EnviarSeparacao(
-        idSituacao: situacao.index + 1,
+        idSituacao: 3,
         dataLiberacaoSeparacao: _data.format(DateTime.now()).toString(),
         dataEnvioSeparacao: _data
             .format(

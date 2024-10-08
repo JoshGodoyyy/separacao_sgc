@@ -27,6 +27,8 @@ class PedidosCarregados extends StatefulWidget {
 
 class _PedidosCarregadosState extends State<PedidosCarregados> {
   late PedidoRoteiroBloc _bloc;
+  bool _selecionarTodos = false;
+  List _todosPedidos = [];
 
   @override
   void initState() {
@@ -61,52 +63,128 @@ class _PedidosCarregadosState extends State<PedidosCarregados> {
         ),
       );
     } else {
-      return ListView(
-        children: [
-          for (var pedido in pedidos)
-            PedidoListItem(
-              idPedido: pedido.id,
-              numeroEntrega: widget.numeroEntrega,
-              cepEntrega: widget.cepEntrega,
-              idCliente: widget.idCliente,
-              idRoteiro: widget.idRoteiro,
-              carregado: pedido.carregado,
-              idStatus: pedido.idStatus,
-              setorEstoque: pedido.setorEstoque,
-              status: pedido.status,
-              volumeAcessorio: pedido.volumeAcessorio,
-              volumeChapa: pedido.volumeChapa,
-              volumePerfil: pedido.volumePerfil,
-              bloc: _bloc,
-            ),
-        ],
+      _todosPedidos = pedidos;
+
+      return Expanded(
+        child: ListView(
+          children: [
+            for (var pedido in pedidos)
+              Row(
+                children: [
+                  Checkbox(
+                      value: pedido.selecionado ?? false,
+                      onChanged: (value) {
+                        setState(() {
+                          pedido.selecionado = value ?? false;
+                        });
+                      }),
+                  Expanded(
+                    child: PedidoListItem(
+                      idPedido: pedido.id,
+                      numeroEntrega: widget.numeroEntrega,
+                      cepEntrega: widget.cepEntrega,
+                      idCliente: widget.idCliente,
+                      idRoteiro: widget.idRoteiro,
+                      carregado: pedido.carregado,
+                      idStatus: pedido.idStatus,
+                      setorEstoque: pedido.setorEstoque,
+                      status: pedido.status,
+                      volumeAcessorio: pedido.volumeAcessorio,
+                      volumeChapa: pedido.volumeChapa,
+                      volumePerfil: pedido.volumePerfil,
+                      selecionado: pedido.selecionado ?? false,
+                      pesoTotal: pedido.pesoTotal ?? 0,
+                      tratamento: pedido.tratamento ?? '',
+                      tratamentoItens: pedido.tratamentoItens ?? '',
+                      bloc: _bloc,
+                    ),
+                  ),
+                ],
+              ),
+          ],
+        ),
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ProdutoRoteiroState>(
-      stream: _bloc.outputProdutoRoteiroController,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||
-            snapshot.data is ProdutoRoteiroLoadingState) {
-          return const Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 46),
-              child: LinearProgressIndicator(),
-            ),
-          );
-        } else if (snapshot.data is ProdutoRoteiroLoadedState) {
-          List pedidos = snapshot.data?.produtos ?? [];
+    return Scaffold(
+      body: StreamBuilder<ProdutoRoteiroState>(
+        stream: _bloc.outputProdutoRoteiroController,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting ||
+              snapshot.data is ProdutoRoteiroLoadingState) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 46),
+                child: LinearProgressIndicator(),
+              ),
+            );
+          } else if (snapshot.data is ProdutoRoteiroLoadedState) {
+            List pedidos = snapshot.data?.produtos ?? [];
 
-          return _pedidos(pedidos);
-        } else {
-          return ErrorAlert(
-            message: snapshot.error.toString(),
-          );
-        }
-      },
+            return Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        value: _selecionarTodos,
+                        onChanged: (value) {
+                          setState(() {
+                            _selecionarTodos = !_selecionarTodos;
+                            for (var pedido in pedidos) {
+                              pedido.selecionado = _selecionarTodos;
+                            }
+                          });
+                        },
+                      ),
+                      const Text('Selecionar todos'),
+                    ],
+                  ),
+                ),
+                _pedidos(pedidos),
+                const SizedBox(height: 80),
+              ],
+            );
+          } else {
+            return ErrorAlert(
+              message: snapshot.error.toString(),
+            );
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          bool separarAgrupamento =
+              await Configuracoes().verificaConfiguracaoAgrupamento() == 1
+                  ? true
+                  : false;
+
+          for (var pedido
+              in _todosPedidos.where((item) => item.selecionado == true)) {
+            _bloc.inputProdutoRoteiroController.add(
+              DescarregarPedido(
+                idPedido: pedido.id,
+                numeroEntrega: widget.numeroEntrega,
+                cepEntrega: widget.cepEntrega,
+                idCliente: widget.idCliente,
+                idRoteiro: widget.idRoteiro,
+                separarAgrupamento: separarAgrupamento,
+              ),
+            );
+          }
+        },
+        label: const Text('Descarregar selecionados'),
+      ),
     );
   }
 }

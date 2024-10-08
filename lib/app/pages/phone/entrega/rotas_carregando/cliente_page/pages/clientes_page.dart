@@ -179,7 +179,7 @@ class _ClientesPageState extends State<ClientesPage> {
                   },
                 );
               } else {
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => OrdemEntrega(
                       dados: widget.dados,

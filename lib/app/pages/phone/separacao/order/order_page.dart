@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/enums/icones.dart';
-import 'package:sgc/app/data/enums/situacao_pedido.dart';
 import 'package:sgc/app/ui/utils/alterar_status_pedido.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import 'package:sgc/app/ui/widgets/loading_dialog.dart';
@@ -269,8 +268,8 @@ class _OrderPageState extends State<OrderPage> {
 
                   var historico = HistoricoPedidoModel(
                     idPedido: widget.pedido.id,
-                    idStatus: widget.pedido.idSituacao,
-                    status: 'FATURAR',
+                    idStatus: 5,
+                    status: 'OK',
                     chaveFuncionario: UserConstants().idLiberacao,
                     data: _data.format(
                       DateTime.now(),
@@ -293,9 +292,14 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return const CustomDialog(
                             titulo: 'SGC Mobile',
-                            conteudo: Text(
-                              'Pedido separado com sucesso',
-                              textAlign: TextAlign.center,
+                            conteudo: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Pedido separado com sucesso',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
                             tipo: Icones.sucesso,
                           );
@@ -361,7 +365,7 @@ class _OrderPageState extends State<OrderPage> {
 
                   var historico = HistoricoPedidoModel(
                     idPedido: widget.pedido.id,
-                    idStatus: widget.pedido.idSituacao,
+                    idStatus: 15,
                     status: 'CONFERENCIA',
                     chaveFuncionario: UserConstants().idLiberacao,
                     data: _data.format(
@@ -385,9 +389,14 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return const CustomDialog(
                             titulo: 'SGC Mobile',
-                            conteudo: Text(
-                              'Pedido separado com sucesso',
-                              textAlign: TextAlign.center,
+                            conteudo: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Pedido enviado para conferência',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
                             tipo: Icones.sucesso,
                           );
@@ -458,7 +467,7 @@ class _OrderPageState extends State<OrderPage> {
 
                   var historico = HistoricoPedidoModel(
                     idPedido: widget.pedido.id,
-                    idStatus: widget.pedido.idSituacao,
+                    idStatus: 14,
                     status: 'EMBALAGEM',
                     chaveFuncionario: UserConstants().idLiberacao,
                     data: _data.format(
@@ -482,9 +491,14 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return const CustomDialog(
                             titulo: 'SGC Mobile',
-                            conteudo: Text(
-                              'Pedido separado com sucesso',
-                              textAlign: TextAlign.center,
+                            conteudo: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Pedido enviado para embalagem',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
                             tipo: Icones.sucesso,
                           );
@@ -506,9 +520,14 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return CustomDialog(
                             titulo: 'SGC Mobile',
-                            conteudo: Text(
-                              e.toString().substring(11),
-                              textAlign: TextAlign.center,
+                            conteudo: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  e.toString().substring(11),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
                             tipo: Icones.erro,
                           );
@@ -562,7 +581,6 @@ class _OrderPageState extends State<OrderPage> {
                                   widget.pedido.idSituacao.toString(),
                                 ),
                                 widget.pedido.status!,
-                                SituacaoPedido.separando,
                                 int.parse(
                                   widget.pedido.autorizado.toString(),
                                 ),
@@ -574,14 +592,16 @@ class _OrderPageState extends State<OrderPage> {
                               );
 
                               var historico = HistoricoPedidoModel(
+                                id: 0,
                                 idPedido: widget.pedido.id,
-                                idStatus: widget.pedido.idSituacao,
-                                status: widget.pedido.status,
+                                idStatus: 3,
+                                status: 'SEPARANDO',
                                 chaveFuncionario: UserConstants().idLiberacao,
                                 data: _data.format(
                                   DateTime.now(),
                                 ),
                                 idUsuario: UserConstants().idUsuario,
+                                nomeUsuario: UserConstants().userName,
                               );
 
                               await HistoricoPedido()
@@ -600,9 +620,15 @@ class _OrderPageState extends State<OrderPage> {
                                     builder: (BuildContext context) {
                                       return const CustomDialog(
                                         titulo: 'SGC Mobile',
-                                        conteudo: Text(
-                                          'Processo iniciado com sucesso',
-                                          textAlign: TextAlign.center,
+                                        conteudo: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Processo iniciado com sucesso',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
                                         ),
                                         tipo: Icones.sucesso,
                                       );

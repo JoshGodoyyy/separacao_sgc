@@ -15,7 +15,10 @@ class Cliente {
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
-        {'id': idRoteiroEntrega, 'pedidosAgrupados': pedidosAgrupados},
+        {
+          'id': idRoteiroEntrega,
+          'pedidosAgrupados': pedidosAgrupados,
+        },
       ),
     );
 

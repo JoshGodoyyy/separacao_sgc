@@ -10,6 +10,10 @@ class PedidoRoteiroModel {
   String? status;
   String? setorEstoque;
   String? pedidosAgrupados;
+  bool? selecionado;
+  num? pesoTotal;
+  String? tratamento;
+  String? tratamentoItens;
 
   PedidoRoteiroModel({
     this.id,
@@ -23,6 +27,10 @@ class PedidoRoteiroModel {
     this.status,
     this.setorEstoque,
     this.pedidosAgrupados,
+    this.selecionado,
+    this.pesoTotal,
+    this.tratamento,
+    this.tratamentoItens,
   });
 
   PedidoRoteiroModel.fromJson(Map<String, dynamic> json) {
@@ -37,5 +45,8 @@ class PedidoRoteiroModel {
     status = json['status'];
     setorEstoque = json['setorEstoque'];
     pedidosAgrupados = json['pedidosAgrupados'];
+    pesoTotal = json['pesoTotal'];
+    tratamento = json['tratamento'];
+    tratamentoItens = json['tratamentoItens'];
   }
 }

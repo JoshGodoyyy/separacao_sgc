@@ -1,6 +1,9 @@
 class ClienteModel {
   num? id;
   num? idRoteiroEntrega;
+  num? pesoTotal;
+  String? tratamentoItens;
+  String? tratamentoEspecial;
   String? fantasia;
   String? razaoSocial;
   num? posicao;
@@ -24,6 +27,9 @@ class ClienteModel {
   ClienteModel(
       this.id,
       this.fantasia,
+      this.pesoTotal,
+      this.tratamentoItens,
+      this.tratamentoEspecial,
       this.razaoSocial,
       this.posicao,
       this.quantidadePedidos,
@@ -45,6 +51,9 @@ class ClienteModel {
 
   ClienteModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    pesoTotal = json['pesoTotal'];
+    tratamentoItens = json['tratamentoItens'];
+    tratamentoEspecial = json['tratamentoEspecial'];
     fantasia = json['fantasia'];
     razaoSocial = json['razaoSocial'];
     posicao = json['posicao'];

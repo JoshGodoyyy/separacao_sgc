@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sgc/app/models/client_model.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
 
-import '../../../../../ui/styles/colors_app.dart';
 import 'screens/pedidos_nao_carregados.dart';
 import 'screens/pedidos_carregados.dart';
 
@@ -31,7 +30,6 @@ class _RotasPedidosState extends State<RotasPedidos> {
           title: Text(widget.cliente.fantasia ?? ''),
           centerTitle: true,
           bottom: const TabBar(
-            indicatorColor: ColorsApp.primaryColor,
             tabs: [
               Tab(
                 text: 'Não Carregados',
