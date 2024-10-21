@@ -93,4 +93,17 @@ class RoteiroEntrega {
 
     return fetchDados(idRoteiro);
   }
+
+  Future setStateRoteiro(int idRoteiro, String chaveLiberacao) async {
+    await http.post(
+      Uri.parse('$url/SetStateRoute'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'idRoteiroEntrega': idRoteiro,
+          'chaveBloqueioRoteiro': chaveLiberacao,
+        },
+      ),
+    );
+  }
 }

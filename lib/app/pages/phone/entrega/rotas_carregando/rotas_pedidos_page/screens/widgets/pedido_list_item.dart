@@ -25,6 +25,7 @@ class PedidoListItem extends StatefulWidget {
   final num pesoTotal;
   final String tratamento;
   final String tratamentoItens;
+  final String observacoesCarregador;
   final PedidoRoteiroBloc bloc;
 
   const PedidoListItem({
@@ -45,6 +46,7 @@ class PedidoListItem extends StatefulWidget {
     required this.pesoTotal,
     required this.tratamento,
     required this.tratamentoItens,
+    required this.observacoesCarregador,
     required this.bloc,
   });
 
@@ -274,6 +276,38 @@ class _PedidoListItemState extends State<PedidoListItem> {
                           ),
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 8),
+                    Visibility(
+                      visible: widget.observacoesCarregador != '',
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).splashColor,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Row(
+                              children: [
+                                Text(
+                                  'Obs. Carregador',
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                                Divider(),
+                              ],
+                            ),
+                            Wrap(
+                              children: [
+                                Text(widget.observacoesCarregador),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sgc/app/models/pedido_model.dart';
-import '../../../../../../../data/repositories/pedido.dart';
 import '../../../widgets/item.dart';
 import '../../../widgets/multi_line_text.dart';
 
@@ -39,19 +38,13 @@ class _DetailsState extends State<Details> {
   }
 
   fetchData() async {
-    final pedido = await Pedido().fetchOrdersByIdOrder(
-      int.parse(
-        widget.pedido.id.toString(),
-      ),
-    );
-
-    widget.volumeAcessorio.text = pedido.volumeAcessorio.toString();
-    widget.volumeAluminio.text = pedido.volumePerfil.toString();
-    widget.volumeChapa.text = pedido.volumeChapa.toString();
-    widget.observacoesSeparacao.text = pedido.observacoesSeparacao ?? '';
-    widget.observacoesSeparador.text = pedido.observacoesSeparador ?? '';
-    widget.setorSeparacao.text = pedido.setorEstoque ?? '';
-    widget.pesoAcessorio.text = pedido.pesoAcessorios.toString();
+    widget.volumeAcessorio.text = widget.pedido.volumeAcessorio.toString();
+    widget.volumeAluminio.text = widget.pedido.volumePerfil.toString();
+    widget.volumeChapa.text = widget.pedido.volumeChapa.toString();
+    widget.observacoesSeparacao.text = widget.pedido.observacoesSeparacao ?? '';
+    widget.observacoesSeparador.text = widget.pedido.observacoesSeparador ?? '';
+    widget.setorSeparacao.text = widget.pedido.setorEstoque ?? '';
+    widget.pesoAcessorio.text = widget.pedido.pesoAcessorios.toString();
   }
 
   @override
@@ -72,7 +65,9 @@ class _DetailsState extends State<Details> {
                   TextInputType.number,
                   [
                     FilteringTextInputFormatter.allow(
-                      RegExp(r'[0-9]'),
+                      RegExp(
+                        r'[0-9]',
+                      ),
                     ),
                   ],
                 ),

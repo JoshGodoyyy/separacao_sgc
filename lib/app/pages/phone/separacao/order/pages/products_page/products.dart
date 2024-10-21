@@ -4,6 +4,7 @@ import 'package:sgc/app/data/blocs/produto/produto_bloc.dart';
 import 'package:sgc/app/data/blocs/produto/produto_event.dart';
 import 'package:sgc/app/data/blocs/produto/produto_state.dart';
 import 'package:sgc/app/data/repositories/tratamento.dart';
+import 'package:sgc/app/pages/phone/separacao/order/widgets/multi_line_text.dart';
 import 'package:sgc/app/ui/widgets/list_header.dart';
 import '../../../../../../data/repositories/pedido.dart';
 import '../../../../../../models/pedido_model.dart';
@@ -15,12 +16,14 @@ class Products extends StatefulWidget {
   final PedidoModel pedido;
   final int tipoProduto;
   final bool tratamentoEspecial;
+  final TextEditingController observacoesSeparacaoController;
 
   const Products({
     super.key,
     required this.pedido,
     required this.tipoProduto,
     required this.tratamentoEspecial,
+    required this.observacoesSeparacaoController,
   });
 
   @override
@@ -165,6 +168,16 @@ class _ProductsState extends State<Products> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
+        Visibility(
+          visible: widget.observacoesSeparacaoController.text != '',
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: MultiLineText(
+              label: 'Observações para Separação:',
+              controller: widget.observacoesSeparacaoController,
+            ),
+          ),
+        ),
         Visibility(
           visible: widget.tratamentoEspecial,
           child: Column(

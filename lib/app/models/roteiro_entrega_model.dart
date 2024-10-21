@@ -22,6 +22,7 @@ class RoteiroEntregaModel {
   num? quantidadePedidos;
   num? quantidadeClientes;
   num? quantidadePedidosCarregados;
+  String? chaveBloqueioRoteiro;
 
   RoteiroEntregaModel({
     this.id,
@@ -47,6 +48,7 @@ class RoteiroEntregaModel {
     this.quantidadePedidos,
     this.quantidadeClientes,
     this.quantidadePedidosCarregados,
+    this.chaveBloqueioRoteiro,
   });
 
   RoteiroEntregaModel.fromJson(Map<String, dynamic> json) {
@@ -73,5 +75,6 @@ class RoteiroEntregaModel {
     quantidadePedidos = json['quantidadePedidos'];
     quantidadeClientes = json['quantidadeClientes'];
     quantidadePedidosCarregados = json['quantidadePedidosCarregados'];
+    chaveBloqueioRoteiro = json['chaveBloqueioRoteiro'];
   }
 }

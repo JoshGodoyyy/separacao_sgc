@@ -5,15 +5,19 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/enums/icones.dart';
+import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/ui/utils/alterar_status_pedido.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import 'package:sgc/app/ui/widgets/loading_dialog.dart';
 import '../../../../config/app_config.dart';
+import '../../../../data/blocs/pedido/pedido_bloc.dart';
+import '../../../../data/blocs/pedido/pedido_event.dart';
 import '../../../../data/repositories/historico_pedido.dart';
 import '../../../../models/historico_pedido_model.dart';
 import '../../../../models/pedido_model.dart';
 import '../../../../ui/styles/colors_app.dart';
 import 'pages/general_info_page/general_info.dart';
+import 'pages/packaging_page/packaging.dart';
 import 'pages/products_page/products.dart';
 import 'pages/separation_page/separation.dart';
 
@@ -30,17 +34,32 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPageState extends State<OrderPage> {
   final codigoVendedorController = TextEditingController();
+
   late int tipoProduto;
+  late final PedidoBloc _pedidoBloc;
+
   Timer? timer;
   Duration tempoDecorrido = const Duration();
+
   bool iniciarSeparacao = false;
   bool liberarEmbalagem = false;
   bool liberarConferencia = false;
   bool finalizarSeparacao = false;
 
+  final volumeAcessorioController = TextEditingController();
+  final volumeAluminioController = TextEditingController();
+  final volumeChapasController = TextEditingController();
+  final observacoesSeparacaoController = TextEditingController();
+  final observacoesSeparadorController = TextEditingController();
+  final setorSeparacaoController = TextEditingController();
+  final pesoAcessorioController = TextEditingController();
+  final pesoController = TextEditingController();
+  late PedidoModel pedido = PedidoModel();
+
   @override
   void initState() {
     super.initState();
+    _pedidoBloc = PedidoBloc();
     final result = Provider.of<AppConfig>(context, listen: false);
 
     if (result.accessories && result.profiles) {
@@ -52,6 +71,20 @@ class _OrderPageState extends State<OrderPage> {
     }
 
     modificarStatus();
+    _fetchPedido();
+  }
+
+  _fetchPedido() async {
+    pedido = await Pedido().fetchOrdersByIdOrder(
+      int.parse(
+        widget.pedido.id.toString(),
+      ),
+    );
+
+    observacoesSeparacaoController.text =
+        pedido.observacoesSeparacao.toString();
+
+    setState(() {});
   }
 
   void clear() {
@@ -165,6 +198,8 @@ class _OrderPageState extends State<OrderPage> {
             children: [
               Text(
                 '${widget.pedido.id} - ${widget.pedido.nomeCliente}',
+                maxLines: 2,
+                textAlign: TextAlign.center,
               ),
               Text(
                 durationValue(),
@@ -204,11 +239,20 @@ class _OrderPageState extends State<OrderPage> {
               pedido: widget.pedido,
               tipoProduto: tipoProduto,
               tratamentoEspecial: widget.pedido.tratamentoItens == 'ESP',
+              observacoesSeparacaoController: observacoesSeparacaoController,
             ),
             Separation(
               ancestralContext: context,
               pedido: widget.pedido,
               tipoProduto: tipoProduto,
+              volumeAcessorioController: volumeAcessorioController,
+              volumeAluminioController: volumeAluminioController,
+              volumeChapasController: volumeChapasController,
+              observacoesSeparacaoController: observacoesSeparacaoController,
+              observacoesSeparadorController: observacoesSeparadorController,
+              setorSeparacaoController: setorSeparacaoController,
+              pesoAcessorioController: pesoAcessorioController,
+              pesoController: pesoController,
             ),
           ],
         ),
@@ -418,9 +462,14 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return CustomDialog(
                             titulo: 'SGC Mobile',
-                            conteudo: Text(
-                              e.toString().substring(11),
-                              textAlign: TextAlign.center,
+                            conteudo: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  e.toString().substring(11),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
                             ),
                             tipo: Icones.erro,
                           );
@@ -657,9 +706,15 @@ class _OrderPageState extends State<OrderPage> {
                                     builder: (BuildContext context) {
                                       return CustomDialog(
                                         titulo: 'SGC Mobile',
-                                        conteudo: Text(
-                                          e.toString().substring(11),
-                                          textAlign: TextAlign.center,
+                                        conteudo: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              e.toString().substring(11),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
                                         ),
                                         tipo: Icones.erro,
                                       );
@@ -695,8 +750,142 @@ class _OrderPageState extends State<OrderPage> {
             ),
           ],
         ),
+        bottomNavigationBar: Material(
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+          elevation: 15,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(20),
+            ),
+            child: BottomNavigationBar(
+              backgroundColor: Theme.of(context).primaryColor,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.inbox_rounded,
+                  ),
+                  label: 'Embalagens',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.save),
+                  label: 'Salvar',
+                ),
+              ],
+              selectedItemColor: Theme.of(context).iconTheme.color,
+              unselectedItemColor: Theme.of(context).iconTheme.color,
+              onTap: _selectedIndexChanged,
+            ),
+          ),
+        ),
       ),
     );
+  }
+
+  _selectedIndexChanged(int selectedIndex) {
+    if (selectedIndex == 0) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (builder) => Packaging(pedido: widget.pedido),
+        ),
+      );
+    } else {
+      if (volumeAcessorioController.text == '') {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const CustomDialog(
+              titulo: 'Sistema SGC',
+              conteudo: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Preencher Volume Acessório'),
+                ],
+              ),
+              tipo: Icones.erro,
+            );
+          },
+        );
+
+        return;
+      }
+
+      if (volumeAluminioController.text == '') {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const CustomDialog(
+              titulo: 'Sistema SGC',
+              conteudo: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Preencher Volume Aluminio'),
+                ],
+              ),
+              tipo: Icones.erro,
+            );
+          },
+        );
+
+        return;
+      }
+
+      if (volumeChapasController.text == '') {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const CustomDialog(
+              titulo: 'Sistema SGC',
+              conteudo: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Preencher Volume Chapas'),
+                ],
+              ),
+              tipo: Icones.erro,
+            );
+          },
+        );
+
+        return;
+      }
+
+      if (pesoAcessorioController.text == '') {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const CustomDialog(
+              titulo: 'Sistema SGC',
+              conteudo: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Preencher Peso Acessório'),
+                ],
+              ),
+              tipo: Icones.erro,
+            );
+          },
+        );
+
+        return;
+      }
+
+      _pedidoBloc.inputPedido.add(
+        UpdatePedido(
+          volAcessorio: double.parse(volumeAcessorioController.text),
+          volAlum: double.parse(volumeAluminioController.text),
+          volChapa: double.parse(volumeChapasController.text),
+          obsSeparacao: observacoesSeparacaoController.text,
+          obsSeparador: observacoesSeparadorController.text,
+          setorEstoque: setorSeparacaoController.text,
+          pesoAcessorio: double.parse(pesoAcessorioController.text),
+          idPedido: int.parse(
+            widget.pedido.id.toString(),
+          ),
+        ),
+      );
+    }
   }
 
   @override

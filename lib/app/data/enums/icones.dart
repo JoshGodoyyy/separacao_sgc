@@ -4,4 +4,5 @@ enum Icones {
   info,
   sucesso,
   filtro,
+  pergunta,
 }

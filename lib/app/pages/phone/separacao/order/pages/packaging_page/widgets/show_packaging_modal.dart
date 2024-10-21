@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import '../../../../../../../data/blocs/embalagem/embalagem_bloc.dart';
 import '../../../../../../../data/blocs/embalagem/embalagem_event.dart';
+import '../../../../../../../data/enums/icones.dart';
 import '../../../../../../../models/embalagem_model.dart';
+import '../../../../../../../ui/widgets/custom_dialog.dart';
 import '../../../widgets/item.dart';
 import '../../../widgets/save_button.dart';
 
@@ -72,30 +72,60 @@ Future<dynamic> showPackagingModal({
                       Icons.save,
                       () {
                         if (numeroCaixaController.text == '') {
-                          showTopSnackBar(
-                            Overlay.of(context),
-                            const CustomSnackBar.error(
-                                message: 'Campo "Número Caixa" obrigatório'),
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const CustomDialog(
+                                titulo: 'Sistema SGC',
+                                conteudo: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('Campo "Número Caixa" obrigatório'),
+                                  ],
+                                ),
+                                tipo: Icones.erro,
+                              );
+                            },
                           );
 
                           return;
                         }
 
                         if (quantidadeController.text == '') {
-                          showTopSnackBar(
-                            Overlay.of(context),
-                            const CustomSnackBar.error(
-                                message: 'Campo "Quantidade" obrigatório'),
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const CustomDialog(
+                                titulo: 'Sistema SGC',
+                                conteudo: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('Campo "Quantidade" obrigatório'),
+                                  ],
+                                ),
+                                tipo: Icones.erro,
+                              );
+                            },
                           );
 
                           return;
                         }
 
                         if (pesoController.text == '') {
-                          showTopSnackBar(
-                            Overlay.of(context),
-                            const CustomSnackBar.error(
-                                message: 'Campo "Peso" obrigatório'),
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return const CustomDialog(
+                                titulo: 'Sistema SGC',
+                                conteudo: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('Campo "Peso" obrigatório'),
+                                  ],
+                                ),
+                                tipo: Icones.erro,
+                              );
+                            },
                           );
 
                           return;

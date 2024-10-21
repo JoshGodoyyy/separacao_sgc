@@ -52,13 +52,16 @@ class CustomDialog extends StatelessWidget {
                     ),
                   ),
                   conteudo,
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text(
-                      'Ok',
-                      style: TextStyle(fontSize: 18.0),
+                  Visibility(
+                    visible: tipo != Icones.pergunta,
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text(
+                        'Ok',
+                        style: TextStyle(fontSize: 18.0),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 8),

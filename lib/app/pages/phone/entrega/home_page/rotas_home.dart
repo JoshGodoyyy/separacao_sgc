@@ -130,34 +130,48 @@ class _RotasHomeState extends State<RotasHome> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'A partir de',
+                          'Selecionar data',
                           style: TextStyle(
                             fontSize: 18,
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Material(
-                          elevation: 5,
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          ),
-                          child: TextField(
-                            controller: _inicioController,
-                            readOnly: true,
-                            onTap: () async {
-                              final data = await _selectDate();
-                              setState(
-                                () => _inicioController.text =
-                                    data != null ? _data.format(data) : '',
-                              );
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Material(
+                                elevation: 5,
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                                child: TextField(
+                                  controller: _inicioController,
+                                  readOnly: true,
+                                  onTap: () async {
+                                    final data = await _selectDate();
+                                    setState(
+                                      () => _inicioController.text =
+                                          data != null
+                                              ? _data.format(data)
+                                              : '',
+                                    );
+                                  },
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            IconButton(
+                              onPressed: () => setState(
+                                () => _inicioController.clear(),
+                              ),
+                              icon: const Icon(Icons.close),
+                            ),
+                          ],
                         ),
                       ],
                     ),

@@ -96,6 +96,7 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
                       pesoTotal: pedido.pesoTotal ?? 0,
                       tratamento: pedido.tratamento ?? '',
                       tratamentoItens: pedido.tratamentoItens ?? '',
+                      observacoesCarregador: pedido.observacoesCarregador ?? '',
                       bloc: _bloc,
                     ),
                   ),
@@ -125,29 +126,30 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
             List pedidos = snapshot.data?.produtos ?? [];
             return Column(
               children: [
-                Container(
-                  margin: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-                  decoration: BoxDecoration(
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+                  child: Material(
                     color: Theme.of(context).primaryColor,
                     borderRadius: const BorderRadius.all(
                       Radius.circular(10),
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Checkbox(
-                        value: _selecionarTodos,
-                        onChanged: (value) {
-                          setState(() {
-                            _selecionarTodos = !_selecionarTodos;
-                            for (var pedido in pedidos) {
-                              pedido.selecionado = _selecionarTodos;
-                            }
-                          });
-                        },
-                      ),
-                      const Text('Selecionar todos'),
-                    ],
+                    elevation: 5,
+                    child: Row(
+                      children: [
+                        Checkbox(
+                          value: _selecionarTodos,
+                          onChanged: (value) {
+                            setState(() {
+                              _selecionarTodos = !_selecionarTodos;
+                              for (var pedido in pedidos) {
+                                pedido.selecionado = _selecionarTodos;
+                              }
+                            });
+                          },
+                        ),
+                        const Text('Selecionar todos'),
+                      ],
+                    ),
                   ),
                 ),
                 _pedidos(pedidos),
@@ -168,8 +170,8 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
                   ? true
                   : false;
 
-          for (var pedido
-              in _todosPedidos.where((item) => item.selecionado == true)) {
+          for (var pedido in _todosPedidos
+              .where((item) => item.selecionado == true && item.idStatus < 5)) {
             _bloc.inputProdutoRoteiroController.add(
               CarregarPedido(
                 idPedido: pedido.id,

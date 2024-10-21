@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/api_config.dart';
 import 'package:sgc/app/config/secure_storage.dart';
+import 'package:sgc/app/data/enums/icones.dart';
 import 'package:sgc/app/data/repositories/configuracoes.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
+import 'package:sgc/app/data/repositories/versao_app_dao.dart';
+import 'package:sgc/app/ui/widgets/custom_dialog.dart';
+import 'package:version/version.dart';
 
 import '../../../config/app_config.dart';
 import '../../../data/repositories/user_dao.dart';
@@ -27,11 +30,96 @@ class _LoginPageState extends State<LoginPage> {
   final usuarioController = TextEditingController();
   final senhaController = TextEditingController();
   bool isWaiting = false;
+  bool _atualizado = false;
+
+  String _version = '';
+  List<int> _currentVersion = [];
+  List<int> _requiredVersion = [];
 
   @override
   void initState() {
     super.initState();
+    _loadVersion();
     loadData();
+  }
+
+  _loadVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    setState(
+      () => _version = '${packageInfo.version}+${packageInfo.buildNumber}',
+    );
+
+    _currentVersion =
+    packageInfo.version.split('.').map(int.parse).toList();
+  }
+
+  _getVersion() async {
+    await ApiConfig().getUrl();
+
+    if (ApiConfig().url == '') {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const CustomDialog(
+                titulo: 'Sistema SGC',
+                conteudo: Row(
+                  children: [
+                    Expanded(
+                      child: Wrap(
+                        children: [
+                          Text(
+                            'É necessário indicar o endereço da API antes de continuar',
+                            textAlign: TextAlign.center,
+                            maxLines: 3,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                tipo: Icones.info,
+              );
+            },
+          );
+        },
+      );
+
+      return;
+    }
+
+    var responseVersion = await VersaoAppDao().fetchVersion();
+
+    _requiredVersion = [
+      int.parse(
+        responseVersion.major.toString(),
+      ),
+      int.parse(
+        responseVersion.minor.toString(),
+      ),
+      int.parse(
+        responseVersion.patch.toString(),
+      ),
+    ];
+
+    Version current = Version(
+      _currentVersion[0],
+      _currentVersion[1],
+      _currentVersion[2],
+    );
+
+    Version latest = Version(
+      _requiredVersion[0],
+      _requiredVersion[1],
+      _requiredVersion[2],
+    );
+
+    if (latest > current) {
+      _atualizado = false;
+    } else {
+      _atualizado = true;
+    }
   }
 
   void loadData() async {
@@ -46,11 +134,76 @@ class _LoginPageState extends State<LoginPage> {
   void login() async {
     final config = Provider.of<AppConfig>(context, listen: false);
     final navigator = Navigator.of(context);
-    final overlay = Overlay.of(context);
+
+    try {
+      await _getVersion();
+    } catch (ex) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return CustomDialog(
+                titulo: 'Sistema SGC',
+                conteudo: Row(
+                  children: [
+                    Expanded(
+                      child: Wrap(
+                        children: [
+                          Text(
+                            ex.toString(),
+                            textAlign: TextAlign.center,
+                            maxLines: 3,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                tipo: Icones.info,
+              );
+            },
+          );
+        },
+      );
+
+      return;
+    }
+
+    if (!_atualizado) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const CustomDialog(
+                titulo: 'Sistema SGC',
+                conteudo: Row(
+                  children: [
+                    Expanded(
+                      child: Wrap(
+                        children: [
+                          Text(
+                            'Atenção, existe uma nova versão disponível. Por favor, atualize-o antes de continuar',
+                            textAlign: TextAlign.center,
+                            maxLines: 3,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                tipo: Icones.info,
+              );
+            },
+          );
+        },
+      );
+
+      return;
+    }
 
     setState(() => isWaiting = true);
-
-    await ApiConfig().getUrl();
 
     var user = User();
     user.user = usuarioController.text;
@@ -86,11 +239,33 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         message = e.toString();
       }
-      showTopSnackBar(
-        overlay,
-        CustomSnackBar.error(
-          message: message,
-        ),
+
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return CustomDialog(
+                titulo: 'Sistema SGC',
+                conteudo: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Wrap(
+                        children: [
+                          Center(
+                            child: Text(message),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                tipo: Icones.erro,
+              );
+            },
+          );
+        },
       );
     }
 
@@ -176,7 +351,17 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: isWaiting ? () {} : login,
                   ),
                 ),
-                const SizedBox(height: 64),
+                const SizedBox(height: 32),
+                Center(
+                  child: Text(
+                    _version,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 32),
                 Visibility(
                   visible: isWaiting,
                   child: Center(

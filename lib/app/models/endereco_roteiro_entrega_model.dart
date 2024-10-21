@@ -1,5 +1,6 @@
 class EnderecoRoteiroEntregaModel {
   num? id;
+  String? observacoesMotorista;
   String? pedidosAgrupados;
   num? idCliente;
   String? fantasia;
@@ -18,6 +19,7 @@ class EnderecoRoteiroEntregaModel {
 
   EnderecoRoteiroEntregaModel({
     this.id,
+    this.observacoesMotorista,
     this.pedidosAgrupados,
     this.idCliente,
     this.fantasia,
@@ -37,6 +39,7 @@ class EnderecoRoteiroEntregaModel {
 
   EnderecoRoteiroEntregaModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    observacoesMotorista = json['observacoesMotorista'];
     pedidosAgrupados = json['pedidosAgrupados'];
     idCliente = json['idCliente'];
     fantasia = json['fantasia'];
@@ -57,6 +60,7 @@ class EnderecoRoteiroEntregaModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'observacoesMotorista': observacoesMotorista,
       'pedidosAgrupados': pedidosAgrupados,
       'idCliente': idCliente,
       'fantasia': fantasia,

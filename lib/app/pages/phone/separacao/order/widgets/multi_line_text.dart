@@ -34,8 +34,8 @@ class MultiLineText extends StatelessWidget {
             ),
             child: TextField(
               controller: controller,
-              maxLines: 3,
-              minLines: 3,
+              maxLines: 6,
+              minLines: 6,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,

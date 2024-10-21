@@ -194,34 +194,38 @@ class _HomePageState extends State<HomePage> {
                       showDialog(
                         context: context,
                         builder: (context) {
-                          return AlertDialog(
-                            title: const Text(
-                              'SGC',
-                            ),
-                            content: const Text(
-                              'Deseja mesmo sair?',
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (builder) => const LoginPage(),
+                          return CustomDialog(
+                            titulo: 'Sistema SGC',
+                            conteudo: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Text('Deseja mesmo sair?'),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (builder) =>
+                                                const LoginPage(),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text('Sim'),
                                     ),
-                                  );
-                                },
-                                child: const Text(
-                                  'Sim',
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text(
-                                  'Não',
-                                ),
-                              ),
-                            ],
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('Não'),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            tipo: Icones.pergunta,
                           );
                         },
                       );

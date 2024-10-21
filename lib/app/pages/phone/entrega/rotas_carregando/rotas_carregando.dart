@@ -52,22 +52,35 @@ class _RotasCarregandoState extends State<RotasCarregando> {
       padding: const EdgeInsets.only(top: 10),
       child: ListView(
         children: [
-          for (var roteiro in data.where((item) =>
-              item.carregamentoConcluido == 0 &&
-              (DateTime.parse(item.dataEntrega).isAfter(dataEntrega) ||
-                  DateTime.parse(item.dataEntrega)
-                      .isAtSameMomentAs(dataEntrega))))
-            RotaButton(
-              dados: roteiro,
-              icon: Icons.roundabout_right_outlined,
-              page: Clientes(
+          if (widget.dataEntrega != '')
+            for (var roteiro in data.where((item) =>
+                item.carregamentoConcluido == 0 &&
+                DateTime.parse(item.dataEntrega).isAtSameMomentAs(dataEntrega)))
+              RotaButton(
                 dados: roteiro,
+                icon: Icons.roundabout_right_outlined,
+                page: Clientes(
+                  dados: roteiro,
+                  bloc: _roteiroBloc,
+                ),
+                begin: Colors.green,
+                end: Colors.greenAccent,
                 bloc: _roteiroBloc,
-              ),
-              begin: Colors.green,
-              end: Colors.greenAccent,
-              bloc: _roteiroBloc,
-            )
+              )
+          else
+            for (var roteiro
+                in data.where((item) => item.carregamentoConcluido == 0))
+              RotaButton(
+                dados: roteiro,
+                icon: Icons.roundabout_right_outlined,
+                page: Clientes(
+                  dados: roteiro,
+                  bloc: _roteiroBloc,
+                ),
+                begin: Colors.green,
+                end: Colors.greenAccent,
+                bloc: _roteiroBloc,
+              )
         ],
       ),
     );

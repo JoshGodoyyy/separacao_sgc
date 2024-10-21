@@ -3,15 +3,14 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/data/repositories/configuracoes.dart';
 import 'package:sgc/app/pages/tablet/home_page/home_page.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
-
 import '../../../config/api_config.dart';
 import '../../../config/app_config.dart';
 import '../../../config/secure_storage.dart';
+import '../../../data/enums/icones.dart';
 import '../../../data/repositories/user_dao.dart';
 import '../../../models/user_model.dart';
 import '../../../ui/widgets/button.dart';
+import '../../../ui/widgets/custom_dialog.dart';
 import '../../../ui/widgets/textfield.dart';
 import '../../initial_setup_page/initial_setup.dart';
 
@@ -48,7 +47,6 @@ class _TLoginPageState extends State<TLoginPage> {
   void login() async {
     final config = Provider.of<AppConfig>(context, listen: false);
     final navigator = Navigator.of(context);
-    final overlay = Overlay.of(context);
 
     setState(() => isWaiting = true);
 
@@ -88,11 +86,24 @@ class _TLoginPageState extends State<TLoginPage> {
       } else {
         message = e.toString();
       }
-      showTopSnackBar(
-        overlay,
-        CustomSnackBar.error(
-          message: message,
-        ),
+
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return CustomDialog(
+                titulo: 'Sistema SGC',
+                conteudo: Row(
+                  children: [
+                    Text(message),
+                  ],
+                ),
+                tipo: Icones.erro,
+              );
+            },
+          );
+        },
       );
     }
 

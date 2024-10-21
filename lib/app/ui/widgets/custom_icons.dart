@@ -14,7 +14,7 @@ class CustomIcon extends StatelessWidget {
       Color cor;
       switch (tipo) {
         case Icones.alerta:
-          cor = Colors.yellow;
+          cor = Colors.yellow[700]!;
           break;
         case Icones.erro:
           cor = Colors.red;
@@ -23,6 +23,7 @@ class CustomIcon extends StatelessWidget {
           cor = Colors.blue;
           break;
         case Icones.filtro:
+        case Icones.pergunta:
           cor = Colors.deepPurple[700]!;
           break;
         case Icones.sucesso:
@@ -36,36 +37,49 @@ class CustomIcon extends StatelessWidget {
     }
 
     Icon icone() {
-      if (tipo == Icones.alerta) {
-        return const Icon(
-          Icons.assignment_late_rounded,
-          color: Colors.white,
-          size: 100,
-        );
-      } else if (tipo == Icones.erro) {
-        return const Icon(
-          Icons.error_outline_rounded,
-          color: Colors.white,
-          size: 125,
-        );
-      } else if (tipo == Icones.info) {
-        return const Icon(
-          Icons.info_outline_rounded,
-          color: Colors.white,
-          size: 125,
-        );
-      } else if (tipo == Icones.sucesso) {
-        return const Icon(
-          Icons.assignment_turned_in,
-          color: Colors.white,
-          size: 100,
-        );
-      } else {
-        return const Icon(
-          Icons.filter_list_alt,
-          color: Colors.white,
-          size: 100,
-        );
+      switch (tipo) {
+        case Icones.alerta:
+          return const Icon(
+            Icons.assignment_late_rounded,
+            color: Colors.white,
+            size: 100,
+          );
+        case Icones.erro:
+          return const Icon(
+            Icons.error_outline_rounded,
+            color: Colors.white,
+            size: 125,
+          );
+        case Icones.info:
+          return const Icon(
+            Icons.info_outline_rounded,
+            color: Colors.white,
+            size: 125,
+          );
+        case Icones.sucesso:
+          return const Icon(
+            Icons.assignment_turned_in,
+            color: Colors.white,
+            size: 100,
+          );
+        case Icones.filtro:
+          return const Icon(
+            Icons.filter_list_alt,
+            color: Colors.white,
+            size: 100,
+          );
+        case Icones.pergunta:
+          return const Icon(
+            Icons.question_mark_rounded,
+            color: Colors.white,
+            size: 100,
+          );
+        default:
+          return const Icon(
+            Icons.info_outline_rounded,
+            color: Colors.white,
+            size: 100,
+          );
       }
     }
 

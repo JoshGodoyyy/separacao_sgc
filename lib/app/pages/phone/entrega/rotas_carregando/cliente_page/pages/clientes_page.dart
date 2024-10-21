@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/blocs/cliente/cliente_bloc.dart';
 import 'package:sgc/app/data/blocs/roteiro_entrega/roteiro_bloc.dart';
+import 'package:sgc/app/data/repositories/roteiro_entrega.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_carregando/cliente_page/pages/ordem_entrega.dart';
 
@@ -32,6 +34,16 @@ class ClientesPage extends StatefulWidget {
 }
 
 class _ClientesPageState extends State<ClientesPage> {
+  _desbloqueioVisivel() {
+    if (widget.dados.chaveBloqueioRoteiro == '' ||
+        widget.dados.chaveBloqueioRoteiro == null ||
+        widget.dados.chaveBloqueioRoteiro == UserConstants().idLiberacao) {
+      return true;
+    }
+
+    return false;
+  }
+
   _concluirCarregamento() async {
     int pedidosCarregados = 0;
     int quantidadePedidos = 0;
@@ -132,20 +144,27 @@ class _ClientesPageState extends State<ClientesPage> {
               showDialog(
                 context: context,
                 builder: (context) {
-                  return AlertDialog(
-                    title: const Text('Sistema SGC'),
-                    content:
+                  return CustomDialog(
+                    titulo: 'Sistema SGC',
+                    conteudo: Column(
+                      children: [
                         const Text('Deseja mesmo concluir o carregamento?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => _concluirCarregamento(),
-                        child: const Text('Sim'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Não'),
-                      ),
-                    ],
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            TextButton(
+                              onPressed: () => _concluirCarregamento(),
+                              child: const Text('Sim'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Não'),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    tipo: Icones.pergunta,
                   );
                 },
               );
@@ -179,6 +198,27 @@ class _ClientesPageState extends State<ClientesPage> {
                   },
                 );
               } else {
+                if (!_desbloqueioVisivel()) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const CustomDialog(
+                        titulo: 'Sistema SGC',
+                        conteudo: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Roteiro bloqueado por outro usuário',
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                        tipo: Icones.erro,
+                      );
+                    },
+                  );
+                  return;
+                }
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => OrdemEntrega(
@@ -188,6 +228,81 @@ class _ClientesPageState extends State<ClientesPage> {
                   ),
                 );
               }
+            },
+          ),
+          SpeedDialChild(
+            visible: _desbloqueioVisivel(),
+            child: widget.dados.chaveBloqueioRoteiro == '' ||
+                    widget.dados.chaveBloqueioRoteiro == null
+                ? const Icon(Icons.lock_outline_rounded)
+                : const Icon(Icons.lock_open_rounded),
+            label: widget.dados.chaveBloqueioRoteiro == '' ||
+                    widget.dados.chaveBloqueioRoteiro == null
+                ? 'Bloquear roteiro'
+                : 'Desbloquear roteiro',
+            backgroundColor: widget.dados.chaveBloqueioRoteiro == '' ||
+                    widget.dados.chaveBloqueioRoteiro == null
+                ? Colors.red
+                : Colors.green,
+            labelBackgroundColor: widget.dados.chaveBloqueioRoteiro == '' ||
+                    widget.dados.chaveBloqueioRoteiro == null
+                ? Colors.red
+                : Colors.green,
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return CustomDialog(
+                    titulo: 'Sistema SGC',
+                    conteudo: Column(
+                      children: [
+                        Text(
+                          widget.dados.chaveBloqueioRoteiro == '' ||
+                                  widget.dados.chaveBloqueioRoteiro == null
+                              ? 'Deseja bloquear futuras edições no roteiro atual?'
+                              : 'Deseja desbloquear o roteiro atual?',
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            TextButton(
+                              onPressed: () async {
+                                final roteiro = RoteiroEntrega();
+                                int idRoteiro = int.parse(
+                                  widget.dados.id.toString(),
+                                );
+                                if (widget.dados.chaveBloqueioRoteiro == '' ||
+                                    widget.dados.chaveBloqueioRoteiro == null) {
+                                  await roteiro.setStateRoteiro(
+                                      idRoteiro, UserConstants().idLiberacao!);
+                                  widget.dados.chaveBloqueioRoteiro =
+                                      UserConstants().idLiberacao!;
+                                } else {
+                                  await roteiro.setStateRoteiro(idRoteiro, '');
+                                  widget.dados.chaveBloqueioRoteiro = null;
+                                }
+
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  Navigator.of(context).pop();
+                                });
+
+                                setState(() {});
+                              },
+                              child: const Text('Sim'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: const Text('Não'),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    tipo: Icones.pergunta,
+                  );
+                },
+              );
             },
           ),
         ],
