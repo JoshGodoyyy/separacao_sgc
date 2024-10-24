@@ -77,12 +77,20 @@ class ClienteModel {
 
   String enderecoCompleto() {
     if (endereco == null) {
-      return '';
+      return 'ENDEREÇO NÃO INFORMADO';
     } else {
-      if (complemento != '') {
-        return '$logradouro $endereco, $numero - $complemento - $bairro - $cidade - $estado - $cep.';
+      String logradouro = this.logradouro == '' || this.logradouro == null
+          ? ''
+          : this.logradouro!;
+      String numero =
+          this.numero == '' || this.numero == null ? '' : ', ${this.numero!}';
+
+      if (complemento != '' && complemento != null) {
+        return '$logradouro $endereco$numero - $complemento - $bairro - $cidade - $estado - $cep.'
+            .trimLeft();
       } else {
-        return '$logradouro $endereco, $numero - $bairro - $cidade - $estado - $cep.';
+        return '$logradouro $endereco$numero - $bairro - $cidade - $estado - $cep.'
+            .trimLeft();
       }
     }
   }

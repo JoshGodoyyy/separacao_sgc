@@ -89,7 +89,7 @@ class ClienteListItem extends StatelessWidget {
                           child: Text('ESP.: ${cliente.tratamentoEspecial}'),
                         ),
                         Visibility(
-                          visible: cliente.tratamentoItens != '' ||
+                          visible: cliente.tratamentoItens != '' &&
                               cliente.tratamentoItens != null,
                           child: Wrap(
                             children: [
