@@ -171,7 +171,7 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
                   : false;
 
           for (var pedido in _todosPedidos
-              .where((item) => item.selecionado == true && item.idStatus < 5)) {
+              .where((item) => item.selecionado == true && item.idStatus == 5 || item.idStatus == 10)) {
             _bloc.inputProdutoRoteiroController.add(
               CarregarPedido(
                 idPedido: pedido.id,

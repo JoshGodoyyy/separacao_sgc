@@ -43,8 +43,8 @@ class _RotasPedidosState extends State<RotasPedidos> {
         body: TabBarView(
           children: [
             PedidosNaoCarregados(
-              numeroEntrega: widget.cliente.numero!,
-              cepEntrega: widget.cliente.cep!,
+              numeroEntrega: widget.cliente.numero ?? '',
+              cepEntrega: widget.cliente.cep ?? '',
               idRoteiro: int.parse(
                 widget.roteiroEntrega.id.toString(),
               ),
@@ -53,8 +53,8 @@ class _RotasPedidosState extends State<RotasPedidos> {
               ),
             ),
             PedidosCarregados(
-              numeroEntrega: widget.cliente.numero!,
-              cepEntrega: widget.cliente.cep!,
+              numeroEntrega: widget.cliente.numero ?? '',
+              cepEntrega: widget.cliente.cep ?? '',
               idRoteiro: int.parse(
                 widget.roteiroEntrega.id.toString(),
               ),
