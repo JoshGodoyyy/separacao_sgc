@@ -78,7 +78,7 @@ class _RotasState extends State<Rotas> {
         ),
         cep: endereco.cep.toString(),
         numero: endereco.numero.toString(),
-        idSituacao: 6,
+        idSituacao: 5,
         idCliente: int.parse(
           endereco.idCliente.toString(),
         ),
@@ -138,8 +138,8 @@ class _RotasState extends State<Rotas> {
                                       children: [
                                         SlidableAction(
                                           onPressed: (_) =>
-                                              endereco.idSituacao >= 6 &&
-                                                      endereco.idSituacao < 11
+                                              endereco.idSituacao == 5 ||
+                                                      endereco.idSituacao == 10
                                                   ? _entregarPedido(endereco)
                                                   : _retornarPedido(endereco),
                                           backgroundColor:
