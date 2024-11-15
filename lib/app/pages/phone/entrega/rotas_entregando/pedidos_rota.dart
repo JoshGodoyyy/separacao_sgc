@@ -32,9 +32,7 @@ class _PedidosRotaState extends State<PedidosRota> {
 
   _fetchPedidos() async {
     bool separarAgrupamento =
-        await Configuracoes().verificaConfiguracaoAgrupamento() == 1
-            ? true
-            : false;
+        await Configuracoes().verificaConfiguracaoAgrupamento() == 1;
 
     _bloc.inputProdutoRoteiroController.add(
       GetPedidosCarregados(

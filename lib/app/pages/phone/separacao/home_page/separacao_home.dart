@@ -37,7 +37,11 @@ class _HomeState extends State<SeparacaoHome> {
     await orders.fetchData(10);
     await orders.fetchData(14);
     await orders.fetchData(15);
-    setState(() => carregando = false);
+
+    if (mounted) {
+      setState(() => carregando = false);
+    }
+
     alertarBalcao(
       orders.pedidosSeparar.any(
         (pedido) => pedido.tipoEntrega == 'BAL',

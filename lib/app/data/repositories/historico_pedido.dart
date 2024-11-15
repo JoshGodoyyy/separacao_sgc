@@ -27,4 +27,12 @@ class HistoricoPedido {
       ),
     );
   }
+
+  Future<void> adicionarHistoricos(List<HistoricoPedidoModel> pedidos) async {
+    await http.post(
+      Uri.parse('$_url/InsertLogOrders'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(pedidos.map((pedido) => pedido.toJson()).toList()),
+    );
+  }
 }

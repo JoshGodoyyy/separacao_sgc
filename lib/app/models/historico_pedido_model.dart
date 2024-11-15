@@ -32,14 +32,14 @@ class HistoricoPedidoModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['idPedido'] = idPedido;
-    data['idStatus'] = idStatus;
-    data['status'] = status;
-    data['idUsuario'] = idUsuario;
-    data['nomeUsuario'] = nomeUsuario;
+    data['id'] = id ?? 0;
+    data['idPedido'] = idPedido ?? 0;
+    data['idStatus'] = idStatus ?? 0;
+    data['status'] = status ?? '';
+    data['idUsuario'] = idUsuario ?? 0;
+    data['nomeUsuario'] = nomeUsuario ?? '';
     data['data'] = this.data;
-    data['chaveFuncionario'] = chaveFuncionario;
+    data['chaveFuncionario'] = chaveFuncionario ?? '';
     return data;
   }
 }

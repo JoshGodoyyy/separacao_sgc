@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
+import 'package:sgc/app/data/repositories/pedido_roteiro.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
 
+import '../../../../../../config/user.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_bloc.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_event.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_state.dart';
+import '../../../../../../data/repositories/configuracoes.dart';
+import '../../../../../../data/repositories/historico_pedido.dart';
 import '../../../../../../models/endereco_roteiro_entrega_model.dart';
+import '../../../../../../models/historico_pedido_model.dart';
 import '../../../../../../ui/widgets/error_alert.dart';
 import '../../pedidos_rota.dart';
 
@@ -22,6 +28,8 @@ class Rotas extends StatefulWidget {
 }
 
 class _RotasState extends State<Rotas> {
+  final DateFormat _data = DateFormat('yyyy-MM-dd HH:mm:ss');
+
   late EnderecoRoteiroBloc _bloc;
   late List enderecos;
 
@@ -54,7 +62,7 @@ class _RotasState extends State<Rotas> {
     }
   }
 
-  _entregarPedido(endereco) {
+  _entregarPedido(endereco) async {
     _bloc.inputRoteiroEntregaController.add(
       EntregarPedido(
         idRoteiro: int.parse(
@@ -68,9 +76,39 @@ class _RotasState extends State<Rotas> {
         ),
       ),
     );
+
+    bool separarAgrupamento =
+        await Configuracoes().verificaConfiguracaoAgrupamento() == 1;
+
+    var pedidos = await PedidoRoteiro().fetchPedidosCarregados(
+      endereco.numero,
+      endereco.cep,
+      endereco.idCliente,
+      endereco.idRoteiroEntrega,
+      separarAgrupamento,
+    );
+
+    List<HistoricoPedidoModel> pedidosHistorico = [];
+
+    for (var pedido in pedidos) {
+      pedidosHistorico.add(
+        HistoricoPedidoModel(
+          idPedido: pedido.id,
+          idStatus: 11,
+          status: 'ENTREGUE',
+          chaveFuncionario: UserConstants().idLiberacao,
+          data: _data.format(
+            DateTime.now(),
+          ),
+          idUsuario: UserConstants().idUsuario,
+        ),
+      );
+    }
+
+    await HistoricoPedido().adicionarHistoricos(pedidosHistorico);
   }
 
-  _retornarPedido(endereco) {
+  _retornarPedido(endereco) async {
     _bloc.inputRoteiroEntregaController.add(
       EntregarPedido(
         idRoteiro: int.parse(
@@ -84,6 +122,36 @@ class _RotasState extends State<Rotas> {
         ),
       ),
     );
+
+    bool separarAgrupamento =
+        await Configuracoes().verificaConfiguracaoAgrupamento() == 1;
+
+    var pedidos = await PedidoRoteiro().fetchPedidosCarregados(
+      endereco.numero,
+      endereco.cep,
+      endereco.idCliente,
+      endereco.idRoteiroEntrega,
+      separarAgrupamento,
+    );
+
+    List<HistoricoPedidoModel> pedidosHistorico = [];
+
+    for (var pedido in pedidos) {
+      pedidosHistorico.add(
+        HistoricoPedidoModel(
+          idPedido: pedido.id,
+          idStatus: 5,
+          status: 'OK',
+          chaveFuncionario: UserConstants().idLiberacao,
+          data: _data.format(
+            DateTime.now(),
+          ),
+          idUsuario: UserConstants().idUsuario,
+        ),
+      );
+    }
+
+    await HistoricoPedido().adicionarHistoricos(pedidosHistorico);
   }
 
   @override
