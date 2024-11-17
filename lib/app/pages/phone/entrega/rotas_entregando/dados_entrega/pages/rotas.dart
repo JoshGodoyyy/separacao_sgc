@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:sgc/app/data/repositories/confirmacao_entrega.dart';
 import 'package:sgc/app/data/repositories/pedido_roteiro.dart';
+import 'package:sgc/app/models/confirmacao_entrega_model.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
+import 'package:sgc/app/pages/phone/entrega/rotas_entregando/dados_entrega/pages/widgets/modal_entrega.dart';
+import 'package:sgc/app/ui/styles/colors_app.dart';
 
 import '../../../../../../config/user.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_bloc.dart';
@@ -63,6 +67,78 @@ class _RotasState extends State<Rotas> {
   }
 
   _entregarPedido(endereco) async {
+    final nomeController = TextEditingController();
+    final rgController = TextEditingController();
+    final cpfController = TextEditingController();
+
+    bool separarAgrupamento =
+        await Configuracoes().verificaConfiguracaoAgrupamento() == 1;
+
+    var pedidos = await PedidoRoteiro().fetchPedidosCarregados(
+      endereco.numero,
+      endereco.cep,
+      endereco.idCliente,
+      endereco.idRoteiroEntrega,
+      separarAgrupamento,
+    );
+
+    if (mounted) {
+      showModal(
+        context,
+        nomeController,
+        rgController,
+        cpfController,
+        () {
+          if (nomeController.text == '' &&
+              (rgController.text == '' || cpfController.text == '')) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'Você precisa identificar o responsável de recebimento',
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: ColorsApp.darkElementColor,
+              ),
+            );
+
+            return;
+          }
+
+          _confirmarEntrega(
+            nomeController.text,
+            rgController.text,
+            cpfController.text,
+            pedidos,
+          );
+
+          _salvarEntrega(endereco, pedidos);
+        },
+      );
+    }
+  }
+
+  _confirmarEntrega(
+    nome,
+    rg,
+    cpf,
+    pedidos,
+  ) async {
+    List<ConfirmacaoEntregaModel> itens = [];
+    for (var pedido in pedidos) {
+      itens.add(
+        ConfirmacaoEntregaModel(
+          pedido.id,
+          nome,
+          rg,
+          cpf,
+        ),
+      );
+    }
+
+    await ConfirmacaoEntrega().confirmar(itens);
+  }
+
+  _salvarEntrega(endereco, pedidos) async {
     _bloc.inputRoteiroEntregaController.add(
       EntregarPedido(
         idRoteiro: int.parse(
@@ -75,17 +151,6 @@ class _RotasState extends State<Rotas> {
           endereco.idCliente.toString(),
         ),
       ),
-    );
-
-    bool separarAgrupamento =
-        await Configuracoes().verificaConfiguracaoAgrupamento() == 1;
-
-    var pedidos = await PedidoRoteiro().fetchPedidosCarregados(
-      endereco.numero,
-      endereco.cep,
-      endereco.idCliente,
-      endereco.idRoteiroEntrega,
-      separarAgrupamento,
     );
 
     List<HistoricoPedidoModel> pedidosHistorico = [];
