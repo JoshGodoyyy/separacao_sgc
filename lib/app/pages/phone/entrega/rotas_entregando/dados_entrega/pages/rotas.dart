@@ -331,6 +331,11 @@ class _RotasState extends State<Rotas> {
                                               ),
                                               const SizedBox(height: 8),
                                               Text(endereco.fantasia),
+                                              const Divider(),
+                                              const Text(
+                                                  'Observações para o Motorista:'),
+                                              Text(
+                                                  '${endereco.observacoesMotorista}'),
                                             ],
                                           ),
                                         ),
