@@ -5,9 +5,11 @@ import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
 import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_state.dart';
 import '../../../../../../data/repositories/configuracoes.dart';
 import '../../../../../../ui/widgets/error_alert.dart';
+import 'widgets/modal_pedido.dart';
 import 'widgets/pedido_list_item.dart';
 
 class PedidosCarregados extends StatefulWidget {
+  final BuildContext mainContext;
   final String numeroEntrega;
   final String cepEntrega;
   final int idRoteiro;
@@ -15,6 +17,7 @@ class PedidosCarregados extends StatefulWidget {
 
   const PedidosCarregados({
     super.key,
+    required this.mainContext,
     required this.numeroEntrega,
     required this.cepEntrega,
     required this.idRoteiro,
@@ -39,9 +42,7 @@ class _PedidosCarregadosState extends State<PedidosCarregados> {
 
   _fetchData() async {
     bool separarAgrupamento =
-        await Configuracoes().verificaConfiguracaoAgrupamento() == 1
-            ? true
-            : false;
+        await Configuracoes().verificaConfiguracaoAgrupamento() == 1;
 
     _bloc.inputProdutoRoteiroController.add(
       GetPedidosCarregados(
@@ -71,13 +72,30 @@ class _PedidosCarregadosState extends State<PedidosCarregados> {
             for (var pedido in pedidos)
               Row(
                 children: [
-                  Checkbox(
-                      value: pedido.selecionado ?? false,
-                      onChanged: (value) {
-                        setState(() {
-                          pedido.selecionado = value ?? false;
-                        });
-                      }),
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          showModal(
+                            widget.mainContext,
+                            pedido.id,
+                            pedido.quantidadeVolumesCarregados ?? 0,
+                          ).then((value) => _fetchData());
+                        },
+                        icon: const Icon(Icons.info_outline_rounded),
+                      ),
+                      Checkbox(
+                        value: pedido.selecionado ?? false,
+                        onChanged: (value) {
+                          setState(
+                            () {
+                              pedido.selecionado = value ?? false;
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                   Expanded(
                     child: PedidoListItem(
                       idPedido: pedido.id,
@@ -140,12 +158,14 @@ class _PedidosCarregadosState extends State<PedidosCarregados> {
                         Checkbox(
                           value: _selecionarTodos,
                           onChanged: (value) {
-                            setState(() {
-                              _selecionarTodos = !_selecionarTodos;
-                              for (var pedido in pedidos) {
-                                pedido.selecionado = _selecionarTodos;
-                              }
-                            });
+                            setState(
+                              () {
+                                _selecionarTodos = !_selecionarTodos;
+                                for (var pedido in pedidos) {
+                                  pedido.selecionado = _selecionarTodos;
+                                }
+                              },
+                            );
                           },
                         ),
                         const Text('Selecionar todos'),

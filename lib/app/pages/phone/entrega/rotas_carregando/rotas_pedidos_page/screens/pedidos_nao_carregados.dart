@@ -8,6 +8,7 @@ import '../../../../../../data/repositories/configuracoes.dart';
 import '../../../../../../ui/widgets/error_alert.dart';
 
 class PedidosNaoCarregados extends StatefulWidget {
+  final BuildContext mainContext;
   final String numeroEntrega;
   final String cepEntrega;
   final int idRoteiro;
@@ -15,6 +16,7 @@ class PedidosNaoCarregados extends StatefulWidget {
 
   const PedidosNaoCarregados({
     super.key,
+    required this.mainContext,
     required this.numeroEntrega,
     required this.cepEntrega,
     required this.idRoteiro,
@@ -72,12 +74,15 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
               Row(
                 children: [
                   Checkbox(
-                      value: pedido.selecionado ?? false,
-                      onChanged: (value) {
-                        setState(() {
+                    value: pedido.selecionado ?? false,
+                    onChanged: (value) {
+                      setState(
+                        () {
                           pedido.selecionado = value ?? false;
-                        });
-                      }),
+                        },
+                      );
+                    },
+                  ),
                   Expanded(
                     child: PedidoListItem(
                       idPedido: pedido.id,
@@ -170,8 +175,9 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
                   ? true
                   : false;
 
-          for (var pedido in _todosPedidos
-              .where((item) => item.selecionado == true && item.idStatus == 5 || item.idStatus == 10)) {
+          for (var pedido in _todosPedidos.where((item) =>
+              item.selecionado == true && item.idStatus == 5 ||
+              item.idStatus == 10)) {
             _bloc.inputProdutoRoteiroController.add(
               CarregarPedido(
                 idPedido: pedido.id,

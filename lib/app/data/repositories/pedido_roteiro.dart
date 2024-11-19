@@ -164,4 +164,20 @@ class PedidoRoteiro {
       throw Exception(e);
     }
   }
+
+  Future alterarQuantidadePedidosCarregados(
+    int idPedido,
+    int quantidadeVolumes,
+  ) async {
+    await http.post(
+      Uri.parse('$url/UpdateQuantityVolumes'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(
+        {
+          'idPedido': idPedido,
+          'totalVolumes': quantidadeVolumes,
+        },
+      ),
+    );
+  }
 }

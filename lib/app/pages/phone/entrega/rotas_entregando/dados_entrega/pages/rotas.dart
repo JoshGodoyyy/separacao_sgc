@@ -333,9 +333,11 @@ class _RotasState extends State<Rotas> {
                                               Text(endereco.fantasia),
                                               const Divider(),
                                               const Text(
-                                                  'Observações para o Motorista:'),
+                                                'Observações para o Motorista:',
+                                              ),
                                               Text(
-                                                  '${endereco.observacoesMotorista}'),
+                                                '${endereco.observacoesMotorista}',
+                                              ),
                                             ],
                                           ),
                                         ),
