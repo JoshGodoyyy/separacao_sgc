@@ -12,11 +12,13 @@ import '../../../../../../config/user.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_bloc.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_event.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_state.dart';
+import '../../../../../../data/enums/situacao_foto.dart';
 import '../../../../../../data/repositories/configuracoes.dart';
 import '../../../../../../data/repositories/historico_pedido.dart';
 import '../../../../../../models/endereco_roteiro_entrega_model.dart';
 import '../../../../../../models/historico_pedido_model.dart';
 import '../../../../../../ui/widgets/error_alert.dart';
+import '../../../../separacao/fotos_page/foto_pedido.dart';
 import '../../pedidos_rota.dart';
 
 class Rotas extends StatefulWidget {
@@ -252,16 +254,49 @@ class _RotasState extends State<Rotas> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                Material(
-                                  elevation: 5,
-                                  color: endereco.idSituacao == 11
-                                      ? Colors.green
-                                      : Theme.of(context).primaryColor,
-                                  shape: const CircleBorder(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(12),
-                                    child: Text('${endereco.posicao + 1}'),
-                                  ),
+                                Column(
+                                  children: [
+                                    Material(
+                                      elevation: 5,
+                                      color: endereco.idSituacao == 11
+                                          ? Colors.green
+                                          : Theme.of(context).primaryColor,
+                                      shape: const CircleBorder(),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (builder) => FotoPedido(
+                                                idPedido: int.parse(
+                                                  endereco.idCliente.toString(),
+                                                ),
+                                                situacaoFoto:
+                                                    SituacaoFoto.entregue,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: const Padding(
+                                          padding: EdgeInsets.all(6),
+                                          child: Icon(
+                                            Icons.camera_alt_rounded,
+                                            size: 20,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Material(
+                                      elevation: 5,
+                                      color: endereco.idSituacao == 11
+                                          ? Colors.green
+                                          : Theme.of(context).primaryColor,
+                                      shape: const CircleBorder(),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12),
+                                        child: Text('${endereco.posicao + 1}'),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(

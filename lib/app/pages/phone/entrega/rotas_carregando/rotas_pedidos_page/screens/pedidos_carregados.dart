@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:sgc/app/data/enums/situacao_foto.dart';
 import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
 import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
 import '../../../../../../data/blocs/pedido_roteiro/pedido_roteiro_state.dart';
 import '../../../../../../data/repositories/configuracoes.dart';
 import '../../../../../../ui/widgets/error_alert.dart';
+import '../../../../separacao/fotos_page/foto_pedido.dart';
 import 'widgets/modal_pedido.dart';
 import 'widgets/pedido_list_item.dart';
 
@@ -184,28 +185,63 @@ class _PedidosCarregadosState extends State<PedidosCarregados> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () async {
-          bool separarAgrupamento =
-              await Configuracoes().verificaConfiguracaoAgrupamento() == 1
-                  ? true
-                  : false;
-
-          for (var pedido
-              in _todosPedidos.where((item) => item.selecionado == true)) {
-            _bloc.inputProdutoRoteiroController.add(
-              DescarregarPedido(
-                idPedido: pedido.id,
-                numeroEntrega: widget.numeroEntrega,
-                cepEntrega: widget.cepEntrega,
-                idCliente: widget.idCliente,
-                idRoteiro: widget.idRoteiro,
-                separarAgrupamento: separarAgrupamento,
+      bottomNavigationBar: BottomAppBar(
+        color: Theme.of(context).primaryColor,
+        child: Row(
+          children: [
+            const Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (builder) => FotoPedido(
+                      idPedido: int.parse(
+                        widget.idCliente.toString(),
+                      ),
+                      situacaoFoto: SituacaoFoto.carregando,
+                      idRoteiro: widget.idRoteiro,
+                    ),
+                  ),
+                );
+              },
+              child: const Icon(
+                Icons.camera_alt,
               ),
-            );
-          }
-        },
-        label: const Text('Descarregar selecionados'),
+            ),
+            const SizedBox(width: 8),
+            ElevatedButton(
+              onPressed: () async {
+                bool separarAgrupamento =
+                    await Configuracoes().verificaConfiguracaoAgrupamento() == 1
+                        ? true
+                        : false;
+
+                for (var pedido in _todosPedidos
+                    .where((item) => item.selecionado == true)) {
+                  _bloc.inputProdutoRoteiroController.add(
+                    DescarregarPedido(
+                      idPedido: pedido.id,
+                      numeroEntrega: widget.numeroEntrega,
+                      cepEntrega: widget.cepEntrega,
+                      idCliente: widget.idCliente,
+                      idRoteiro: widget.idRoteiro,
+                      separarAgrupamento: separarAgrupamento,
+                    ),
+                  );
+                }
+              },
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.app_registration_rounded,
+                  ),
+                  SizedBox(width: 16),
+                  Text('Descarregar selecionados'),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

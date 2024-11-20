@@ -5,7 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/enums/icones.dart';
+import 'package:sgc/app/data/enums/situacao_foto.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
+import 'package:sgc/app/pages/phone/separacao/fotos_page/foto_pedido.dart';
 import 'package:sgc/app/ui/utils/alterar_status_pedido.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import 'package:sgc/app/ui/widgets/loading_dialog.dart';
@@ -56,6 +58,10 @@ class _OrderPageState extends State<OrderPage> {
   final pesoController = TextEditingController();
   late PedidoModel pedido = PedidoModel();
 
+  final DateFormat _data = DateFormat('yyyy-MM-dd HH:mm:ss');
+
+  SituacaoFoto? situacaoFoto;
+
   @override
   void initState() {
     super.initState();
@@ -90,8 +96,6 @@ class _OrderPageState extends State<OrderPage> {
   void clear() {
     codigoVendedorController.clear();
   }
-
-  final DateFormat _data = DateFormat('yyyy-MM-dd HH:mm:ss');
 
   iniciarContador(DateTime dataInicial) {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -158,9 +162,15 @@ class _OrderPageState extends State<OrderPage> {
         setState(() => iniciarSeparacao = true);
         break;
       case 'SEPARANDO':
-        setState(() => iniciarSeparacao = false);
+        setState(() {
+          iniciarSeparacao = false;
+          situacaoFoto = SituacaoFoto.separando;
+        });
         if (config.conferencia) {
-          setState(() => liberarConferencia = true);
+          setState(() {
+            liberarConferencia = true;
+            situacaoFoto = SituacaoFoto.separando;
+          });
         }
         if (config.embalagem) {
           setState(() => liberarEmbalagem = true);
@@ -177,7 +187,10 @@ class _OrderPageState extends State<OrderPage> {
         }
         break;
       case 'CONFERENCIA':
-        setState(() => finalizarSeparacao = true);
+        setState(() {
+          liberarConferencia = true;
+          situacaoFoto = SituacaoFoto.conferencia;
+        });
         break;
       default:
         break;
@@ -761,17 +774,23 @@ class _OrderPageState extends State<OrderPage> {
             ),
             child: BottomNavigationBar(
               backgroundColor: Theme.of(context).primaryColor,
-              items: const [
-                BottomNavigationBarItem(
+              items: [
+                const BottomNavigationBarItem(
                   icon: Icon(
                     Icons.inbox_rounded,
                   ),
                   label: 'Embalagens',
                 ),
-                BottomNavigationBarItem(
+                const BottomNavigationBarItem(
                   icon: Icon(Icons.save),
                   label: 'Salvar',
                 ),
+                if (situacaoFoto == SituacaoFoto.separando ||
+                    situacaoFoto == SituacaoFoto.conferencia)
+                  const BottomNavigationBarItem(
+                    icon: Icon(Icons.camera_alt_rounded),
+                    label: 'Foto',
+                  ),
               ],
               selectedItemColor: Theme.of(context).iconTheme.color,
               unselectedItemColor: Theme.of(context).iconTheme.color,
@@ -784,107 +803,124 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   _selectedIndexChanged(int selectedIndex) {
-    if (selectedIndex == 0) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (builder) => Packaging(pedido: widget.pedido),
-        ),
-      );
-    } else {
-      if (volumeAcessorioController.text == '') {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const CustomDialog(
-              titulo: 'Sistema SGC',
-              conteudo: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Preencher Volume Acessório'),
-                ],
-              ),
-              tipo: Icones.erro,
-            );
-          },
-        );
-
-        return;
-      }
-
-      if (volumeAluminioController.text == '') {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const CustomDialog(
-              titulo: 'Sistema SGC',
-              conteudo: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Preencher Volume Aluminio'),
-                ],
-              ),
-              tipo: Icones.erro,
-            );
-          },
-        );
-
-        return;
-      }
-
-      if (volumeChapasController.text == '') {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const CustomDialog(
-              titulo: 'Sistema SGC',
-              conteudo: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Preencher Volume Chapas'),
-                ],
-              ),
-              tipo: Icones.erro,
-            );
-          },
-        );
-
-        return;
-      }
-
-      if (pesoAcessorioController.text == '') {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return const CustomDialog(
-              titulo: 'Sistema SGC',
-              conteudo: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Preencher Peso Acessório'),
-                ],
-              ),
-              tipo: Icones.erro,
-            );
-          },
-        );
-
-        return;
-      }
-
-      _pedidoBloc.inputPedido.add(
-        UpdatePedido(
-          volAcessorio: double.parse(volumeAcessorioController.text),
-          volAlum: double.parse(volumeAluminioController.text),
-          volChapa: double.parse(volumeChapasController.text),
-          obsSeparacao: observacoesSeparacaoController.text,
-          obsSeparador: observacoesSeparadorController.text,
-          setorEstoque: setorSeparacaoController.text,
-          pesoAcessorio: double.parse(pesoAcessorioController.text),
-          idPedido: int.parse(
-            widget.pedido.id.toString(),
+    switch (selectedIndex) {
+      case 0:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (builder) => Packaging(pedido: widget.pedido),
           ),
-        ),
-      );
+        );
+        break;
+      case 1:
+        if (volumeAcessorioController.text == '') {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const CustomDialog(
+                titulo: 'Sistema SGC',
+                conteudo: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Preencher Volume Acessório'),
+                  ],
+                ),
+                tipo: Icones.erro,
+              );
+            },
+          );
+
+          return;
+        }
+
+        if (volumeAluminioController.text == '') {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const CustomDialog(
+                titulo: 'Sistema SGC',
+                conteudo: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Preencher Volume Aluminio'),
+                  ],
+                ),
+                tipo: Icones.erro,
+              );
+            },
+          );
+
+          return;
+        }
+
+        if (volumeChapasController.text == '') {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const CustomDialog(
+                titulo: 'Sistema SGC',
+                conteudo: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Preencher Volume Chapas'),
+                  ],
+                ),
+                tipo: Icones.erro,
+              );
+            },
+          );
+
+          return;
+        }
+
+        if (pesoAcessorioController.text == '') {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const CustomDialog(
+                titulo: 'Sistema SGC',
+                conteudo: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Preencher Peso Acessório'),
+                  ],
+                ),
+                tipo: Icones.erro,
+              );
+            },
+          );
+
+          return;
+        }
+
+        _pedidoBloc.inputPedido.add(
+          UpdatePedido(
+            volAcessorio: double.parse(volumeAcessorioController.text),
+            volAlum: double.parse(volumeAluminioController.text),
+            volChapa: double.parse(volumeChapasController.text),
+            obsSeparacao: observacoesSeparacaoController.text,
+            obsSeparador: observacoesSeparadorController.text,
+            setorEstoque: setorSeparacaoController.text,
+            pesoAcessorio: double.parse(pesoAcessorioController.text),
+            idPedido: int.parse(
+              widget.pedido.id.toString(),
+            ),
+          ),
+        );
+        break;
+      case 2:
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (builder) => FotoPedido(
+              idPedido: int.parse(
+                widget.pedido.id.toString(),
+              ),
+              situacaoFoto: situacaoFoto!,
+            ),
+          ),
+        );
+        break;
+      default:
+        break;
     }
   }
 
