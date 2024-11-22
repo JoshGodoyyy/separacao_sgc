@@ -49,8 +49,7 @@ class _LoginPageState extends State<LoginPage> {
       () => _version = '${packageInfo.version}+${packageInfo.buildNumber}',
     );
 
-    _currentVersion =
-    packageInfo.version.split('.').map(int.parse).toList();
+    _currentVersion = packageInfo.version.split('.').map(int.parse).toList();
   }
 
   _getVersion() async {
@@ -62,24 +61,29 @@ class _LoginPageState extends State<LoginPage> {
           showDialog(
             context: context,
             builder: (context) {
-              return const CustomDialog(
+              return CustomDialog(
                 titulo: 'Sistema SGC',
-                conteudo: Row(
+                conteudo: const Wrap(
                   children: [
-                    Expanded(
-                      child: Wrap(
-                        children: [
-                          Text(
-                            'É necessário indicar o endereço da API antes de continuar',
-                            textAlign: TextAlign.center,
-                            maxLines: 3,
-                          ),
-                        ],
-                      ),
+                    Text(
+                      'É necessário indicar o endereço da API antes de continuar',
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
                     ),
                   ],
                 ),
                 tipo: Icones.info,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Ok',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
               );
             },
           );
@@ -145,22 +149,29 @@ class _LoginPageState extends State<LoginPage> {
             builder: (context) {
               return CustomDialog(
                 titulo: 'Sistema SGC',
-                conteudo: Row(
-                  children: [
-                    Expanded(
-                      child: Wrap(
-                        children: [
-                          Text(
-                            ex.toString(),
-                            textAlign: TextAlign.center,
-                            maxLines: 3,
-                          ),
-                        ],
+                conteudo: Expanded(
+                  child: Wrap(
+                    children: [
+                      Text(
+                        ex.toString(),
+                        textAlign: TextAlign.center,
+                        maxLines: 3,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 tipo: Icones.info,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Ok',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
               );
             },
           );
@@ -176,24 +187,29 @@ class _LoginPageState extends State<LoginPage> {
           showDialog(
             context: context,
             builder: (context) {
-              return const CustomDialog(
+              return CustomDialog(
                 titulo: 'Sistema SGC',
-                conteudo: Row(
+                conteudo: const Wrap(
                   children: [
-                    Expanded(
-                      child: Wrap(
-                        children: [
-                          Text(
-                            'Atenção, existe uma nova versão disponível. Por favor, atualize-o antes de continuar',
-                            textAlign: TextAlign.center,
-                            maxLines: 3,
-                          ),
-                        ],
-                      ),
+                    Text(
+                      'Atenção, existe uma nova versão disponível. Por favor, atualize-o antes de continuar.',
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
                     ),
                   ],
                 ),
                 tipo: Icones.info,
+                actions: [
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Download (v${_requiredVersion[0]}.${_requiredVersion[1]}.${_requiredVersion[2]})',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ],
               );
             },
           );
@@ -262,6 +278,17 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 tipo: Icones.erro,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Ok',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
               );
             },
           );

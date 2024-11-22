@@ -126,56 +126,46 @@ class _RotasHomeState extends State<RotasHome> {
                 builder: (context) {
                   return CustomDialog(
                     titulo: 'Filtrar por Data',
-                    conteudo: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Selecionar data',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Material(
-                                elevation: 5,
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                child: TextField(
-                                  controller: _inicioController,
-                                  readOnly: true,
-                                  onTap: () async {
-                                    final data = await _selectDate();
-                                    setState(
-                                      () => _inicioController.text =
-                                          data != null
-                                              ? _data.format(data)
-                                              : '',
-                                    );
-                                  },
-                                  decoration: const InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () => setState(
-                                () => _inicioController.clear(),
-                              ),
-                              icon: const Icon(Icons.close),
-                            ),
-                          ],
-                        ),
-                      ],
+                    conteudo: const Text(
+                      'Selecionar data',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
                     ),
                     tipo: Icones.filtro,
+                    actions: [
+                      Expanded(
+                        child: Material(
+                          elevation: 5,
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          child: TextField(
+                            controller: _inicioController,
+                            readOnly: true,
+                            onTap: () async {
+                              final data = await _selectDate();
+                              setState(
+                                () => _inicioController.text =
+                                    data != null ? _data.format(data) : '',
+                              );
+                            },
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => setState(
+                          () => _inicioController.clear(),
+                        ),
+                        icon: const Icon(Icons.close),
+                      ),
+                    ],
                   );
                 },
               );

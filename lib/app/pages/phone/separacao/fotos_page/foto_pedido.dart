@@ -135,6 +135,17 @@ class _FotoPedidoState extends State<FotoPedido> {
                                   ),
                                 ),
                                 tipo: Icones.info,
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text(
+                                      'Ok',
+                                      style: TextStyle(fontSize: 18.0),
+                                    ),
+                                  ),
+                                ],
                               );
                             },
                           );
@@ -168,37 +179,28 @@ class _FotoPedidoState extends State<FotoPedido> {
                                     builder: (context) {
                                       return CustomDialog(
                                         titulo: 'Sistema SGC',
-                                        conteudo: Column(
-                                          children: [
-                                            const Text(
-                                              'Deseja realmente excluir este item?',
-                                            ),
-                                            const Divider(),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    foto.situacaoFoto = widget
-                                                        .situacaoFoto.index;
-                                                    _bloc.inputFoto.add(
-                                                      DeleteFoto(foto: foto),
-                                                    );
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text('Sim'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                  child: const Text('Não'),
-                                                ),
-                                              ],
-                                            )
-                                          ],
+                                        conteudo: const Text(
+                                          'Deseja realmente excluir este item?',
                                         ),
                                         tipo: Icones.pergunta,
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              foto.situacaoFoto =
+                                                  widget.situacaoFoto.index;
+                                              _bloc.inputFoto.add(
+                                                DeleteFoto(foto: foto),
+                                              );
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Sim'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: const Text('Não'),
+                                          ),
+                                        ],
                                       );
                                     },
                                   );

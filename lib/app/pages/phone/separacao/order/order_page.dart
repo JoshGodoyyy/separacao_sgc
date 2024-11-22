@@ -188,7 +188,8 @@ class _OrderPageState extends State<OrderPage> {
         break;
       case 'CONFERENCIA':
         setState(() {
-          liberarConferencia = true;
+          liberarConferencia = false;
+          finalizarSeparacao = true;
           situacaoFoto = SituacaoFoto.conferencia;
         });
         break;
@@ -347,9 +348,9 @@ class _OrderPageState extends State<OrderPage> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return const CustomDialog(
+                          return CustomDialog(
                             titulo: 'SGC Mobile',
-                            conteudo: Row(
+                            conteudo: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
@@ -359,6 +360,17 @@ class _OrderPageState extends State<OrderPage> {
                               ],
                             ),
                             tipo: Icones.sucesso,
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  'Ok',
+                                  style: TextStyle(fontSize: 18.0),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ).then(
@@ -383,6 +395,17 @@ class _OrderPageState extends State<OrderPage> {
                               textAlign: TextAlign.center,
                             ),
                             tipo: Icones.erro,
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  'Ok',
+                                  style: TextStyle(fontSize: 18.0),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ).then(
@@ -399,7 +422,7 @@ class _OrderPageState extends State<OrderPage> {
             ),
             //* Liberar para Conferência
             SpeedDialChild(
-              visible: widget.pedido.status != 'SEPARAR',
+              visible: widget.pedido.status != 'SEPARAR' && liberarConferencia,
               child: const Icon(Icons.checklist_rtl_rounded),
               label: 'Liberar para Conferência',
               onTap: () async {
@@ -444,18 +467,24 @@ class _OrderPageState extends State<OrderPage> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return const CustomDialog(
+                          return CustomDialog(
                             titulo: 'SGC Mobile',
-                            conteudo: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Pedido enviado para conferência',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                            conteudo: const Text(
+                              'Pedido enviado para conferência',
+                              textAlign: TextAlign.center,
                             ),
                             tipo: Icones.sucesso,
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  'Ok',
+                                  style: TextStyle(fontSize: 18.0),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ).then(
@@ -475,16 +504,22 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return CustomDialog(
                             titulo: 'SGC Mobile',
-                            conteudo: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  e.toString().substring(11),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                            conteudo: Text(
+                              e.toString().substring(11),
+                              textAlign: TextAlign.center,
                             ),
                             tipo: Icones.erro,
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  'Ok',
+                                  style: TextStyle(fontSize: 18.0),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ).then(
@@ -551,18 +586,24 @@ class _OrderPageState extends State<OrderPage> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return const CustomDialog(
+                          return CustomDialog(
                             titulo: 'SGC Mobile',
-                            conteudo: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Pedido enviado para embalagem',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                            conteudo: const Text(
+                              'Pedido enviado para embalagem',
+                              textAlign: TextAlign.center,
                             ),
                             tipo: Icones.sucesso,
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  'Ok',
+                                  style: TextStyle(fontSize: 18.0),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ).then(
@@ -582,16 +623,22 @@ class _OrderPageState extends State<OrderPage> {
                         builder: (BuildContext context) {
                           return CustomDialog(
                             titulo: 'SGC Mobile',
-                            conteudo: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  e.toString().substring(11),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                            conteudo: Text(
+                              e.toString().substring(11),
+                              textAlign: TextAlign.center,
                             ),
                             tipo: Icones.erro,
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  'Ok',
+                                  style: TextStyle(fontSize: 18.0),
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ).then(
@@ -680,19 +727,24 @@ class _OrderPageState extends State<OrderPage> {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return const CustomDialog(
+                                      return CustomDialog(
                                         titulo: 'SGC Mobile',
-                                        conteudo: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Processo iniciado com sucesso',
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ],
+                                        conteudo: const Text(
+                                          'Processo iniciado com sucesso',
+                                          textAlign: TextAlign.center,
                                         ),
                                         tipo: Icones.sucesso,
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text(
+                                              'Ok',
+                                              style: TextStyle(fontSize: 18.0),
+                                            ),
+                                          ),
+                                        ],
                                       );
                                     },
                                   ).then(
@@ -719,17 +771,22 @@ class _OrderPageState extends State<OrderPage> {
                                     builder: (BuildContext context) {
                                       return CustomDialog(
                                         titulo: 'SGC Mobile',
-                                        conteudo: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              e.toString().substring(11),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ],
+                                        conteudo: Text(
+                                          e.toString().substring(11),
+                                          textAlign: TextAlign.center,
                                         ),
                                         tipo: Icones.erro,
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text(
+                                              'Ok',
+                                              style: TextStyle(fontSize: 18.0),
+                                            ),
+                                          ),
+                                        ],
                                       );
                                     },
                                   ).then(
@@ -816,15 +873,21 @@ class _OrderPageState extends State<OrderPage> {
           showDialog(
             context: context,
             builder: (context) {
-              return const CustomDialog(
+              return CustomDialog(
                 titulo: 'Sistema SGC',
-                conteudo: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Preencher Volume Acessório'),
-                  ],
-                ),
+                conteudo: const Text('Preencher Volume Acessório'),
                 tipo: Icones.erro,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Ok',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
               );
             },
           );
@@ -836,15 +899,21 @@ class _OrderPageState extends State<OrderPage> {
           showDialog(
             context: context,
             builder: (context) {
-              return const CustomDialog(
+              return CustomDialog(
                 titulo: 'Sistema SGC',
-                conteudo: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Preencher Volume Aluminio'),
-                  ],
-                ),
+                conteudo: const Text('Preencher Volume Aluminio'),
                 tipo: Icones.erro,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Ok',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
               );
             },
           );
@@ -856,15 +925,21 @@ class _OrderPageState extends State<OrderPage> {
           showDialog(
             context: context,
             builder: (context) {
-              return const CustomDialog(
+              return CustomDialog(
                 titulo: 'Sistema SGC',
-                conteudo: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Preencher Volume Chapas'),
-                  ],
-                ),
+                conteudo: const Text('Preencher Volume Chapas'),
                 tipo: Icones.erro,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Ok',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
               );
             },
           );
@@ -876,15 +951,21 @@ class _OrderPageState extends State<OrderPage> {
           showDialog(
             context: context,
             builder: (context) {
-              return const CustomDialog(
+              return CustomDialog(
                 titulo: 'Sistema SGC',
-                conteudo: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Preencher Peso Acessório'),
-                  ],
-                ),
+                conteudo: const Text('Preencher Peso Acessório'),
                 tipo: Icones.erro,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Ok',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
               );
             },
           );

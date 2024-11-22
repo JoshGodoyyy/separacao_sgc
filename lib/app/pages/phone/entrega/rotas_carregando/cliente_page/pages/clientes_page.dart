@@ -61,13 +61,24 @@ class _ClientesPageState extends State<ClientesPage> {
       showDialog(
         context: context,
         builder: (context) {
-          return const CustomDialog(
+          return CustomDialog(
             titulo: 'Sistema SGC',
-            conteudo: Text(
+            conteudo: const Text(
               'Ainda existem pedidos não carregados',
               textAlign: TextAlign.center,
             ),
             tipo: Icones.alerta,
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'Ok',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              ),
+            ],
           );
         },
       ).then(
@@ -87,13 +98,24 @@ class _ClientesPageState extends State<ClientesPage> {
       showDialog(
         context: context,
         builder: (context) {
-          return const CustomDialog(
+          return CustomDialog(
             titulo: 'Sistema SGC',
-            conteudo: Text(
+            conteudo: const Text(
               'Roteiro carregado com sucesso! Liberado para entrega',
               textAlign: TextAlign.center,
             ),
             tipo: Icones.sucesso,
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'Ok',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              ),
+            ],
           );
         },
       )
@@ -146,25 +168,20 @@ class _ClientesPageState extends State<ClientesPage> {
                 builder: (context) {
                   return CustomDialog(
                     titulo: 'Sistema SGC',
-                    conteudo: Column(
-                      children: [
-                        const Text('Deseja mesmo concluir o carregamento?'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            TextButton(
-                              onPressed: () => _concluirCarregamento(),
-                              child: const Text('Sim'),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Não'),
-                            ),
-                          ],
-                        )
-                      ],
+                    conteudo: const Text(
+                      'Deseja mesmo concluir o carregamento?',
                     ),
                     tipo: Icones.pergunta,
+                    actions: [
+                      TextButton(
+                        onPressed: () => _concluirCarregamento(),
+                        child: const Text('Sim'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Não'),
+                      ),
+                    ],
                   );
                 },
               );
@@ -187,13 +204,24 @@ class _ClientesPageState extends State<ClientesPage> {
                 showDialog(
                   context: context,
                   builder: (context) {
-                    return const CustomDialog(
+                    return CustomDialog(
                       titulo: 'Sistema SGC',
-                      conteudo: Text(
+                      conteudo: const Text(
                         'Não é possível reordenar a rota, já existem pedidos carregados',
                         textAlign: TextAlign.center,
                       ),
                       tipo: Icones.erro,
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            'Ok',
+                            style: TextStyle(fontSize: 18.0),
+                          ),
+                        ),
+                      ],
                     );
                   },
                 );
@@ -202,18 +230,24 @@ class _ClientesPageState extends State<ClientesPage> {
                   showDialog(
                     context: context,
                     builder: (context) {
-                      return const CustomDialog(
+                      return CustomDialog(
                         titulo: 'Sistema SGC',
-                        conteudo: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Roteiro bloqueado por outro usuário',
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                        conteudo: const Text(
+                          'Roteiro bloqueado por outro usuário',
+                          textAlign: TextAlign.center,
                         ),
                         tipo: Icones.erro,
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text(
+                              'Ok',
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          ),
+                        ],
                       );
                     },
                   );
@@ -254,52 +288,44 @@ class _ClientesPageState extends State<ClientesPage> {
                 builder: (context) {
                   return CustomDialog(
                     titulo: 'Sistema SGC',
-                    conteudo: Column(
-                      children: [
-                        Text(
-                          widget.dados.chaveBloqueioRoteiro == '' ||
-                                  widget.dados.chaveBloqueioRoteiro == null
-                              ? 'Deseja bloquear futuras edições no roteiro atual?'
-                              : 'Deseja desbloquear o roteiro atual?',
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            TextButton(
-                              onPressed: () async {
-                                final roteiro = RoteiroEntrega();
-                                int idRoteiro = int.parse(
-                                  widget.dados.id.toString(),
-                                );
-                                if (widget.dados.chaveBloqueioRoteiro == '' ||
-                                    widget.dados.chaveBloqueioRoteiro == null) {
-                                  await roteiro.setStateRoteiro(
-                                      idRoteiro, UserConstants().idLiberacao!);
-                                  widget.dados.chaveBloqueioRoteiro =
-                                      UserConstants().idLiberacao!;
-                                } else {
-                                  await roteiro.setStateRoteiro(idRoteiro, '');
-                                  widget.dados.chaveBloqueioRoteiro = null;
-                                }
-
-                                WidgetsBinding.instance
-                                    .addPostFrameCallback((_) {
-                                  Navigator.of(context).pop();
-                                });
-
-                                setState(() {});
-                              },
-                              child: const Text('Sim'),
-                            ),
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Não'),
-                            ),
-                          ],
-                        )
-                      ],
+                    conteudo: Text(
+                      widget.dados.chaveBloqueioRoteiro == '' ||
+                              widget.dados.chaveBloqueioRoteiro == null
+                          ? 'Deseja bloquear futuras edições no roteiro atual?'
+                          : 'Deseja desbloquear o roteiro atual?',
                     ),
                     tipo: Icones.pergunta,
+                    actions: [
+                      TextButton(
+                        onPressed: () async {
+                          final roteiro = RoteiroEntrega();
+                          int idRoteiro = int.parse(
+                            widget.dados.id.toString(),
+                          );
+                          if (widget.dados.chaveBloqueioRoteiro == '' ||
+                              widget.dados.chaveBloqueioRoteiro == null) {
+                            await roteiro.setStateRoteiro(
+                                idRoteiro, UserConstants().idLiberacao!);
+                            widget.dados.chaveBloqueioRoteiro =
+                                UserConstants().idLiberacao!;
+                          } else {
+                            await roteiro.setStateRoteiro(idRoteiro, '');
+                            widget.dados.chaveBloqueioRoteiro = null;
+                          }
+
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            Navigator.of(context).pop();
+                          });
+
+                          setState(() {});
+                        },
+                        child: const Text('Sim'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Não'),
+                      ),
+                    ],
                   );
                 },
               );

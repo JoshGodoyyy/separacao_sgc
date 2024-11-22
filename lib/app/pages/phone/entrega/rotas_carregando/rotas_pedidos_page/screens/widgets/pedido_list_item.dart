@@ -63,17 +63,29 @@ class _PedidoListItemState extends State<PedidoListItem> {
   }
 
   void update() async {
-    if ((widget.idStatus != 5 && widget.idStatus != 10) && widget.carregado == 0) {
+    if ((widget.idStatus != 5 && widget.idStatus != 10) &&
+        widget.carregado == 0) {
       showDialog(
         context: context,
         builder: (context) {
-          return const CustomDialog(
+          return CustomDialog(
             titulo: 'Atenção',
-            conteudo: Text(
+            conteudo: const Text(
               'O pedido deve estar liberado para poder ser carregado',
               textAlign: TextAlign.center,
             ),
             tipo: Icones.alerta,
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'Ok',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              ),
+            ],
           );
         },
       );

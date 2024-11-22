@@ -130,13 +130,24 @@ class _DadosState extends State<Dados> {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return const CustomDialog(
+                            return CustomDialog(
                               titulo: 'Atenção',
-                              conteudo: Text(
+                              conteudo: const Text(
                                 'Você deve informar o horário de saída',
                                 textAlign: TextAlign.center,
                               ),
                               tipo: Icones.info,
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text(
+                                    'Ok',
+                                    style: TextStyle(fontSize: 18.0),
+                                  ),
+                                ),
+                              ],
                             );
                           },
                         );

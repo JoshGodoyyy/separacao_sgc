@@ -6,11 +6,14 @@ class CustomDialog extends StatelessWidget {
   final String titulo;
   final Widget conteudo;
   final Icones tipo;
+  final List<Widget> actions;
+
   const CustomDialog({
     super.key,
     required this.titulo,
     required this.conteudo,
     required this.tipo,
+    required this.actions,
   });
 
   @override
@@ -52,17 +55,14 @@ class CustomDialog extends StatelessWidget {
                     ),
                   ),
                   conteudo,
-                  Visibility(
-                    visible: tipo != Icones.pergunta,
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text(
-                        'Ok',
-                        style: TextStyle(fontSize: 18.0),
-                      ),
-                    ),
+                  const Divider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Spacer(),
+                      for (var action in actions) action,
+                      const Spacer(),
+                    ],
                   ),
                   const SizedBox(height: 8),
                 ],

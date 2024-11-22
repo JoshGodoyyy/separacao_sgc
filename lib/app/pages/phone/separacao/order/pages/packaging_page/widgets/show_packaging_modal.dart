@@ -75,15 +75,22 @@ Future<dynamic> showPackagingModal({
                           showDialog(
                             context: context,
                             builder: (context) {
-                              return const CustomDialog(
+                              return CustomDialog(
                                 titulo: 'Sistema SGC',
-                                conteudo: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('Campo "Número Caixa" obrigatório'),
-                                  ],
-                                ),
+                                conteudo: const Text(
+                                    'Campo "Número Caixa" obrigatório'),
                                 tipo: Icones.erro,
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text(
+                                      'Ok',
+                                      style: TextStyle(fontSize: 18.0),
+                                    ),
+                                  ),
+                                ],
                               );
                             },
                           );
@@ -95,15 +102,22 @@ Future<dynamic> showPackagingModal({
                           showDialog(
                             context: context,
                             builder: (context) {
-                              return const CustomDialog(
+                              return CustomDialog(
                                 titulo: 'Sistema SGC',
-                                conteudo: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('Campo "Quantidade" obrigatório'),
-                                  ],
-                                ),
+                                conteudo: const Text(
+                                    'Campo "Quantidade" obrigatório'),
                                 tipo: Icones.erro,
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text(
+                                      'Ok',
+                                      style: TextStyle(fontSize: 18.0),
+                                    ),
+                                  ),
+                                ],
                               );
                             },
                           );
@@ -115,15 +129,22 @@ Future<dynamic> showPackagingModal({
                           showDialog(
                             context: context,
                             builder: (context) {
-                              return const CustomDialog(
+                              return CustomDialog(
                                 titulo: 'Sistema SGC',
-                                conteudo: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text('Campo "Peso" obrigatório'),
-                                  ],
-                                ),
+                                conteudo:
+                                    const Text('Campo "Peso" obrigatório'),
                                 tipo: Icones.erro,
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text(
+                                      'Ok',
+                                      style: TextStyle(fontSize: 18.0),
+                                    ),
+                                  ),
+                                ],
                               );
                             },
                           );

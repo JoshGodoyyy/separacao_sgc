@@ -195,38 +195,28 @@ class _HomePageState extends State<HomePage> {
                         context: context,
                         builder: (context) {
                           return CustomDialog(
-                            titulo: 'Sistema SGC',
-                            conteudo: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text('Deseja mesmo sair?'),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(
-                                            builder: (builder) =>
-                                                const LoginPage(),
-                                          ),
-                                        );
-                                      },
-                                      child: const Text('Sim'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('Não'),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            tipo: Icones.pergunta,
-                          );
+                              titulo: 'Sistema SGC',
+                              conteudo: const Text('Deseja mesmo sair?'),
+                              tipo: Icones.pergunta,
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (builder) => const LoginPage(),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text('Sim'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Não'),
+                                ),
+                              ]);
                         },
                       );
                     },
@@ -315,6 +305,17 @@ class _HomePageState extends State<HomePage> {
               textAlign: TextAlign.center,
             ),
             tipo: Icones.erro,
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  'Ok',
+                  style: TextStyle(fontSize: 18.0),
+                ),
+              ),
+            ],
           );
         },
       );

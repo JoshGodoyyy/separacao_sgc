@@ -194,52 +194,43 @@ class _InitialSetupState extends State<InitialSetup> {
                           builder: (context) {
                             return CustomDialog(
                               titulo: 'Sistema SGC',
-                              conteudo: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
+                              conteudo:
                                   const Text('Deseja mesmo excluir este item?'),
-                                  const Divider(),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          var item = _urls.firstWhere(
-                                            (_) => _.url == _selectedItem,
-                                          );
-
-                                          _url = item;
-
-                                          _deleteData();
-
-                                          _loadUrls();
-
-                                          Navigator.pop(context);
-
-                                          setState(() {
-                                            if (_urls.isNotEmpty) {
-                                              _selectedItem = _urls.last.url;
-                                            } else {
-                                              _selectedItem = '';
-                                            }
-                                          });
-                                        },
-                                        child: const Text(
-                                          'Sim',
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text(
-                                          'Não',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
                               tipo: Icones.pergunta,
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    var item = _urls.firstWhere(
+                                      (_) => _.url == _selectedItem,
+                                    );
+
+                                    _url = item;
+
+                                    _deleteData();
+
+                                    _loadUrls();
+
+                                    Navigator.pop(context);
+
+                                    setState(() {
+                                      if (_urls.isNotEmpty) {
+                                        _selectedItem = _urls.last.url;
+                                      } else {
+                                        _selectedItem = '';
+                                      }
+                                    });
+                                  },
+                                  child: const Text(
+                                    'Sim',
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text(
+                                    'Não',
+                                  ),
+                                ),
+                              ],
                             );
                           },
                         );

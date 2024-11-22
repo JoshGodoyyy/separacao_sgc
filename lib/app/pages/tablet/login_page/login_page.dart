@@ -100,6 +100,17 @@ class _TLoginPageState extends State<TLoginPage> {
                   ],
                 ),
                 tipo: Icones.erro,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Ok',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
               );
             },
           );
