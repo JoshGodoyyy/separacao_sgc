@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../data/blocs/endereco_roteiro/endereco_roteiro_event.dart';
 import '../../../../data/blocs/endereco_roteiro/pedido_endereco_bloc.dart';
 import '../../../../data/blocs/endereco_roteiro/pedido_endereco_roteiro_state.dart';
@@ -31,9 +30,10 @@ class _PedidosRotaState extends State<PedidosRota> {
   _fetchPedidos() {
     _pedidoEnderecoRoteiroBloc.inputRoteiroEntregaController.add(
       GetPedidos(
-          cep: widget.endereco.cep,
-          numero: widget.endereco.numero,
-          idRoteiro: widget.idRoteiro),
+        cep: widget.endereco.cep,
+        numero: widget.endereco.numero,
+        idRoteiro: widget.idRoteiro,
+      ),
     );
   }
 
@@ -54,47 +54,50 @@ class _PedidosRotaState extends State<PedidosRota> {
           List pedidos = snapshot.data?.pedidos ?? [];
 
           return SingleChildScrollView(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(10),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
                 ),
-              ),
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: const EdgeInsets.all(
-                  16,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Center(
-                      child: Text(
-                        '${widget.endereco.logradouro} ${widget.endereco.endereco}, ${widget.endereco.numero}',
-                        style: const TextStyle(fontSize: 18),
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                    16,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Center(
+                        child: Text(
+                          '${widget.endereco.logradouro} ${widget.endereco.endereco}, ${widget.endereco.numero}',
+                          style: const TextStyle(fontSize: 18),
+                        ),
                       ),
-                    ),
-                    const Divider(),
-                    const Text(
-                      'Pedidos:',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 8),
-                    for (var pedido in pedidos)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('- ${pedido.id}'),
-                          Text(
-                            '   Volume total: ${pedido.volumeAcessorio + pedido.volumeChapa + pedido.volumePerfil}',
-                          ),
-                          const SizedBox(height: 8),
-                        ],
+                      const Divider(),
+                      const Text(
+                        'Pedidos:',
+                        style: TextStyle(fontSize: 16),
                       ),
-                  ],
+                      const SizedBox(height: 8),
+                      for (var pedido in pedidos)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('- ${pedido.id}'),
+                            Text(
+                              '   Volume total: ${pedido.volumeAcessorio + pedido.volumeChapa + pedido.volumePerfil}',
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),

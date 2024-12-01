@@ -7,7 +7,7 @@ import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/enums/icones.dart';
 import 'package:sgc/app/data/enums/situacao_foto.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
-import 'package:sgc/app/pages/phone/separacao/fotos_page/foto_pedido.dart';
+import 'package:sgc/app/pages/phone/fotos_page/foto_pedido.dart';
 import 'package:sgc/app/ui/utils/alterar_status_pedido.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import 'package:sgc/app/ui/widgets/loading_dialog.dart';
@@ -996,6 +996,8 @@ class _OrderPageState extends State<OrderPage> {
                 widget.pedido.id.toString(),
               ),
               situacaoFoto: situacaoFoto!,
+              idCliente: 0,
+              idRoteiro: 0,
             ),
           ),
         );

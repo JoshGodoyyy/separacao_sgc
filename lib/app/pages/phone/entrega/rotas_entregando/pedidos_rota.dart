@@ -62,47 +62,50 @@ class _PedidosRotaState extends State<PedidosRota> {
           List pedidos = snapshot.data?.produtos ?? [];
 
           return SingleChildScrollView(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(10),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
                 ),
-              ),
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: const EdgeInsets.all(
-                  16,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Center(
-                      child: Text(
-                        '${widget.endereco.logradouro} ${widget.endereco.endereco}, ${widget.endereco.numero}',
-                        style: const TextStyle(fontSize: 18),
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: const EdgeInsets.all(
+                    16,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Center(
+                        child: Text(
+                          '${widget.endereco.logradouro} ${widget.endereco.endereco}, ${widget.endereco.numero}',
+                          style: const TextStyle(fontSize: 18),
+                        ),
                       ),
-                    ),
-                    const Divider(),
-                    const Text(
-                      'Pedidos:',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 8),
-                    for (var pedido in pedidos)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('- ${pedido.id}'),
-                          Text(
-                            '   Volume total: ${pedido.volumeAcessorio + pedido.volumeChapa + pedido.volumePerfil}',
-                          ),
-                          const SizedBox(height: 8),
-                        ],
+                      const Divider(),
+                      const Text(
+                        'Pedidos:',
+                        style: TextStyle(fontSize: 16),
                       ),
-                  ],
+                      const SizedBox(height: 8),
+                      for (var pedido in pedidos)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('- ${pedido.id}'),
+                            Text(
+                              '   Volume total: ${pedido.volumeAcessorio + pedido.volumeChapa + pedido.volumePerfil}',
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),

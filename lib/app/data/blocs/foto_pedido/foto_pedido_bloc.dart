@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:sgc/app/data/blocs/foto_pedido/foto_pedido_event.dart';
 import 'package:sgc/app/data/blocs/foto_pedido/foto_pedido_state.dart';
+import 'package:sgc/app/data/enums/situacao_foto.dart';
 import 'package:sgc/app/data/repositories/foto_pedido.dart';
 
 class FotoPedidoBloc {
@@ -25,9 +26,123 @@ class FotoPedidoBloc {
     _outputFotoController.add(FotoPedidoLoadingState());
 
     if (event is GetFotos) {
-      fotos = await _repository.fetchFotos(event.fotoPedido);
+      if (event.fotoPedido.situacaoFoto == SituacaoFoto.separando.index) {
+        final fotosSeparando = await _repository.fetchFotosSeparacao(
+          int.parse(
+            event.fotoPedido.idPedido.toString(),
+          ),
+        );
+
+        fotos = [...fotosSeparando];
+      } else if (event.fotoPedido.situacaoFoto ==
+          SituacaoFoto.conferencia.index) {
+        var response = await Future.wait([
+          _repository.fetchFotosSeparacao(
+            int.parse(
+              event.fotoPedido.idPedido.toString(),
+            ),
+          ),
+          _repository.fetchFotosConferencia(
+            int.parse(
+              event.fotoPedido.idPedido.toString(),
+            ),
+          ),
+        ]);
+
+        fotos = [...response[0], ...response[1]];
+      } else if (event.fotoPedido.situacaoFoto ==
+          SituacaoFoto.carregando.index) {
+        var response = await Future.wait([
+          _repository.fetchFotosSeparacaoCarregamento(
+            int.parse(
+              event.fotoPedido.idRoteiro.toString(),
+            ),
+            int.parse(
+              event.fotoPedido.idCliente.toString(),
+            ),
+          ),
+          _repository.fetchFotosConferenciaCarregamento(
+            int.parse(
+              event.fotoPedido.idRoteiro.toString(),
+            ),
+            int.parse(
+              event.fotoPedido.idCliente.toString(),
+            ),
+          ),
+          _repository.fetchFotosCarregando(event.fotoPedido),
+        ]);
+
+        fotos = [...response[0], ...response[1], ...response[2]];
+      } else if (event.fotoPedido.situacaoFoto ==
+          SituacaoFoto.carregado.index) {
+        var response = await Future.wait([
+          _repository.fetchFotosSeparacaoCarregado(
+            int.parse(
+              event.fotoPedido.idRoteiro.toString(),
+            ),
+          ),
+          _repository.fetchFotosConferenciaCarregado(
+            int.parse(
+              event.fotoPedido.idRoteiro.toString(),
+            ),
+          ),
+          _repository.fetchAllFotosCarregando(
+            int.parse(
+              event.fotoPedido.idRoteiro.toString(),
+            ),
+          ),
+          _repository.fetchFotosCarregado(
+            int.parse(
+              event.fotoPedido.idRoteiro.toString(),
+            ),
+          ),
+        ]);
+
+        fotos = [
+          ...response[0],
+          ...response[1],
+          ...response[2],
+          ...response[3],
+        ];
+      } else if (event.fotoPedido.situacaoFoto == SituacaoFoto.entregue.index) {
+        var response = await Future.wait([
+          _repository.fetchFotosSeparacaoCarregado(
+            int.parse(
+              event.fotoPedido.idRoteiro.toString(),
+            ),
+          ),
+          _repository.fetchFotosConferenciaCarregado(
+            int.parse(
+              event.fotoPedido.idRoteiro.toString(),
+            ),
+          ),
+          _repository.fetchAllFotosCarregando(
+            int.parse(
+              event.fotoPedido.idRoteiro.toString(),
+            ),
+          ),
+          _repository.fetchFotosCarregado(
+            int.parse(
+              event.fotoPedido.idRoteiro.toString(),
+            ),
+          ),
+          _repository.fetchFotosEntregue(
+            int.parse(
+              event.fotoPedido.idRoteiro.toString(),
+            ),
+          ),
+        ]);
+
+        fotos = [
+          ...response[0],
+          ...response[1],
+          ...response[2],
+          ...response[3],
+          ...response[4],
+        ];
+      }
     } else if (event is DeleteFoto) {
-      fotos = await _repository.delete(event.foto);
+      await _repository.delete(event.foto);
     }
 
     _outputFotoController.add(

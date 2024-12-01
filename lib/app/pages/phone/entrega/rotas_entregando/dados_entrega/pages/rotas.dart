@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +8,6 @@ import 'package:sgc/app/models/confirmacao_entrega_model.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_entregando/dados_entrega/pages/widgets/modal_entrega.dart';
 import 'package:sgc/app/ui/styles/colors_app.dart';
-
 import '../../../../../../config/user.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_bloc.dart';
 import '../../../../../../data/blocs/endereco_roteiro/endereco_roteiro_event.dart';
@@ -18,7 +18,7 @@ import '../../../../../../data/repositories/historico_pedido.dart';
 import '../../../../../../models/endereco_roteiro_entrega_model.dart';
 import '../../../../../../models/historico_pedido_model.dart';
 import '../../../../../../ui/widgets/error_alert.dart';
-import '../../../../separacao/fotos_page/foto_pedido.dart';
+import '../../../../camera_page/camera_page.dart';
 import '../../pedidos_rota.dart';
 
 class Rotas extends StatefulWidget {
@@ -119,12 +119,7 @@ class _RotasState extends State<Rotas> {
     }
   }
 
-  _confirmarEntrega(
-    nome,
-    rg,
-    cpf,
-    pedidos,
-  ) async {
+  _confirmarEntrega(nome, rg, cpf, pedidos) async {
     List<ConfirmacaoEntregaModel> itens = [];
     for (var pedido in pedidos) {
       itens.add(
@@ -221,6 +216,30 @@ class _RotasState extends State<Rotas> {
     await HistoricoPedido().adicionarHistoricos(pedidosHistorico);
   }
 
+  _openCamera(int idCliente) async {
+    final cameras = await availableCameras();
+
+    final firstCamera = cameras.first;
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (builder) => CameraPage(
+              camera: firstCamera,
+              idPedido: idCliente,
+              situacaoFoto: SituacaoFoto.entregue,
+              idRoteiro: int.parse(
+                widget.roteiro.id.toString(),
+              ),
+              idCliente: 0,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<EnderecoRoteiroState>(
@@ -250,139 +269,7 @@ class _RotasState extends State<Rotas> {
                     child: ListView(
                       children: [
                         for (var endereco in enderecos)
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Material(
-                                      elevation: 5,
-                                      color: endereco.idSituacao == 11
-                                          ? Colors.green
-                                          : Theme.of(context).primaryColor,
-                                      shape: const CircleBorder(),
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (builder) => FotoPedido(
-                                                idPedido: int.parse(
-                                                  endereco.idCliente.toString(),
-                                                ),
-                                                situacaoFoto:
-                                                    SituacaoFoto.entregue,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(6),
-                                          child: Icon(
-                                            Icons.camera_alt_rounded,
-                                            size: 20,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Material(
-                                      elevation: 5,
-                                      color: endereco.idSituacao == 11
-                                          ? Colors.green
-                                          : Theme.of(context).primaryColor,
-                                      shape: const CircleBorder(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(12),
-                                        child: Text('${endereco.posicao + 1}'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Slidable(
-                                    startActionPane: ActionPane(
-                                      motion: const BehindMotion(),
-                                      children: [
-                                        SlidableAction(
-                                          onPressed: (_) =>
-                                              endereco.idSituacao == 5 ||
-                                                      endereco.idSituacao == 10
-                                                  ? _entregarPedido(endereco)
-                                                  : _retornarPedido(endereco),
-                                          backgroundColor:
-                                              endereco.idSituacao == 11
-                                                  ? Colors.red
-                                                  : Colors.green,
-                                          foregroundColor: Colors.white,
-                                          icon: endereco.idSituacao == 11
-                                              ? Icons.undo
-                                              : Icons.check,
-                                          label: endereco.idSituacao == 11
-                                              ? 'Retornar'
-                                              : 'Entregue',
-                                          borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            bottomLeft: Radius.circular(10),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    child: Material(
-                                      elevation: 5,
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                      color: endereco.idSituacao == 11
-                                          ? Colors.green
-                                          : Theme.of(context).primaryColor,
-                                      child: InkWell(
-                                        onTap: () {
-                                          mostrarPedidos(
-                                            context,
-                                            endereco,
-                                            int.parse(
-                                              widget.roteiro.id.toString(),
-                                            ),
-                                          );
-                                        },
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                _endereco(endereco),
-                                                overflow: TextOverflow.ellipsis,
-                                                softWrap: true,
-                                                maxLines: 5,
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                              const SizedBox(height: 8),
-                                              Text(endereco.fantasia),
-                                              const Divider(),
-                                              const Text(
-                                                'Observações para o Motorista:',
-                                              ),
-                                              Text(
-                                                '${endereco.observacoesMotorista}',
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          listItem(endereco, context),
                       ],
                     ),
                   )
@@ -399,6 +286,128 @@ class _RotasState extends State<Rotas> {
     );
   }
 
+  Padding listItem(endereco, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Column(
+            children: [
+              Material(
+                elevation: 5,
+                color: endereco.idSituacao == 11
+                    ? Colors.green
+                    : Theme.of(context).primaryColor,
+                shape: const CircleBorder(),
+                child: InkWell(
+                  onTap: () {
+                    _openCamera(
+                      int.parse(
+                        endereco.idCliente.toString(),
+                      ),
+                    );
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(6),
+                    child: Icon(
+                      Icons.camera_alt_rounded,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ),
+              Material(
+                elevation: 5,
+                color: endereco.idSituacao == 11
+                    ? Colors.green
+                    : Theme.of(context).primaryColor,
+                shape: const CircleBorder(),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Text('${endereco.posicao + 1}'),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Slidable(
+              startActionPane: ActionPane(
+                motion: const BehindMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: (_) =>
+                        endereco.idSituacao == 5 || endereco.idSituacao == 10
+                            ? _entregarPedido(endereco)
+                            : _retornarPedido(endereco),
+                    backgroundColor:
+                        endereco.idSituacao == 11 ? Colors.red : Colors.green,
+                    foregroundColor: Colors.white,
+                    icon: endereco.idSituacao == 11 ? Icons.undo : Icons.check,
+                    label: endereco.idSituacao == 11 ? 'Retornar' : 'Entregue',
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                    ),
+                  )
+                ],
+              ),
+              child: Material(
+                elevation: 5,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10),
+                ),
+                color: endereco.idSituacao == 11
+                    ? Colors.green
+                    : Theme.of(context).primaryColor,
+                child: InkWell(
+                  onTap: () {
+                    mostrarPedidos(
+                      context,
+                      endereco,
+                      int.parse(
+                        widget.roteiro.id.toString(),
+                      ),
+                    );
+                  },
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _endereco(endereco),
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                          maxLines: 5,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(endereco.fantasia),
+                        const Divider(),
+                        const Text(
+                          'Observações para o Motorista:',
+                        ),
+                        Text(
+                          '${endereco.observacoesMotorista}',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<dynamic> mostrarPedidos(
     BuildContext context,
     endereco,
@@ -406,6 +415,7 @@ class _RotasState extends State<Rotas> {
   ) {
     return showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (context) {
         return PedidosRota(
           endereco: endereco,

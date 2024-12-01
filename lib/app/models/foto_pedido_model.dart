@@ -3,6 +3,7 @@ class FotoPedidoModel {
   num? situacaoFoto;
   num? idPedido;
   num? idRoteiro;
+  num? idCliente;
   String? imagem;
   String? descricao;
   String? dataFoto;
@@ -12,6 +13,7 @@ class FotoPedidoModel {
     this.situacaoFoto,
     this.idPedido,
     this.idRoteiro,
+    this.idCliente,
     this.imagem,
     this.descricao,
     this.dataFoto,
@@ -22,6 +24,7 @@ class FotoPedidoModel {
     situacaoFoto = json['situacaoFoto'];
     idPedido = json['idPedido'];
     idRoteiro = json['idRoteiro'];
+    idCliente = json['idCliente'];
     imagem = json['imagem'];
     descricao = json['descricao'];
     dataFoto = json['dataFoto'];

@@ -8,11 +8,14 @@ import 'package:sgc/app/data/enums/icones.dart';
 import 'package:sgc/app/data/repositories/configuracoes.dart';
 import 'package:sgc/app/data/repositories/versao_app_dao.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
+import 'package:sgc/app/ui/widgets/error_alert.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
 import '../../../config/app_config.dart';
 import '../../../data/repositories/user_dao.dart';
 import '../../../models/user_model.dart';
+import '../../../models/versao_app.dart';
 import '../../../ui/widgets/button.dart';
 import '../../../ui/widgets/textfield.dart';
 import '../../initial_setup_page/initial_setup.dart';
@@ -31,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
   final senhaController = TextEditingController();
   bool isWaiting = false;
   bool _atualizado = false;
+  late VersaoApp _versao;
 
   String _version = '';
   List<int> _currentVersion = [];
@@ -93,17 +97,17 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    var responseVersion = await VersaoAppDao().fetchVersion();
+    _versao = await VersaoAppDao().fetchVersion();
 
     _requiredVersion = [
       int.parse(
-        responseVersion.major.toString(),
+        _versao.major.toString(),
       ),
       int.parse(
-        responseVersion.minor.toString(),
+        _versao.minor.toString(),
       ),
       int.parse(
-        responseVersion.patch.toString(),
+        _versao.patch.toString(),
       ),
     ];
 
@@ -201,7 +205,13 @@ class _LoginPageState extends State<LoginPage> {
                 tipo: Icones.info,
                 actions: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      if (!await launchUrl(Uri.parse(_versao.url!))) {
+                        const ErrorAlert(
+                          message: 'Não foi possível abrir o link',
+                        );
+                      }
+                    },
                     child: Text(
                       'Download (v${_requiredVersion[0]}.${_requiredVersion[1]}.${_requiredVersion[2]})',
                       style: const TextStyle(

@@ -168,6 +168,7 @@ class _RotasState extends State<Rotas> {
   ) {
     return showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (context) {
         return PedidosRota(
           endereco: endereco,

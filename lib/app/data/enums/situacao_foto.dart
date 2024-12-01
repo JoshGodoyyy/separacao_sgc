@@ -3,4 +3,5 @@ enum SituacaoFoto {
   conferencia,
   carregando,
   entregue,
+  carregado,
 }

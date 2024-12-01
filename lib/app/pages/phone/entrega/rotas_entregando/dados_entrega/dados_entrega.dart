@@ -90,85 +90,89 @@ class _DadosEntregaState extends State<DadosEntrega> {
     final kmFinalController = TextEditingController();
     return showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (context) {
         return Padding(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
           ),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10),
+                ),
               ),
-            ),
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(height: 16),
-                text(
-                  pedagioController,
-                  'Pedágio',
-                  'R\$ ',
-                ),
-                const SizedBox(height: 16),
-                text(
-                  combustivelController,
-                  'Combustível',
-                  'R\$ ',
-                ),
-                const SizedBox(height: 16),
-                text(
-                  refeicaoController,
-                  'Refeição',
-                  'R\$ ',
-                ),
-                const SizedBox(height: 16),
-                text(
-                  kmFinalController,
-                  'Km Final',
-                  'Km ',
-                ),
-                const SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: () {
-                    if (pedagioController.text == '') {
-                      pedagioController.text = '0.0';
-                    }
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 16),
+                  text(
+                    pedagioController,
+                    'Pedágio',
+                    'R\$ ',
+                  ),
+                  const SizedBox(height: 16),
+                  text(
+                    combustivelController,
+                    'Combustível',
+                    'R\$ ',
+                  ),
+                  const SizedBox(height: 16),
+                  text(
+                    refeicaoController,
+                    'Refeição',
+                    'R\$ ',
+                  ),
+                  const SizedBox(height: 16),
+                  text(
+                    kmFinalController,
+                    'Km Final',
+                    'Km ',
+                  ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (pedagioController.text == '') {
+                        pedagioController.text = '0.0';
+                      }
 
-                    if (combustivelController.text == '') {
-                      combustivelController.text = '0.0';
-                    }
+                      if (combustivelController.text == '') {
+                        combustivelController.text = '0.0';
+                      }
 
-                    if (refeicaoController.text == '') {
-                      refeicaoController.text = '0.0';
-                    }
+                      if (refeicaoController.text == '') {
+                        refeicaoController.text = '0.0';
+                      }
 
-                    if (kmFinalController.text == '') {
-                      kmFinalController.text = '0.0';
-                    }
+                      if (kmFinalController.text == '') {
+                        kmFinalController.text = '0.0';
+                      }
 
-                    RoteiroBloc().inputRoteiroController.add(
-                          FinishDados(
-                            idRoteiro: int.parse(
-                              widget.roteiro.id.toString(),
+                      RoteiroBloc().inputRoteiroController.add(
+                            FinishDados(
+                              idRoteiro: int.parse(
+                                widget.roteiro.id.toString(),
+                              ),
+                              pedagio: double.parse(pedagioController.text),
+                              combustivel:
+                                  double.parse(combustivelController.text),
+                              refeicao: double.parse(refeicaoController.text),
+                              kmFinal: double.parse(kmFinalController.text),
                             ),
-                            pedagio: double.parse(pedagioController.text),
-                            combustivel:
-                                double.parse(combustivelController.text),
-                            refeicao: double.parse(refeicaoController.text),
-                            kmFinal: double.parse(kmFinalController.text),
-                          ),
-                        );
+                          );
 
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Concluir'),
-                ),
-              ],
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Concluir'),
+                  ),
+                ],
+              ),
             ),
           ),
         );

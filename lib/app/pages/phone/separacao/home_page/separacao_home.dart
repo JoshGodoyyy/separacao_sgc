@@ -62,6 +62,8 @@ class _HomeState extends State<SeparacaoHome> {
   }
 
   void alertarBalcao(bool value, List pedidos) async {
+    if (!mounted) return;
+
     var config = Provider.of<AppConfig>(context, listen: false);
 
     String ids = '';
@@ -85,6 +87,7 @@ class _HomeState extends State<SeparacaoHome> {
   }
 
   void alertarRetirar(bool value, List pedidos) async {
+    if (!mounted) return;
     var config = Provider.of<AppConfig>(context, listen: false);
     String ids = '';
     String nomes = '';

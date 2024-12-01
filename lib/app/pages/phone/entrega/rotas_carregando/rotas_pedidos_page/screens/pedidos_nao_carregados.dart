@@ -7,7 +7,7 @@ import 'package:sgc/app/pages/phone/entrega/rotas_carregando/rotas_pedidos_page/
 import '../../../../../../data/enums/situacao_foto.dart';
 import '../../../../../../data/repositories/configuracoes.dart';
 import '../../../../../../ui/widgets/error_alert.dart';
-import '../../../../separacao/fotos_page/foto_pedido.dart';
+import '../../../../fotos_page/foto_pedido.dart';
 
 class PedidosNaoCarregados extends StatefulWidget {
   final BuildContext mainContext;
@@ -60,10 +60,12 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
 
   _pedidos(List pedidos) {
     if (pedidos.isEmpty) {
-      return const Center(
-        child: Text(
-          'Nenhum pedido',
-          style: TextStyle(fontSize: 24),
+      return const Expanded(
+        child: Center(
+          child: Text(
+            'Nenhum pedido',
+            style: TextStyle(fontSize: 24),
+          ),
         ),
       );
     } else {
@@ -133,34 +135,26 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
             List pedidos = snapshot.data?.produtos ?? [];
             return Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
-                  child: Material(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                    elevation: 5,
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          value: _selecionarTodos,
-                          onChanged: (value) {
-                            setState(() {
-                              _selecionarTodos = !_selecionarTodos;
-                              for (var pedido in pedidos) {
-                                pedido.selecionado = _selecionarTodos;
-                              }
-                            });
-                          },
-                        ),
-                        const Text('Selecionar todos'),
-                      ],
-                    ),
+                _pedidos(pedidos),
+                Material(
+                  color: Theme.of(context).primaryColor,
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        value: _selecionarTodos,
+                        onChanged: (value) {
+                          setState(() {
+                            _selecionarTodos = !_selecionarTodos;
+                            for (var pedido in pedidos) {
+                              pedido.selecionado = _selecionarTodos;
+                            }
+                          });
+                        },
+                      ),
+                      const Text('Selecionar todos'),
+                    ],
                   ),
                 ),
-                _pedidos(pedidos),
-                const SizedBox(height: 80),
               ],
             );
           } else {
@@ -185,6 +179,9 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
                       ),
                       situacaoFoto: SituacaoFoto.carregando,
                       idRoteiro: widget.idRoteiro,
+                      idCliente: int.parse(
+                        widget.idCliente.toString(),
+                      ),
                     ),
                   ),
                 );

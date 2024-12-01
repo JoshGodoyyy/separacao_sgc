@@ -126,44 +126,62 @@ class _RotasHomeState extends State<RotasHome> {
                 builder: (context) {
                   return CustomDialog(
                     titulo: 'Filtrar por Data',
-                    conteudo: const Text(
-                      'Selecionar data',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    tipo: Icones.filtro,
-                    actions: [
-                      Expanded(
-                        child: Material(
+                    conteudo: Column(
+                      children: [
+                        const Text(
+                          'Selecionar data',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Material(
                           elevation: 5,
                           color: Theme.of(context).primaryColor,
                           borderRadius: const BorderRadius.all(
                             Radius.circular(10),
                           ),
-                          child: TextField(
-                            controller: _inicioController,
-                            readOnly: true,
-                            onTap: () async {
-                              final data = await _selectDate();
-                              setState(
-                                () => _inicioController.text =
-                                    data != null ? _data.format(data) : '',
-                              );
-                            },
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _inicioController,
+                                  textAlign: TextAlign.center,
+                                  readOnly: true,
+                                  onTap: () async {
+                                    final data = await _selectDate();
+                                    setState(
+                                      () => _inicioController.text =
+                                          data != null
+                                              ? _data.format(data)
+                                              : '',
+                                    );
+                                  },
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                              IconButton(
+                                onPressed: () => setState(
+                                  () => _inicioController.clear(),
+                                ),
+                                icon: const Icon(Icons.close),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () => setState(
-                          () => _inicioController.clear(),
-                        ),
-                        icon: const Icon(Icons.close),
+                        const SizedBox(height: 8),
+                      ],
+                    ),
+                    tipo: Icones.filtro,
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Ok'),
                       ),
                     ],
                   );

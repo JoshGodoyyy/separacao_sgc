@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
-import 'package:sgc/app/pages/phone/entrega/rotas_finalizadas/dados_entrega/pages/dados.dart';
-import 'package:sgc/app/pages/phone/entrega/rotas_finalizadas/dados_entrega/pages/rotas.dart';
+import 'pages/dados.dart';
+import 'pages/galeria.dart';
+import 'pages/rotas.dart';
 
 class DadosEntrega extends StatefulWidget {
   final RoteiroEntregaModel roteiro;
@@ -18,7 +19,7 @@ class _DadosEntregaState extends State<DadosEntrega> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
@@ -27,6 +28,9 @@ class _DadosEntregaState extends State<DadosEntrega> {
           backgroundColor: Theme.of(context).primaryColor,
           bottom: const TabBar(
             tabs: [
+              Tab(
+                text: 'Galeria',
+              ),
               Tab(
                 text: 'Detalhes',
               ),
@@ -38,6 +42,9 @@ class _DadosEntregaState extends State<DadosEntrega> {
         ),
         body: TabBarView(
           children: [
+            Galeria(
+              roteiro: widget.roteiro,
+            ),
             Dados(
               roteiro: widget.roteiro,
             ),

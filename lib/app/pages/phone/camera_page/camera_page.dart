@@ -1,14 +1,12 @@
 import 'dart:convert';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sgc/app/data/enums/situacao_foto.dart';
 import 'package:sgc/app/data/repositories/foto_pedido.dart';
 import 'package:sgc/app/models/foto_pedido_model.dart';
-import 'package:sgc/app/pages/phone/separacao/fotos_page/widgets/modal_foto.dart';
+import 'package:sgc/app/pages/phone/fotos_page/widgets/modal_foto.dart';
 import 'dart:io';
-
 import 'package:sgc/app/ui/widgets/error_alert.dart';
 
 class CameraPage extends StatefulWidget {
@@ -16,13 +14,15 @@ class CameraPage extends StatefulWidget {
   final int idPedido;
   final SituacaoFoto situacaoFoto;
   final int idRoteiro;
+  final int idCliente;
 
   const CameraPage({
     super.key,
     required this.camera,
     required this.idPedido,
     required this.situacaoFoto,
-    this.idRoteiro = 0,
+    required this.idRoteiro,
+    required this.idCliente,
   });
 
   @override
@@ -57,42 +57,65 @@ class _CameraPageState extends State<CameraPage> {
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return CameraPreview(_controller);
+            return CameraPreview(
+              _controller,
+            );
           } else {
             return const Center(child: CircularProgressIndicator());
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          try {
-            await _initializeControllerFuture;
-            final image = await _controller.takePicture();
-            final base64String = await imageToBase64(image.path);
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Material(
+        shape: const CircleBorder(),
+        color: Colors.white60,
+        child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: Material(
+            shape: const CircleBorder(),
+            color: Colors.white,
+            child: InkWell(
+              onTap: () async {
+                try {
+                  await _initializeControllerFuture;
+                  final image = await _controller.takePicture();
+                  final base64String = await imageToBase64(image.path);
 
-            if (!mounted) return;
-            WidgetsBinding.instance.addPostFrameCallback(
-              (timeStamp) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => DisplayPicture(
-                      imagePath: image.path,
-                      idPedido: widget.idPedido,
-                      situacaoFoto: widget.situacaoFoto,
-                      imageBase64: base64String,
-                      idRoteiro: widget.idRoteiro,
-                    ),
-                  ),
-                );
+                  if (!mounted) return;
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (timeStamp) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => DisplayPicture(
+                            imagePath: image.path,
+                            idPedido: widget.idPedido,
+                            situacaoFoto: widget.situacaoFoto,
+                            imageBase64: base64String,
+                            idRoteiro: widget.idRoteiro,
+                            idCliente: widget.idCliente,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } catch (e) {
+                  ErrorAlert(
+                    message: e.toString(),
+                  );
+                }
               },
-            );
-          } catch (e) {
-            ErrorAlert(
-              message: e.toString(),
-            );
-          }
-        },
-        child: const Icon(Icons.camera_alt),
+              customBorder: const CircleBorder(),
+              child: const Padding(
+                padding: EdgeInsets.all(15),
+                child: Icon(
+                  Icons.camera_alt,
+                  size: 50,
+                  color: Colors.black45,
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -110,6 +133,7 @@ class DisplayPicture extends StatefulWidget {
   final SituacaoFoto situacaoFoto;
   final String imageBase64;
   final int idRoteiro;
+  final int idCliente;
 
   const DisplayPicture({
     super.key,
@@ -117,7 +141,8 @@ class DisplayPicture extends StatefulWidget {
     required this.idPedido,
     required this.situacaoFoto,
     required this.imageBase64,
-    this.idRoteiro = 0,
+    required this.idRoteiro,
+    required this.idCliente,
   });
 
   @override
@@ -164,6 +189,7 @@ class _DisplayPictureState extends State<DisplayPicture> {
               widget.situacaoFoto.index,
               widget.idPedido,
               widget.idRoteiro,
+              widget.idCliente,
               widget.imageBase64,
               tituloController.text == ''
                   ? '${_data.format(DateTime.now())}_SGC_Image'

@@ -3,12 +3,14 @@ class VersaoApp {
   num? major;
   num? minor;
   num? patch;
+  String? url;
 
   VersaoApp(
     this.id,
     this.major,
     this.minor,
     this.patch,
+    this.url,
   );
 
   VersaoApp.fromJson(Map<String, dynamic> json) {
@@ -16,5 +18,6 @@ class VersaoApp {
     major = json['major'];
     minor = json['minor'];
     patch = json['patch'];
+    url = json['url'];
   }
 }
