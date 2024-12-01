@@ -164,7 +164,7 @@ class _InitialSetupState extends State<InitialSetup> {
                       enabled: _urls.isNotEmpty,
                       onTap: () async {
                         var item = _urls.firstWhere(
-                          (_) => _.url == _selectedItem,
+                          (value) => value.url == _selectedItem,
                         );
 
                         _url = item;
@@ -201,7 +201,7 @@ class _InitialSetupState extends State<InitialSetup> {
                                 TextButton(
                                   onPressed: () {
                                     var item = _urls.firstWhere(
-                                      (_) => _.url == _selectedItem,
+                                      (value) => value.url == _selectedItem,
                                     );
 
                                     _url = item;
@@ -259,7 +259,7 @@ class _InitialSetupState extends State<InitialSetup> {
                           }
 
                           var item = _urls.firstWhere(
-                            (_) => _.url == _selectedItem,
+                            (value) => value.url == _selectedItem,
                           );
 
                           _urls.remove(item);
