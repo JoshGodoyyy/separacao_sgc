@@ -33,7 +33,10 @@ class _ColunaStatusState extends State<ColunaStatus> {
 
   _carregarDados() {
     _pedidosBloc.inputPedido.add(
-      GetPedidosSituacao(idSituacao: widget.idStatus),
+      GetPedidosSituacao(
+        idSituacao: widget.idStatus,
+        tipoProduto: 0,
+      ),
     );
   }
 

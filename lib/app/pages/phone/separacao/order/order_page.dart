@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sgc/app/config/conferencia_config.dart';
+import 'package:sgc/app/config/embalagem_config.dart';
+import 'package:sgc/app/config/separando_config.dart';
 import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/enums/icones.dart';
 import 'package:sgc/app/data/enums/situacao_foto.dart';
@@ -62,10 +65,18 @@ class _OrderPageState extends State<OrderPage> {
 
   SituacaoFoto? situacaoFoto;
 
+  SeparandoConfig? _separandoConfig;
+  EmbalagemConfig? _embalagemConfig;
+  ConferenciaConfig? _conferenciaConfig;
+
   @override
   void initState() {
     super.initState();
     _pedidoBloc = PedidoBloc();
+    _separandoConfig = Provider.of<SeparandoConfig>(context, listen: false);
+    _embalagemConfig = Provider.of<EmbalagemConfig>(context, listen: false);
+    _conferenciaConfig = Provider.of<ConferenciaConfig>(context, listen: false);
+
     final result = Provider.of<AppConfig>(context, listen: false);
 
     if (result.accessories && result.profiles) {
@@ -196,6 +207,46 @@ class _OrderPageState extends State<OrderPage> {
       default:
         break;
     }
+  }
+
+  bool conferenciaVisibility() {
+    bool value = false;
+
+    if (widget.pedido.status != 'SEPARAR' && liberarConferencia) {
+      switch (widget.pedido.status) {
+        case 'SEPARANDO':
+          value = _separandoConfig?.mostrarConferencia ?? true;
+        case 'EMBALAGEM':
+          value = _embalagemConfig?.mostrarConferencia ?? true;
+          break;
+        default:
+          value = false;
+          break;
+      }
+      return value;
+    }
+
+    return value;
+  }
+
+  bool embalagemVisibility() {
+    bool value = false;
+
+    if (widget.pedido.status != 'SEPARAR' && liberarConferencia) {
+      switch (widget.pedido.status) {
+        case 'SEPARANDO':
+          value = _separandoConfig?.mostrarEmbalagem ?? true;
+        case 'CONFERENCIA':
+          value = _conferenciaConfig?.mostrarEmbalagem ?? true;
+          break;
+        default:
+          value = false;
+          break;
+      }
+      return value;
+    }
+
+    return value;
   }
 
   @override
@@ -422,7 +473,7 @@ class _OrderPageState extends State<OrderPage> {
             ),
             //* Liberar para Conferência
             SpeedDialChild(
-              visible: widget.pedido.status != 'SEPARAR' && liberarConferencia,
+              visible: conferenciaVisibility(),
               child: const Icon(Icons.checklist_rtl_rounded),
               label: 'Liberar para Conferência',
               onTap: () async {
@@ -538,9 +589,7 @@ class _OrderPageState extends State<OrderPage> {
             SpeedDialChild(
               visible: UserConstants().idLiberacao == ''
                   ? false
-                  : liberarEmbalagem
-                      ? true
-                      : false,
+                  : embalagemVisibility(),
               child: const Icon(Icons.archive),
               label: 'Liberar para Embalagem',
               onTap: () async {

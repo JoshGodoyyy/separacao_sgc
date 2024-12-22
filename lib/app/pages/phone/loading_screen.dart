@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:sgc/app/config/app_config.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
 
 import 'home_page/home_page.dart';
@@ -23,15 +24,28 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   Future<void> getData() async {
     final orders = Provider.of<Pedido>(context, listen: false);
+    final config = Provider.of<AppConfig>(context, listen: false);
+
+    int tipoProduto = 0;
+
+    if (config.profiles) {
+      if (config.accessories) {
+        tipoProduto = 0;
+      } else {
+        tipoProduto = 2;
+      }
+    } else {
+      tipoProduto = 3;
+    }
 
     var navigator = Navigator.of(context);
 
-    await orders.fetchData(2);
-    await orders.fetchData(3);
-    await orders.fetchData(5);
-    await orders.fetchData(10);
-    await orders.fetchData(14);
-    await orders.fetchData(15);
+    await orders.fetchData(2, tipoProduto);
+    await orders.fetchData(3, tipoProduto);
+    await orders.fetchData(5, tipoProduto);
+    await orders.fetchData(10, tipoProduto);
+    await orders.fetchData(14, tipoProduto);
+    await orders.fetchData(15, tipoProduto);
 
     navigator.pushReplacement(
       MaterialPageRoute(

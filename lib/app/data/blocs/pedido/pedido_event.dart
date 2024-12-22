@@ -2,15 +2,24 @@ abstract class PedidoEvent {}
 
 class GetPedidosSituacao extends PedidoEvent {
   final int idSituacao;
+  final int tipoProduto;
 
-  GetPedidosSituacao({required this.idSituacao});
+  GetPedidosSituacao({
+    required this.idSituacao,
+    required this.tipoProduto,
+  });
 }
 
 class SearchPedido extends PedidoEvent {
   final int idSituacao;
   final int idPedido;
+  final int tipoProduto;
 
-  SearchPedido({required this.idSituacao, required this.idPedido});
+  SearchPedido({
+    required this.idSituacao,
+    required this.idPedido,
+    required this.tipoProduto,
+  });
 }
 
 class UpdatePedido extends PedidoEvent {

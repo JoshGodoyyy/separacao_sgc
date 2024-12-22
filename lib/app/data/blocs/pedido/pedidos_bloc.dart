@@ -27,10 +27,15 @@ class PedidosBloc {
 
     if (event is GetPedidosSituacao) {
       pedidos = await _repository.fetchOrdersBySituation(
-          idSituacao: event.idSituacao);
+        idSituacao: event.idSituacao,
+        tipoProduto: event.tipoProduto,
+      );
     } else if (event is SearchPedido) {
       pedidos = await _repository.fetchOrdersBySituation(
-          idSituacao: event.idSituacao, idPedido: event.idPedido);
+        idSituacao: event.idSituacao,
+        idPedido: event.idPedido,
+        tipoProduto: event.tipoProduto,
+      );
     }
 
     _outputPedidoController.add(PedidosLoadedState(pedidos: pedidos));

@@ -13,13 +13,14 @@ class Pedido with ChangeNotifier {
   List pedidosLogistica = [];
   String url = '${ApiConfig().url}/Order';
 
-  Future<void> fetchData(int idSituacao) async {
+  Future<void> fetchData(int idSituacao, int tipoProduto) async {
     var response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
           'id': idSituacao,
+          'tipoProduto': tipoProduto,
         },
       ),
     );
@@ -76,6 +77,7 @@ class Pedido with ChangeNotifier {
   Future<List<PedidoModel>> fetchOrdersBySituation({
     required int idSituacao,
     int? idPedido,
+    required int tipoProduto,
   }) async {
     var response = await http.post(
       Uri.parse(url),
@@ -84,6 +86,7 @@ class Pedido with ChangeNotifier {
         {
           'id': idSituacao,
           'idPedido': idPedido,
+          'tipoProduto': tipoProduto,
         },
       ),
     );

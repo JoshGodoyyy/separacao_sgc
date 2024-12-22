@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -37,11 +36,24 @@ class _MainPageState extends State<MainPage> {
   List<PedidoModel> pedidos = [];
   late Timer timer;
   String search = '';
+  int _tipoProduto = 0;
 
   @override
   void initState() {
     super.initState();
+    final config = Provider.of<AppConfig>(context, listen: false);
     _pedidosBloc = PedidosBloc();
+
+    if (config.profiles) {
+      if (config.accessories) {
+        _tipoProduto = 0;
+      } else {
+        _tipoProduto = 2;
+      }
+    } else {
+      _tipoProduto = 3;
+    }
+
     fetchData();
 
     const Duration duracao = Duration(seconds: 30);
@@ -54,13 +66,15 @@ class _MainPageState extends State<MainPage> {
   fetchData() {
     if (search == '') {
       _pedidosBloc.inputPedido.add(
-        GetPedidosSituacao(idSituacao: widget.status),
+        GetPedidosSituacao(
+            idSituacao: widget.status, tipoProduto: _tipoProduto),
       );
     } else {
       _pedidosBloc.inputPedido.add(
         SearchPedido(
           idSituacao: widget.status,
           idPedido: int.parse(search),
+          tipoProduto: _tipoProduto,
         ),
       );
     }
@@ -184,7 +198,10 @@ class _MainPageState extends State<MainPage> {
             child: RefreshIndicator(
               onRefresh: () async {
                 _pedidosBloc.inputPedido.add(
-                  GetPedidosSituacao(idSituacao: widget.status),
+                  GetPedidosSituacao(
+                    idSituacao: widget.status,
+                    tipoProduto: _tipoProduto,
+                  ),
                 );
               },
               child: widget.status == 3 ? pedidosFiltrados() : todosPedidos(),
@@ -227,7 +244,10 @@ class _MainPageState extends State<MainPage> {
                           )
                           .then(
                             (value) => _pedidosBloc.inputPedido.add(
-                              GetPedidosSituacao(idSituacao: widget.status),
+                              GetPedidosSituacao(
+                                idSituacao: widget.status,
+                                tipoProduto: _tipoProduto,
+                              ),
                             ),
                           );
                     },
@@ -257,7 +277,10 @@ class _MainPageState extends State<MainPage> {
                           )
                           .then(
                             (value) => _pedidosBloc.inputPedido.add(
-                              GetPedidosSituacao(idSituacao: widget.status),
+                              GetPedidosSituacao(
+                                idSituacao: widget.status,
+                                tipoProduto: _tipoProduto,
+                              ),
                             ),
                           );
                     },
@@ -293,7 +316,10 @@ class _MainPageState extends State<MainPage> {
                           )
                           .then(
                             (value) => _pedidosBloc.inputPedido.add(
-                              GetPedidosSituacao(idSituacao: widget.status),
+                              GetPedidosSituacao(
+                                idSituacao: widget.status,
+                                tipoProduto: _tipoProduto,
+                              ),
                             ),
                           );
                     },
@@ -323,7 +349,10 @@ class _MainPageState extends State<MainPage> {
                           )
                           .then(
                             (value) => _pedidosBloc.inputPedido.add(
-                              GetPedidosSituacao(idSituacao: widget.status),
+                              GetPedidosSituacao(
+                                idSituacao: widget.status,
+                                tipoProduto: _tipoProduto,
+                              ),
                             ),
                           );
                     },
@@ -362,7 +391,10 @@ class _MainPageState extends State<MainPage> {
                       )
                       .then(
                         (value) => _pedidosBloc.inputPedido.add(
-                          GetPedidosSituacao(idSituacao: widget.status),
+                          GetPedidosSituacao(
+                            idSituacao: widget.status,
+                            tipoProduto: _tipoProduto,
+                          ),
                         ),
                       );
                 },
@@ -389,7 +421,10 @@ class _MainPageState extends State<MainPage> {
                       )
                       .then(
                         (value) => _pedidosBloc.inputPedido.add(
-                          GetPedidosSituacao(idSituacao: widget.status),
+                          GetPedidosSituacao(
+                            idSituacao: widget.status,
+                            tipoProduto: _tipoProduto,
+                          ),
                         ),
                       );
                 },

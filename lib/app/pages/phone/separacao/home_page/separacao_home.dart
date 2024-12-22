@@ -30,13 +30,27 @@ class _HomeState extends State<SeparacaoHome> {
 
   loadData() async {
     var orders = Provider.of<Pedido>(context, listen: false);
+    final config = Provider.of<AppConfig>(context, listen: false);
+
+    int tipoProduto = 0;
+
+    if (config.profiles) {
+      if (config.accessories) {
+        tipoProduto = 0;
+      } else {
+        tipoProduto = 2;
+      }
+    } else {
+      tipoProduto = 3;
+    }
+
     setState(() => carregando = true);
-    await orders.fetchData(2);
-    await orders.fetchData(3);
-    await orders.fetchData(5);
-    await orders.fetchData(10);
-    await orders.fetchData(14);
-    await orders.fetchData(15);
+    await orders.fetchData(2, tipoProduto);
+    await orders.fetchData(3, tipoProduto);
+    await orders.fetchData(5, tipoProduto);
+    await orders.fetchData(10, tipoProduto);
+    await orders.fetchData(14, tipoProduto);
+    await orders.fetchData(15, tipoProduto);
 
     if (mounted) {
       setState(() => carregando = false);
