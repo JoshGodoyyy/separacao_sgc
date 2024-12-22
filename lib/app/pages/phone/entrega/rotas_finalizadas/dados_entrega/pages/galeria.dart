@@ -46,6 +46,7 @@ class _GaleriaState extends State<Galeria> {
           '',
           '',
           '',
+          '',
         ),
       ),
     );
@@ -90,15 +91,30 @@ class _GaleriaState extends State<Galeria> {
 
             return ListView(
               children: [
-                const Header(label: '1. Separação'),
+                Visibility(
+                  visible: fotosSeparando.isNotEmpty,
+                  child: const Header(label: '1. Separação'),
+                ),
                 for (var foto in fotosSeparando) ItemFoto(foto: foto),
-                const Header(label: '2. Conferência'),
+                Visibility(
+                  visible: fotosConferencia.isNotEmpty,
+                  child: const Header(label: '2. Conferência'),
+                ),
                 for (var foto in fotosConferencia) ItemFoto(foto: foto),
-                const Header(label: '3. Carregando'),
+                Visibility(
+                  visible: fotosCarregando.isNotEmpty,
+                  child: const Header(label: '3. Carregando'),
+                ),
                 for (var foto in fotosCarregando) ItemFoto(foto: foto),
-                const Header(label: '4. Roteiro Carregado'),
+                Visibility(
+                  visible: fotosRoteiroCarregado.isNotEmpty,
+                  child: const Header(label: '4. Roteiro Carregado'),
+                ),
                 for (var foto in fotosRoteiroCarregado) ItemFoto(foto: foto),
-                const Header(label: '5. Entregues'),
+                Visibility(
+                  visible: fotosEntregues.isNotEmpty,
+                  child: const Header(label: '5. Entregues'),
+                ),
                 for (var foto in fotosEntregues) ItemFoto(foto: foto),
               ],
             );
@@ -214,14 +230,38 @@ class ItemFoto extends StatelessWidget {
                   width: 60,
                 ),
                 const SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Descrição: ${foto.descricao}'),
-                    Text(
-                      'Data: ${foto.dataFoto.toString().split(' ')[0]}',
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Visibility(
+                        visible: '${foto.idPedido}' != '0',
+                        child: Text(
+                          'Pedido: ${foto.idPedido}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      Visibility(
+                        visible: '${foto.idCliente}' != '0',
+                        child: Text(
+                          softWrap: true,
+                          '[${foto.idCliente}] ${foto.nomeCliente}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      Visibility(
+                        visible: foto.idRoteiro != 0,
+                        child: Text(
+                          'Roteiro: [${foto.idRoteiro}] ${foto.nomeRoteiro}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      Text('${foto.descricao}'),
+                      Text(
+                        'Data: ${foto.dataFoto.toString().split(' ')[0]}',
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

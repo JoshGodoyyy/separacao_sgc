@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sgc/app/config/conferencia_config.dart';
+import 'package:sgc/app/config/embalagem_config.dart';
 import 'package:sgc/app/config/menu_state.dart';
+import 'package:sgc/app/config/separando_config.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/pages/tablet/login_page/login_page.dart';
 import 'package:sgc/app/ui/utils/notificacao.dart';
@@ -20,6 +23,15 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => AppConfig(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SeparandoConfig(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => EmbalagemConfig(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => ConferenciaConfig(),
         ),
         ChangeNotifierProvider(
           create: (_) => MenuState(),

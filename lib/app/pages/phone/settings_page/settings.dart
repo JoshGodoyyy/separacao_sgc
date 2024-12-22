@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
+import 'package:sgc/app/pages/phone/settings_page/widgets/footer_conferencia.dart';
+import 'package:sgc/app/pages/phone/settings_page/widgets/footer_embalagem.dart';
+import 'package:sgc/app/pages/phone/settings_page/widgets/footer_separando.dart';
 import 'package:sgc/app/ui/widgets/group.dart';
 
 import '../../../ui/widgets/toggle_switch.dart';
@@ -66,6 +69,13 @@ class _SettingsState extends State<Settings> {
                 onChanged: () {
                   config.setSeparando(!config.separando);
                 },
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => FooterSeparando(),
+                  );
+                },
               ),
               ToggleSwitch(
                 label: 'Embalagem',
@@ -73,12 +83,26 @@ class _SettingsState extends State<Settings> {
                 onChanged: () {
                   config.setEmbalagem(!config.embalagem);
                 },
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => FooterEmbalagem(),
+                  );
+                },
               ),
               ToggleSwitch(
                 label: 'Conferencia',
                 value: config.conferencia,
                 onChanged: () {
                   config.setConferencia(!config.conferencia);
+                },
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => FooterConferencia(),
+                  );
                 },
               ),
               ToggleSwitch(

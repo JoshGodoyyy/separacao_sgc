@@ -60,6 +60,7 @@ class _RotasEntregandoState extends State<RotasEntregando> {
                 icon: Icons.local_shipping_rounded,
                 page: DadosEntrega(
                   roteiro: roteiro,
+                  ancestorContext: context,
                 ),
                 begin: Colors.blue,
                 end: Colors.blue[300]!,

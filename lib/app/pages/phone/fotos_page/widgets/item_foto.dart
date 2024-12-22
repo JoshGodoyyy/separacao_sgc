@@ -75,16 +75,39 @@ class ItemFoto extends StatelessWidget {
                   width: 60,
                 ),
                 const SizedBox(width: 8),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Descrição: ${foto.descricao}'),
-                    Text(
-                      'Data: ${foto.dataFoto.toString().split(' ')[0]}',
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Visibility(
+                        visible: '${foto.idPedido}' != '0',
+                        child: Text(
+                          'Pedido: ${foto.idPedido}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      Visibility(
+                        visible: '${foto.idCliente}' != '0',
+                        child: Text(
+                          softWrap: true,
+                          '[${foto.idCliente}] ${foto.nomeCliente}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      Visibility(
+                        visible: foto.idRoteiro != 0,
+                        child: Text(
+                          'Roteiro: [${foto.idRoteiro}] ${foto.nomeRoteiro}',
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      Text('${foto.descricao}'),
+                      Text(
+                        'Data: ${foto.dataFoto.toString().split(' ')[0]}',
+                      ),
+                    ],
+                  ),
                 ),
-                const Spacer(),
                 Visibility(
                   visible: foto.situacaoFoto == situacao,
                   child: IconButton(

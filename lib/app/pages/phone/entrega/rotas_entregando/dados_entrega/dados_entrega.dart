@@ -8,9 +8,11 @@ import 'pages/rotas.dart';
 
 class DadosEntrega extends StatefulWidget {
   final RoteiroEntregaModel roteiro;
+  final BuildContext ancestorContext;
   const DadosEntrega({
     super.key,
     required this.roteiro,
+    required this.ancestorContext,
   });
 
   @override
@@ -61,6 +63,7 @@ class _DadosEntregaState extends State<DadosEntrega> {
             ),
             Rotas(
               roteiro: widget.roteiro,
+              ancestorContext: widget.ancestorContext,
             ),
           ],
         ),

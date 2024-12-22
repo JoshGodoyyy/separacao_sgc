@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sgc/app/data/enums/situacao_foto.dart';
 import 'package:sgc/app/data/repositories/foto_pedido.dart';
 import 'package:sgc/app/models/foto_pedido_model.dart';
 import 'package:sgc/app/pages/phone/fotos_page/widgets/modal_foto.dart';
@@ -11,18 +10,12 @@ import 'package:sgc/app/ui/widgets/error_alert.dart';
 
 class CameraPage extends StatefulWidget {
   final CameraDescription camera;
-  final int idPedido;
-  final SituacaoFoto situacaoFoto;
-  final int idRoteiro;
-  final int idCliente;
+  final FotoPedidoModel fotoPedido;
 
   const CameraPage({
     super.key,
     required this.camera,
-    required this.idPedido,
-    required this.situacaoFoto,
-    required this.idRoteiro,
-    required this.idCliente,
+    required this.fotoPedido,
   });
 
   @override
@@ -81,18 +74,17 @@ class _CameraPageState extends State<CameraPage> {
                   final image = await _controller.takePicture();
                   final base64String = await imageToBase64(image.path);
 
+                  FotoPedidoModel foto = widget.fotoPedido;
+                  foto.imagem = image.path;
+
                   if (!mounted) return;
                   WidgetsBinding.instance.addPostFrameCallback(
                     (timeStamp) {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => DisplayPicture(
-                            imagePath: image.path,
-                            idPedido: widget.idPedido,
-                            situacaoFoto: widget.situacaoFoto,
                             imageBase64: base64String,
-                            idRoteiro: widget.idRoteiro,
-                            idCliente: widget.idCliente,
+                            fotoPedido: foto,
                           ),
                         ),
                       );
@@ -128,21 +120,13 @@ class _CameraPageState extends State<CameraPage> {
 }
 
 class DisplayPicture extends StatefulWidget {
-  final String imagePath;
-  final int idPedido;
-  final SituacaoFoto situacaoFoto;
   final String imageBase64;
-  final int idRoteiro;
-  final int idCliente;
+  final FotoPedidoModel fotoPedido;
 
   const DisplayPicture({
     super.key,
-    required this.imagePath,
-    required this.idPedido,
-    required this.situacaoFoto,
     required this.imageBase64,
-    required this.idRoteiro,
-    required this.idCliente,
+    required this.fotoPedido,
   });
 
   @override
@@ -179,25 +163,22 @@ class _DisplayPictureState extends State<DisplayPicture> {
         ],
       ),
       body: Image.file(
-        File(widget.imagePath),
+        File(widget.fotoPedido.imagem ?? ''),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          FotoPedidoModel foto = widget.fotoPedido;
+          foto.descricao = tituloController.text == ''
+              ? '${_data.format(DateTime.now())}_SGC_Image'
+              : tituloController.text;
+          foto.imagem = widget.imageBase64;
+
+          foto.dataFoto = _data.format(
+            DateTime.now(),
+          );
+
           await FotoPedido().insert(
-            FotoPedidoModel(
-              0,
-              widget.situacaoFoto.index,
-              widget.idPedido,
-              widget.idRoteiro,
-              widget.idCliente,
-              widget.imageBase64,
-              tituloController.text == ''
-                  ? '${_data.format(DateTime.now())}_SGC_Image'
-                  : tituloController.text,
-              _data.format(
-                DateTime.now(),
-              ),
-            ),
+            foto,
           );
 
           WidgetsBinding.instance.addPostFrameCallback(

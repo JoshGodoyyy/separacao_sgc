@@ -208,6 +208,8 @@ class FotoPedido {
           'imagem': foto.imagem,
           'descricao': foto.descricao,
           'dataFoto': foto.dataFoto,
+          'idCliente': int.parse(foto.idCliente.toString()),
+          'nomeCliente': '',
         },
       ),
     );

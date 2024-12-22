@@ -9,11 +9,13 @@ import '../../../../ui/widgets/error_alert.dart';
 class PedidosRota extends StatefulWidget {
   final dynamic endereco;
   final int idRoteiro;
+  final BuildContext ancestorContext;
 
   const PedidosRota({
     super.key,
     required this.endereco,
     required this.idRoteiro,
+    required this.ancestorContext,
   });
 
   @override

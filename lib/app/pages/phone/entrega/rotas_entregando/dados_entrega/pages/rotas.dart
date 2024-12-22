@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:sgc/app/data/repositories/confirmacao_entrega.dart';
 import 'package:sgc/app/data/repositories/pedido_roteiro.dart';
 import 'package:sgc/app/models/confirmacao_entrega_model.dart';
+import 'package:sgc/app/models/foto_pedido_model.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
 import 'package:sgc/app/pages/phone/entrega/rotas_entregando/dados_entrega/pages/widgets/modal_entrega.dart';
 import 'package:sgc/app/ui/styles/colors_app.dart';
@@ -23,11 +24,10 @@ import '../../pedidos_rota.dart';
 
 class Rotas extends StatefulWidget {
   final RoteiroEntregaModel roteiro;
+  final BuildContext ancestorContext;
 
-  const Rotas({
-    super.key,
-    required this.roteiro,
-  });
+  const Rotas(
+      {super.key, required this.roteiro, required this.ancestorContext});
 
   @override
   State<Rotas> createState() => _RotasState();
@@ -223,16 +223,25 @@ class _RotasState extends State<Rotas> {
 
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
+        FotoPedidoModel foto = FotoPedidoModel(
+          0,
+          SituacaoFoto.entregue.index,
+          0,
+          int.parse(
+            widget.roteiro.id.toString(),
+          ),
+          idCliente,
+          '',
+          '',
+          '',
+          '',
+        );
+
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (builder) => CameraPage(
               camera: firstCamera,
-              idPedido: idCliente,
-              situacaoFoto: SituacaoFoto.entregue,
-              idRoteiro: int.parse(
-                widget.roteiro.id.toString(),
-              ),
-              idCliente: 0,
+              fotoPedido: foto,
             ),
           ),
         );
@@ -409,17 +418,27 @@ class _RotasState extends State<Rotas> {
   }
 
   Future<dynamic> mostrarPedidos(
-    BuildContext context,
+    BuildContext ancestor,
     endereco,
     int idRoteiro,
   ) {
     return showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (context) {
-        return PedidosRota(
-          endereco: endereco,
-          idRoteiro: idRoteiro,
+      isScrollControlled: true,
+      builder: (ancestor) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(ancestor).viewInsets.bottom,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: PedidosRota(
+              endereco: endereco,
+              idRoteiro: idRoteiro,
+              ancestorContext: ancestor,
+            ),
+          ),
         );
       },
     );

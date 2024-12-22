@@ -54,6 +54,7 @@ class _FotoPedidoState extends State<FotoPedido> {
           '',
           '',
           '',
+          '',
         ),
       ),
     );
@@ -211,15 +212,24 @@ class _FotoPedidoState extends State<FotoPedido> {
 
                 WidgetsBinding.instance.addPostFrameCallback(
                   (timestamp) {
+                    final FotoPedidoModel foto = FotoPedidoModel(
+                      0,
+                      widget.situacaoFoto.index,
+                      widget.idPedido,
+                      widget.idRoteiro,
+                      widget.idCliente,
+                      '',
+                      '',
+                      '',
+                      '',
+                    );
+
                     Navigator.of(context)
                         .push(
                           MaterialPageRoute(
                             builder: (context) => CameraPage(
                               camera: firstCamera,
-                              idPedido: widget.idPedido,
-                              situacaoFoto: widget.situacaoFoto,
-                              idRoteiro: widget.idRoteiro,
-                              idCliente: widget.idCliente,
+                              fotoPedido: foto,
                             ),
                           ),
                         )
