@@ -35,6 +35,7 @@ class _DadosState extends State<Dados> {
   final combustivelController = TextEditingController();
   final refeicaoController = TextEditingController();
   final finalizacaoController = TextEditingController();
+  final inicioController = TextEditingController();
   final chegadaController = TextEditingController();
 
   @override
@@ -94,6 +95,15 @@ class _DadosState extends State<Dados> {
             );
 
             finalizacaoController.text = finalizacao;
+
+            String inicio = dataFormatter.format(
+              DateTime.parse(
+                data.roteiro!.horaSaida.toString(),
+              ),
+            );
+
+            inicioController.text = inicio;
+
             ajudanteController.text = data.roteiro!.ajudante ?? '';
 
             String horario = '';
@@ -192,6 +202,12 @@ class _DadosState extends State<Dados> {
                       ),
                     ),
                   ],
+                ),
+                Campo(
+                  label: 'Início do Roteiro',
+                  controller: inicioController,
+                  readOnly: true,
+                  type: const TextInputType.numberWithOptions(),
                 ),
                 Campo(
                   label: 'Finalização',
