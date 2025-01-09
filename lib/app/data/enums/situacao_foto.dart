@@ -4,4 +4,5 @@ enum SituacaoFoto {
   carregando,
   entregue,
   carregado,
+  finalizado
 }

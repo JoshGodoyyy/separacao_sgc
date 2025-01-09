@@ -6,6 +6,7 @@ Future<void> showModal(
   TextEditingController rgController,
   TextEditingController cpfController,
   Function onSave,
+  Function openCamera,
 ) async {
   return showModalBottomSheet(
     backgroundColor: Colors.transparent,
@@ -65,7 +66,18 @@ Future<void> showModal(
                       TextField(
                         controller: cpfController,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 12),
+                      ElevatedButton(
+                        onPressed: () => openCamera(),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.camera_alt),
+                            SizedBox(width: 12),
+                            Text('Adicionar Foto'),
+                          ],
+                        ),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [

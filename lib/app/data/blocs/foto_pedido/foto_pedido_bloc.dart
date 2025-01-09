@@ -105,6 +105,15 @@ class FotoPedidoBloc {
           ...response[3],
         ];
       } else if (event.fotoPedido.situacaoFoto == SituacaoFoto.entregue.index) {
+        final fotosSeparando = await _repository.fetchFotosEntregue(
+          int.parse(
+            event.fotoPedido.idRoteiro.toString(),
+          ),
+        );
+
+        fotos = [...fotosSeparando];
+      } else if (event.fotoPedido.situacaoFoto ==
+          SituacaoFoto.finalizado.index) {
         var response = await Future.wait([
           _repository.fetchFotosSeparacaoCarregado(
             int.parse(

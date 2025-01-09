@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgc/app/config/conferencia_config.dart';
 import 'package:sgc/app/config/embalagem_config.dart';
 import 'package:sgc/app/config/menu_state.dart';
 import 'package:sgc/app/config/separando_config.dart';
@@ -29,9 +28,6 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => EmbalagemConfig(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => ConferenciaConfig(),
         ),
         ChangeNotifierProvider(
           create: (_) => MenuState(),

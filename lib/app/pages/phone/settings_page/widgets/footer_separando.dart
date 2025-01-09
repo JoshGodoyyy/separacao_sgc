@@ -44,11 +44,6 @@ class _FooterSeparandoState extends State<FooterSeparando> {
               value: config.mostrarFaturar,
               onChanged: () => config.setFaturar(!config.mostrarFaturar),
             ),
-            ToggleSwitch(
-              label: 'Logística',
-              value: config.mostrarLogistica,
-              onChanged: () => config.setLogistica(!config.mostrarLogistica),
-            ),
           ],
         ),
       ),

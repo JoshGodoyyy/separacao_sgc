@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_bloc.dart';
 import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_event.dart';
 import 'package:sgc/app/data/blocs/pedido_roteiro/pedido_roteiro_state.dart';
-import 'package:sgc/app/pages/phone/entrega/rotas_carregando/rotas_pedidos_page/screens/widgets/pedido_list_item.dart';
-
+import 'widgets/modal_pedido.dart';
 import '../../../../../../data/enums/situacao_foto.dart';
 import '../../../../../../data/repositories/configuracoes.dart';
 import '../../../../../../ui/widgets/error_alert.dart';
 import '../../../../fotos_page/foto_pedido.dart';
+import 'widgets/pedido_list_item.dart';
 
 class PedidosNaoCarregados extends StatefulWidget {
   final BuildContext mainContext;
@@ -77,15 +77,29 @@ class _PedidosNaoCarregadosState extends State<PedidosNaoCarregados> {
             for (var pedido in pedidos)
               Row(
                 children: [
-                  Checkbox(
-                    value: pedido.selecionado ?? false,
-                    onChanged: (value) {
-                      setState(
-                        () {
-                          pedido.selecionado = value ?? false;
+                  Column(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          showModal(
+                            widget.mainContext,
+                            pedido.id,
+                            pedido.quantidadeVolumesCarregados ?? 0,
+                          ).then((value) => _fetchData());
                         },
-                      );
-                    },
+                        icon: const Icon(Icons.info_outline_rounded),
+                      ),
+                      Checkbox(
+                        value: pedido.selecionado ?? false,
+                        onChanged: (value) {
+                          setState(
+                            () {
+                              pedido.selecionado = value ?? false;
+                            },
+                          );
+                        },
+                      ),
+                    ],
                   ),
                   Expanded(
                     child: PedidoListItem(

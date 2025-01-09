@@ -87,36 +87,63 @@ class _RotasState extends State<Rotas> {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         showModal(
-          widget.ancestorContext,
-          nomeController,
-          rgController,
-          cpfController,
-          () {
-            if (nomeController.text == '' &&
-                (rgController.text == '' || cpfController.text == '')) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    'Você precisa identificar o responsável de recebimento',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: ColorsApp.darkElementColor,
+            widget.ancestorContext, nomeController, rgController, cpfController,
+            () {
+          if (nomeController.text == '' &&
+              (rgController.text == '' || cpfController.text == '')) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'Você precisa identificar o responsável de recebimento',
+                  style: TextStyle(color: Colors.white),
                 ),
-              );
-
-              return;
-            }
-
-            _confirmarEntrega(
-              nomeController.text,
-              rgController.text,
-              cpfController.text,
-              pedidos,
+                backgroundColor: ColorsApp.darkElementColor,
+              ),
             );
 
-            _salvarEntrega(endereco, pedidos);
-          },
-        );
+            return;
+          }
+
+          _confirmarEntrega(
+            nomeController.text,
+            rgController.text,
+            cpfController.text,
+            pedidos,
+          );
+
+          _salvarEntrega(endereco, pedidos);
+        }, () async {
+          final cameras = await availableCameras();
+
+          final firstCamera = cameras.first;
+
+          WidgetsBinding.instance.addPostFrameCallback(
+            (timeStamp) {
+              FotoPedidoModel foto = FotoPedidoModel(
+                0,
+                SituacaoFoto.entregue.index,
+                0,
+                int.parse(
+                  widget.roteiro.id.toString(),
+                ),
+                endereco.idCliente,
+                '',
+                '',
+                '',
+                '',
+              );
+
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (builder) => CameraPage(
+                    camera: firstCamera,
+                    fotoPedido: foto,
+                  ),
+                ),
+              );
+            },
+          );
+        });
       },
     );
   }
@@ -218,39 +245,6 @@ class _RotasState extends State<Rotas> {
     await HistoricoPedido().adicionarHistoricos(pedidosHistorico);
   }
 
-  _openCamera(int idCliente) async {
-    final cameras = await availableCameras();
-
-    final firstCamera = cameras.first;
-
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) {
-        FotoPedidoModel foto = FotoPedidoModel(
-          0,
-          SituacaoFoto.entregue.index,
-          0,
-          int.parse(
-            widget.roteiro.id.toString(),
-          ),
-          idCliente,
-          '',
-          '',
-          '',
-          '',
-        );
-
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (builder) => CameraPage(
-              camera: firstCamera,
-              fotoPedido: foto,
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<EnderecoRoteiroState>(
@@ -302,43 +296,16 @@ class _RotasState extends State<Rotas> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          Column(
-            children: [
-              Material(
-                elevation: 5,
-                color: endereco.idSituacao == 11
-                    ? Colors.green
-                    : Theme.of(context).primaryColor,
-                shape: const CircleBorder(),
-                child: InkWell(
-                  onTap: () {
-                    _openCamera(
-                      int.parse(
-                        endereco.idCliente.toString(),
-                      ),
-                    );
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.all(6),
-                    child: Icon(
-                      Icons.camera_alt_rounded,
-                      size: 20,
-                    ),
-                  ),
-                ),
-              ),
-              Material(
-                elevation: 5,
-                color: endereco.idSituacao == 11
-                    ? Colors.green
-                    : Theme.of(context).primaryColor,
-                shape: const CircleBorder(),
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Text('${endereco.posicao + 1}'),
-                ),
-              ),
-            ],
+          Material(
+            elevation: 5,
+            color: endereco.idSituacao == 11
+                ? Colors.green
+                : Theme.of(context).primaryColor,
+            shape: const CircleBorder(),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Text('${endereco.posicao + 1}'),
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(

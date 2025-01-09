@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sgc/app/data/blocs/dados_roteiro_entrega/roteiro_bloc.dart';
 import 'package:sgc/app/data/blocs/dados_roteiro_entrega/roteiro_event.dart';
 import 'package:sgc/app/models/roteiro_entrega_model.dart';
+import 'package:sgc/app/pages/phone/entrega/rotas_entregando/dados_entrega/pages/galeria.dart';
 
 import 'pages/dados.dart';
 import 'pages/rotas.dart';
@@ -68,7 +69,9 @@ class _DadosEntregaState extends State<DadosEntrega> {
               roteiro: widget.roteiro,
               ancestorContext: context,
             ),
-            Container(),
+            Galeria(
+              roteiro: widget.roteiro,
+            ),
           ],
         ),
       ),

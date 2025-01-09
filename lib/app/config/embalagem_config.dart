@@ -6,15 +6,12 @@ class EmbalagemConfig with ChangeNotifier {
 
   static const String _keyMostrarConferencia = 'keyMostrarConferenciaEmbalagem';
   static const String _keyMostrarFaturar = 'keyMostrarFaturarEmbalagem';
-  static const String _keyMostrarLogistica = 'keyMostrarLogisticaEmbalagem';
 
   bool _mostrarConferencia = true;
   bool _mostrarFaturar = true;
-  bool _mostrarLogistica = true;
 
   bool get mostrarConferencia => _mostrarConferencia;
   bool get mostrarFaturar => _mostrarFaturar;
-  bool get mostrarLogistica => _mostrarLogistica;
 
   EmbalagemConfig() {
     _loadData();
@@ -32,17 +29,10 @@ class EmbalagemConfig with ChangeNotifier {
     notifyListeners();
   }
 
-  void setLogistica(bool value) {
-    _mostrarLogistica = value;
-    _preferences.setBool(_keyMostrarLogistica, value);
-    notifyListeners();
-  }
-
   Future<void> _loadData() async {
     _preferences = await SharedPreferences.getInstance();
     _mostrarConferencia = _preferences.getBool(_keyMostrarConferencia) ?? true;
     _mostrarFaturar = _preferences.getBool(_keyMostrarFaturar) ?? true;
-    _mostrarLogistica = _preferences.getBool(_keyMostrarLogistica) ?? true;
     notifyListeners();
   }
 }

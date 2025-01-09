@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgc/app/config/app_config.dart';
-import 'package:sgc/app/pages/phone/settings_page/widgets/footer_conferencia.dart';
 import 'package:sgc/app/pages/phone/settings_page/widgets/footer_embalagem.dart';
 import 'package:sgc/app/pages/phone/settings_page/widgets/footer_separando.dart';
 import 'package:sgc/app/ui/widgets/group.dart';
@@ -96,13 +95,6 @@ class _SettingsState extends State<Settings> {
                 value: config.conferencia,
                 onChanged: () {
                   config.setConferencia(!config.conferencia);
-                },
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    backgroundColor: Colors.transparent,
-                    builder: (context) => FooterConferencia(),
-                  );
                 },
               ),
               ToggleSwitch(

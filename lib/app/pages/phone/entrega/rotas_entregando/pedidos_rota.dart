@@ -101,7 +101,7 @@ class _PedidosRotaState extends State<PedidosRota> {
                           children: [
                             Text('- ${pedido.id}'),
                             Text(
-                              '   Volume total: ${pedido.volumeAcessorio + pedido.volumeChapa + pedido.volumePerfil}',
+                              '   Volume total: ${pedido.quantidadeVolumesCarregados}',
                             ),
                             const SizedBox(height: 8),
                           ],

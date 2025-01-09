@@ -39,11 +39,6 @@ class _FooterEmbalagemState extends State<FooterEmbalagem> {
               value: config.mostrarFaturar,
               onChanged: () => config.setFaturar(!config.mostrarFaturar),
             ),
-            ToggleSwitch(
-              label: 'Logística',
-              value: config.mostrarLogistica,
-              onChanged: () => config.setLogistica(!config.mostrarLogistica),
-            ),
           ],
         ),
       ),

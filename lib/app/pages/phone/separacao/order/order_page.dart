@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:sgc/app/config/conferencia_config.dart';
 import 'package:sgc/app/config/embalagem_config.dart';
 import 'package:sgc/app/config/separando_config.dart';
 import 'package:sgc/app/config/user.dart';
@@ -78,7 +77,6 @@ class _OrderPageState extends State<OrderPage> {
   AppConfig? _config;
   SeparandoConfig? _separandoConfig;
   EmbalagemConfig? _embalagemConfig;
-  ConferenciaConfig? _conferenciaConfig;
 
   @override
   void initState() {
@@ -87,7 +85,6 @@ class _OrderPageState extends State<OrderPage> {
     _config = Provider.of<AppConfig>(context, listen: false);
     _separandoConfig = Provider.of<SeparandoConfig>(context, listen: false);
     _embalagemConfig = Provider.of<EmbalagemConfig>(context, listen: false);
-    _conferenciaConfig = Provider.of<ConferenciaConfig>(context, listen: false);
 
     final result = Provider.of<AppConfig>(context, listen: false);
 
@@ -186,26 +183,16 @@ class _OrderPageState extends State<OrderPage> {
         setState(() {
           iniciarSeparacao = false;
           situacaoFoto = SituacaoFoto.separando;
+          liberarConferencia = _separandoConfig!.mostrarConferencia;
+          liberarEmbalagem = _separandoConfig!.mostrarEmbalagem;
+          finalizarSeparacao = _separandoConfig!.mostrarFaturar;
         });
-        if (_config!.conferencia) {
-          setState(() {
-            liberarConferencia = true;
-            situacaoFoto = SituacaoFoto.separando;
-          });
-        }
-        if (_config!.embalagem) {
-          setState(() => liberarEmbalagem = true);
-        }
-        if (!_config!.embalagem || _config!.conferencia) {
-          setState(() => finalizarSeparacao = true);
-        }
         break;
       case 'EMBALAGEM':
-        if (_config!.conferencia) {
-          setState(() => liberarConferencia = true);
-        } else {
-          setState(() => finalizarSeparacao = true);
-        }
+        setState(() {
+          liberarConferencia = _embalagemConfig!.mostrarConferencia;
+          finalizarSeparacao = _embalagemConfig!.mostrarFaturar;
+        });
         break;
       case 'CONFERENCIA':
         setState(() {
@@ -416,46 +403,6 @@ class _OrderPageState extends State<OrderPage> {
         },
       );
     }
-  }
-
-  bool conferenciaVisibility() {
-    bool value = false;
-
-    if (widget.pedido.status != 'SEPARAR' && liberarConferencia) {
-      switch (widget.pedido.status) {
-        case 'SEPARANDO':
-          value = _separandoConfig?.mostrarConferencia ?? true;
-        case 'EMBALAGEM':
-          value = _embalagemConfig?.mostrarConferencia ?? true;
-          break;
-        default:
-          value = false;
-          break;
-      }
-      return value;
-    }
-
-    return value;
-  }
-
-  bool embalagemVisibility() {
-    bool value = false;
-
-    if (widget.pedido.status != 'SEPARAR' && liberarConferencia) {
-      switch (widget.pedido.status) {
-        case 'SEPARANDO':
-          value = _separandoConfig?.mostrarEmbalagem ?? true;
-        case 'CONFERENCIA':
-          value = _conferenciaConfig?.mostrarEmbalagem ?? true;
-          break;
-        default:
-          value = false;
-          break;
-      }
-      return value;
-    }
-
-    return value;
   }
 
   @override
@@ -693,7 +640,7 @@ class _OrderPageState extends State<OrderPage> {
             ),
             //* Liberar para Conferência
             SpeedDialChild(
-              visible: conferenciaVisibility(),
+              visible: liberarConferencia,
               child: const Icon(Icons.checklist_rtl_rounded),
               label: 'Liberar para Conferência',
               onTap: () async {
@@ -807,9 +754,8 @@ class _OrderPageState extends State<OrderPage> {
             ),
             //* Liberar para Embalagem
             SpeedDialChild(
-              visible: UserConstants().idLiberacao == ''
-                  ? false
-                  : embalagemVisibility(),
+              visible:
+                  UserConstants().idLiberacao == '' ? false : liberarEmbalagem,
               child: const Icon(Icons.archive),
               label: 'Liberar para Embalagem',
               onTap: () async {
@@ -1130,6 +1076,63 @@ class _OrderPageState extends State<OrderPage> {
         );
         break;
       case 1:
+        if (volumeAcessorioController.text != '' &&
+            volumeAcessorioController.text != '0' &&
+            (pesoAcessorioController.text == '' ||
+                pesoAcessorioController.text == '0')) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return CustomDialog(
+                titulo: 'Sistema SGC',
+                conteudo: const Text('Preencher Peso'),
+                tipo: Icones.erro,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Ok',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+
+          return;
+        }
+
+        if (volumeAcessorioController.text == '0' &&
+            volumeAluminioController.text == '0' &&
+            volumeChapasController.text == '0') {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return CustomDialog(
+                titulo: 'Sistema SGC',
+                conteudo: const Text('Preencher Volumes'),
+                tipo: Icones.erro,
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Ok',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+
+          return;
+        }
+
         if (volumeAcessorioController.text == '') {
           showDialog(
             context: context,
