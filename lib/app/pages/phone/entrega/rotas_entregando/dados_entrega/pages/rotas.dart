@@ -84,39 +84,41 @@ class _RotasState extends State<Rotas> {
       separarAgrupamento,
     );
 
-    if (mounted) {
-      showModal(
-        context,
-        nomeController,
-        rgController,
-        cpfController,
-        () {
-          if (nomeController.text == '' &&
-              (rgController.text == '' || cpfController.text == '')) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'Você precisa identificar o responsável de recebimento',
-                  style: TextStyle(color: Colors.white),
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        showModal(
+          widget.ancestorContext,
+          nomeController,
+          rgController,
+          cpfController,
+          () {
+            if (nomeController.text == '' &&
+                (rgController.text == '' || cpfController.text == '')) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    'Você precisa identificar o responsável de recebimento',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: ColorsApp.darkElementColor,
                 ),
-                backgroundColor: ColorsApp.darkElementColor,
-              ),
+              );
+
+              return;
+            }
+
+            _confirmarEntrega(
+              nomeController.text,
+              rgController.text,
+              cpfController.text,
+              pedidos,
             );
 
-            return;
-          }
-
-          _confirmarEntrega(
-            nomeController.text,
-            rgController.text,
-            cpfController.text,
-            pedidos,
-          );
-
-          _salvarEntrega(endereco, pedidos);
-        },
-      );
-    }
+            _salvarEntrega(endereco, pedidos);
+          },
+        );
+      },
+    );
   }
 
   _confirmarEntrega(nome, rg, cpf, pedidos) async {
@@ -372,7 +374,7 @@ class _RotasState extends State<Rotas> {
                 child: InkWell(
                   onTap: () {
                     mostrarPedidos(
-                      context,
+                      widget.ancestorContext,
                       endereco,
                       int.parse(
                         widget.roteiro.id.toString(),
@@ -423,7 +425,7 @@ class _RotasState extends State<Rotas> {
     int idRoteiro,
   ) {
     return showModalBottomSheet(
-      context: context,
+      context: ancestor,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (ancestor) {

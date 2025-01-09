@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
@@ -9,15 +10,23 @@ import 'package:sgc/app/config/separando_config.dart';
 import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/enums/icones.dart';
 import 'package:sgc/app/data/enums/situacao_foto.dart';
+import 'package:sgc/app/data/repositories/empresa.dart';
+import 'package:sgc/app/data/repositories/fornecedor.dart';
+import 'package:sgc/app/data/repositories/generica.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
+import 'package:sgc/app/data/repositories/vendedor_dao.dart';
+import 'package:sgc/app/models/fornecedor_model.dart';
 import 'package:sgc/app/pages/phone/fotos_page/foto_pedido.dart';
 import 'package:sgc/app/ui/utils/alterar_status_pedido.dart';
+import 'package:sgc/app/ui/utils/impressao_utils.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import 'package:sgc/app/ui/widgets/loading_dialog.dart';
 import '../../../../config/app_config.dart';
 import '../../../../data/blocs/pedido/pedido_bloc.dart';
 import '../../../../data/blocs/pedido/pedido_event.dart';
 import '../../../../data/repositories/historico_pedido.dart';
+import '../../../../data/repositories/impressora.dart';
+import '../../../../data/repositories/produto.dart';
 import '../../../../models/historico_pedido_model.dart';
 import '../../../../models/pedido_model.dart';
 import '../../../../ui/styles/colors_app.dart';
@@ -25,6 +34,7 @@ import 'pages/general_info_page/general_info.dart';
 import 'pages/packaging_page/packaging.dart';
 import 'pages/products_page/products.dart';
 import 'pages/separation_page/separation.dart';
+import 'dart:developer' as developer;
 
 class OrderPage extends StatefulWidget {
   final PedidoModel pedido;
@@ -65,6 +75,7 @@ class _OrderPageState extends State<OrderPage> {
 
   SituacaoFoto? situacaoFoto;
 
+  AppConfig? _config;
   SeparandoConfig? _separandoConfig;
   EmbalagemConfig? _embalagemConfig;
   ConferenciaConfig? _conferenciaConfig;
@@ -73,6 +84,7 @@ class _OrderPageState extends State<OrderPage> {
   void initState() {
     super.initState();
     _pedidoBloc = PedidoBloc();
+    _config = Provider.of<AppConfig>(context, listen: false);
     _separandoConfig = Provider.of<SeparandoConfig>(context, listen: false);
     _embalagemConfig = Provider.of<EmbalagemConfig>(context, listen: false);
     _conferenciaConfig = Provider.of<ConferenciaConfig>(context, listen: false);
@@ -166,8 +178,6 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   void modificarStatus() {
-    final config = Provider.of<AppConfig>(context, listen: false);
-
     switch (widget.pedido.status!.toUpperCase()) {
       case 'SEPARAR':
         setState(() => iniciarSeparacao = true);
@@ -177,21 +187,21 @@ class _OrderPageState extends State<OrderPage> {
           iniciarSeparacao = false;
           situacaoFoto = SituacaoFoto.separando;
         });
-        if (config.conferencia) {
+        if (_config!.conferencia) {
           setState(() {
             liberarConferencia = true;
             situacaoFoto = SituacaoFoto.separando;
           });
         }
-        if (config.embalagem) {
+        if (_config!.embalagem) {
           setState(() => liberarEmbalagem = true);
         }
-        if (!config.embalagem || config.conferencia) {
+        if (!_config!.embalagem || _config!.conferencia) {
           setState(() => finalizarSeparacao = true);
         }
         break;
       case 'EMBALAGEM':
-        if (config.conferencia) {
+        if (_config!.conferencia) {
           setState(() => liberarConferencia = true);
         } else {
           setState(() => finalizarSeparacao = true);
@@ -206,6 +216,205 @@ class _OrderPageState extends State<OrderPage> {
         break;
       default:
         break;
+    }
+  }
+
+  bool visibilityImpressora() {
+    bool value = false;
+
+    if (widget.pedido.status == 'CONFERENCIA') {
+      value = true;
+      return value;
+    }
+
+    if (widget.pedido.status == 'SEPARANDO' && !_config!.conferencia) {
+      value = true;
+      return value;
+    }
+
+    return value;
+  }
+
+  _printEtiqueta() async {
+    try {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomDialog(
+            titulo: 'SGC Mobile',
+            conteudo: Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Imprimindo...',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            tipo: Icones.info,
+            actions: [],
+          );
+        },
+      );
+
+      var volumeTotal = int.parse(widget.pedido.volumeAcessorio.toString()) +
+          int.parse(widget.pedido.volumeChapa.toString()) +
+          int.parse(widget.pedido.volumePerfil.toString());
+
+      String codigoEtiqueta = await Impressora().fetchZpl();
+
+      if (_config!.printerIp == '' || _config!.printerPort == '') {
+        throw Exception('Impressora não configurada');
+      }
+
+      var futures = await Future.wait([
+        Empresa().fetchEmpresa(1),
+        VendedorDAO().fetchVendedor(
+          int.parse(
+            widget.pedido.idVendedor.toString(),
+          ),
+        ),
+      ]);
+
+      var empresa = futures[0];
+
+      var vendedor = futures[1];
+
+      DateFormat data = DateFormat('dd/MM/yyyy');
+
+      FornecedorModel? transportadora;
+
+      if (widget.pedido.idFornNFe != null && widget.pedido.idFornNFe! > 0) {
+        transportadora = await Fornecedor().fetchFornecedor(
+          int.parse(
+            widget.pedido.idFornNFe.toString(),
+          ),
+        );
+      }
+
+      int totalProdutos = await Produto().getTotalProdutos(
+          int.parse(
+            widget.pedido.id.toString(),
+          ),
+          tipoProduto);
+
+      for (int i = 0; i < volumeTotal; i++) {
+        String zpl = '';
+        List<Generica> campos = [];
+
+        campos.addAll(
+          [
+            Generica(id: 'C_EMPRESA_NOME', descricao: empresa.nome),
+            Generica(id: 'C_EMPRESA_TELEFONE', descricao: empresa.telefone),
+          ],
+        );
+
+        if (widget.pedido.nnFeRemessa.toString() == '') {
+          campos.addAll([
+            Generica(
+                id: 'C_NFE_REMESSA',
+                descricao: widget.pedido.nnFeRemessa.toString()),
+            Generica(
+                id: 'C_REMESSA_NOME', descricao: widget.pedido.fantasiaTri),
+            Generica(
+                id: 'C_REMESSA_CIDADE', descricao: widget.pedido.cidadeTri),
+            Generica(
+                id: 'C_REMESSA_ESTADO', descricao: widget.pedido.estadoTri),
+          ]);
+        } else {
+          campos.addAll([
+            Generica(id: 'C_REMESSA_NOME', descricao: ''),
+            Generica(id: 'C_REMESSA_CIDADE', descricao: ''),
+            Generica(id: 'C_REMESSA_ESTADO', descricao: ''),
+          ]);
+        }
+
+        campos.addAll([
+          Generica(
+              id: 'C_NFE_VENDA', descricao: widget.pedido.nnFeVenda.toString()),
+          Generica(id: 'C_CLIENTE_NOME', descricao: widget.pedido.nomeCliente),
+          Generica(id: 'C_CLIENTE_CIDADE', descricao: widget.pedido.cidade),
+          Generica(id: 'C_CLIENTE_ESTADO', descricao: widget.pedido.estado),
+          Generica(
+              id: 'C_CLIENTE_SETORENTREGA',
+              descricao: widget.pedido.setorEntrega),
+          Generica(
+              id: 'C_PEDIDO_TIPOENTREGA', descricao: widget.pedido.tipoEntrega),
+          Generica(
+              id: 'C_TRANSPORTADOR_NOME',
+              descricao: transportadora?.fantasia ?? ''),
+          Generica(
+              id: 'C_PEDIDO_PEDIDOCLIENTE',
+              descricao: widget.pedido.idPedidoCliente),
+          Generica(id: 'C_PEDIDO_REPRESENTANTE', descricao: vendedor.nome),
+          Generica(
+              id: 'C_PEDIDO_SEPARADOR',
+              descricao: widget.pedido.separadorConcluir ?? ''),
+          Generica(id: 'C_DATA_ATUAL', descricao: data.format(DateTime.now())),
+          Generica(id: 'C_PEDIDO_ID', descricao: widget.pedido.id.toString()),
+          Generica(id: 'C_PEDIDO_VOLUMEATUAL', descricao: (i + 1).toString()),
+          Generica(id: 'C_PEDIDO_VOLUMES', descricao: volumeTotal.toString()),
+          Generica(id: 'C_EMBALAGEM_IDCAIXA', descricao: ''),
+          Generica(id: 'C_QTDE_PRODUTOS', descricao: totalProdutos.toString()),
+        ]);
+
+        var corpo = ImpressaoUtils().processarCorpo(codigoEtiqueta, campos);
+
+        developer.log(corpo.toString());
+
+        for (String item in corpo.split('\n')) {
+          zpl += item;
+        }
+
+        final socket = await Socket.connect(
+          _config!.printerIp,
+          int.parse(_config!.printerPort),
+          timeout: Duration(seconds: 5),
+        );
+
+        socket.write(zpl);
+        await socket.flush();
+        socket.destroy();
+      }
+
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          Navigator.pop(context);
+        },
+      );
+    } catch (ex) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          Navigator.pop(context);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return CustomDialog(
+                titulo: 'SGC Mobile',
+                conteudo: Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Text(
+                    ex.toString(),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                tipo: Icones.erro,
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Ok'),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      );
     }
   }
 
@@ -258,6 +467,17 @@ class _OrderPageState extends State<OrderPage> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
           toolbarHeight: 80,
+          actions: [
+            Visibility(
+              visible: visibilityImpressora(),
+              child: IconButton(
+                onPressed: () async {
+                  await _printEtiqueta();
+                },
+                icon: const Icon(Icons.print),
+              ),
+            ),
+          ],
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -870,38 +1090,30 @@ class _OrderPageState extends State<OrderPage> {
           ],
         ),
         bottomNavigationBar: Material(
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
           elevation: 15,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(20),
-            ),
-            child: BottomNavigationBar(
-              backgroundColor: Theme.of(context).primaryColor,
-              items: [
-                const BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.inbox_rounded,
-                  ),
-                  label: 'Embalagens',
+          child: BottomNavigationBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            items: [
+              const BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.inbox_rounded,
                 ),
+                label: 'Embalagens',
+              ),
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.save),
+                label: 'Salvar',
+              ),
+              if (situacaoFoto == SituacaoFoto.separando ||
+                  situacaoFoto == SituacaoFoto.conferencia)
                 const BottomNavigationBarItem(
-                  icon: Icon(Icons.save),
-                  label: 'Salvar',
+                  icon: Icon(Icons.camera_alt_rounded),
+                  label: 'Foto',
                 ),
-                if (situacaoFoto == SituacaoFoto.separando ||
-                    situacaoFoto == SituacaoFoto.conferencia)
-                  const BottomNavigationBarItem(
-                    icon: Icon(Icons.camera_alt_rounded),
-                    label: 'Foto',
-                  ),
-              ],
-              selectedItemColor: Theme.of(context).iconTheme.color,
-              unselectedItemColor: Theme.of(context).iconTheme.color,
-              onTap: _selectedIndexChanged,
-            ),
+            ],
+            selectedItemColor: Theme.of(context).iconTheme.color,
+            unselectedItemColor: Theme.of(context).iconTheme.color,
+            onTap: _selectedIndexChanged,
           ),
         ),
       ),

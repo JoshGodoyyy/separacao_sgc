@@ -16,6 +16,8 @@ class AppConfig with ChangeNotifier {
   static const String _keyLogistica = 'keyLogistica';
   static const String _keyBalcao = 'keyBalcao';
   static const String _keyRetirar = 'keyRetirar';
+  static const String _keyPrinterIP = 'keyPrinterIP';
+  static const String _keyPrinterPort = 'keyPrinterPort';
 
   bool _salvarDados = false;
   bool _isDarkMode = false;
@@ -29,6 +31,8 @@ class AppConfig with ChangeNotifier {
   bool _logistica = true;
   bool _balcao = true;
   bool _retirar = true;
+  String _printerIp = '';
+  String _printerPort = '';
 
   AppConfig() {
     _loadData();
@@ -46,6 +50,8 @@ class AppConfig with ChangeNotifier {
   bool get logistica => _logistica;
   bool get balcao => _balcao;
   bool get retirar => _retirar;
+  String get printerIp => _printerIp;
+  String get printerPort => _printerPort;
 
   void setSalvarDados(bool value) {
     _salvarDados = value;
@@ -119,6 +125,16 @@ class AppConfig with ChangeNotifier {
     notifyListeners();
   }
 
+  void setPrinterIp(String value) {
+    _printerIp = value;
+    preferences.setString(_keyPrinterIP, value);
+  }
+
+  void setPrinterPort(String value) {
+    _printerPort = value;
+    preferences.setString(_keyPrinterPort, value);
+  }
+
   Future<void> _loadData() async {
     preferences = await SharedPreferences.getInstance();
     _salvarDados = preferences.getBool(_keySalvarDados) ?? false;
@@ -133,6 +149,8 @@ class AppConfig with ChangeNotifier {
     _logistica = preferences.getBool(_keyLogistica) ?? true;
     _balcao = preferences.getBool(_keyBalcao) ?? true;
     _retirar = preferences.getBool(_keyRetirar) ?? true;
+    _printerIp = preferences.getString(_keyPrinterIP) ?? '';
+    _printerPort = preferences.getString(_keyPrinterPort) ?? '';
     notifyListeners();
   }
 }

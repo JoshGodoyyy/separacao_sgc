@@ -55,7 +55,10 @@ class CustomDialog extends StatelessWidget {
                     ),
                   ),
                   conteudo,
-                  const Divider(),
+                  Visibility(
+                    visible: actions.isNotEmpty,
+                    child: const Divider(),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

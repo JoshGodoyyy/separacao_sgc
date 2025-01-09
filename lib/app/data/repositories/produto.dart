@@ -25,6 +25,27 @@ class Produto {
     }
   }
 
+  Future<int> getTotalProdutos(int idPedido, int tipoProduto) async {
+    try {
+      var response = await http.post(
+        Uri.parse('$url/TotalProdutos'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'idPedido': idPedido,
+          'tipoProduto': tipoProduto,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        return int.parse(response.body);
+      }
+
+      throw Exception(response.statusCode);
+    } catch (ex) {
+      throw Exception(ex.toString());
+    }
+  }
+
   Future<List<dynamic>> updateProduto(
     int idProduto,
     int separado,

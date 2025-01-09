@@ -1,4 +1,5 @@
 class FornecedorModel {
+  String? fantasia;
   String? logradouro;
   String? nomeRua;
   String? numero;
@@ -9,6 +10,7 @@ class FornecedorModel {
   String? cep;
 
   FornecedorModel({
+    this.fantasia,
     this.logradouro,
     this.nomeRua,
     this.numero,
@@ -20,6 +22,7 @@ class FornecedorModel {
   });
 
   FornecedorModel.fromJson(Map<String, dynamic> json) {
+    fantasia = json['fantasia'];
     logradouro = json['logradouro'];
     nomeRua = json['nomeRua'];
     numero = json['numero'];

@@ -23,7 +23,7 @@ class _DadosEntregaState extends State<DadosEntrega> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
@@ -53,6 +53,9 @@ class _DadosEntregaState extends State<DadosEntrega> {
               Tab(
                 text: 'Rotas',
               ),
+              Tab(
+                icon: Icon(Icons.photo_library),
+              ),
             ],
           ),
         ),
@@ -63,8 +66,9 @@ class _DadosEntregaState extends State<DadosEntrega> {
             ),
             Rotas(
               roteiro: widget.roteiro,
-              ancestorContext: widget.ancestorContext,
+              ancestorContext: context,
             ),
+            Container(),
           ],
         ),
       ),
