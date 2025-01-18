@@ -69,6 +69,7 @@ class Produto {
   }
 
   Future<List<dynamic>> updateProduto(
+    int? idUsuarioSeparador,
     int idProduto,
     int separado,
     int idPedido,
@@ -83,6 +84,7 @@ class Produto {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
+          'idUsuarioSeparador': idUsuarioSeparador,
           'id': idProduto,
           'valor': separado,
         },

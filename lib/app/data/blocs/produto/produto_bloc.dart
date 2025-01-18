@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:sgc/app/data/blocs/produto/produto_event.dart';
 import 'package:sgc/app/data/blocs/produto/produto_state.dart';
 import 'package:sgc/app/data/repositories/produto.dart';
@@ -36,6 +35,7 @@ class ProdutoBloc {
       );
     } else if (event is UpdateSeparacao) {
       produtos = await _repository.updateProduto(
+        event.idUsuarioSeparador,
         event.idProduto,
         event.separado,
         event.idPedido,

@@ -19,6 +19,7 @@ class GetProdutos extends ProdutoEvent {
 }
 
 class UpdateSeparacao extends ProdutoEvent {
+  final int? idUsuarioSeparador;
   final int idProduto;
   final int separado;
   final int idPedido;
@@ -29,6 +30,7 @@ class UpdateSeparacao extends ProdutoEvent {
   final bool kits;
 
   UpdateSeparacao({
+    required this.idUsuarioSeparador,
     required this.idProduto,
     required this.separado,
     required this.perfis,
