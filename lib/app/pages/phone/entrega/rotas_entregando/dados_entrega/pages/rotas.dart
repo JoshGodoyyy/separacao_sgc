@@ -367,6 +367,54 @@ class _RotasState extends State<Rotas> {
                         ),
                         const SizedBox(height: 8),
                         Text(endereco.fantasia),
+                        const SizedBox(height: 8),
+                        Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(6),
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(4),
+                          child: Text(
+                            'Peso Total: ${endereco.pesoTotalReal} Kg',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Visibility(
+                              visible:
+                                  endereco.volumeAcessorio == 0 ? false : true,
+                              child: volumeContainer(
+                                'Acessórios: ${endereco.volumeAcessorio}',
+                              ),
+                            ),
+                            Visibility(
+                              visible:
+                                  endereco.volumeAcessorio == 0 ? false : true,
+                              child: const SizedBox(width: 8),
+                            ),
+                            Visibility(
+                              visible: endereco.volumeChapa == 0 ? false : true,
+                              child: volumeContainer(
+                                'Chapas: ${endereco.volumeChapa}',
+                              ),
+                            ),
+                            Visibility(
+                              visible: endereco.volumeChapa == 0 ? false : true,
+                              child: const SizedBox(width: 8),
+                            ),
+                            Visibility(
+                              visible:
+                                  endereco.volumePerfil == 0 ? false : true,
+                              child: volumeContainer(
+                                'Perfis: ${endereco.volumePerfil}',
+                              ),
+                            ),
+                          ],
+                        ),
                         const Divider(),
                         const Text(
                           'Observações para o Motorista:',
@@ -410,6 +458,22 @@ class _RotasState extends State<Rotas> {
           ),
         );
       },
+    );
+  }
+
+  Container volumeContainer(String label) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.purple,
+        borderRadius: BorderRadius.all(
+          Radius.circular(6),
+        ),
+      ),
+      padding: const EdgeInsets.all(4),
+      child: Text(
+        label,
+        style: const TextStyle(color: Colors.white),
+      ),
     );
   }
 }

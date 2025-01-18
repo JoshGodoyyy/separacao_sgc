@@ -20,6 +20,7 @@ import 'package:sgc/app/ui/utils/alterar_status_pedido.dart';
 import 'package:sgc/app/ui/utils/impressao_utils.dart';
 import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import 'package:sgc/app/ui/widgets/loading_dialog.dart';
+import 'package:sgc/app/ui/widgets/textfield.dart';
 import '../../../../config/app_config.dart';
 import '../../../../data/blocs/pedido/pedido_bloc.dart';
 import '../../../../data/blocs/pedido/pedido_event.dart';
@@ -866,6 +867,33 @@ class _OrderPageState extends State<OrderPage> {
                     },
                   );
                 }
+              },
+            ),
+            SpeedDialChild(
+              visible: widget.pedido.status!.toUpperCase() == 'SEPARANDO',
+              backgroundColor: Colors.red,
+              label: 'Cancelar Separação',
+              child: const Icon(Icons.cancel),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CustomDialog(
+                      titulo: 'SGC Mobile',
+                      conteudo: STextField(
+                          controller: TextEditingController(),
+                          label: 'Senha para cancelamento',
+                          usePasswordChar: true),
+                      tipo: Icones.pergunta,
+                      actions: [
+                        TextButton(
+                          onPressed: () {},
+                          child: const Text('Ok'),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
             ),
             //* Iniciar Separação

@@ -16,6 +16,10 @@ class EnderecoRoteiroEntregaModel {
   String? estado;
   String? cep;
   num? idRoteiroEntrega;
+  num? pesoTotalReal;
+  num? volumeAcessorio;
+  num? volumePerfil;
+  num? volumeChapa;
 
   EnderecoRoteiroEntregaModel({
     this.id,
@@ -35,6 +39,10 @@ class EnderecoRoteiroEntregaModel {
     this.estado,
     this.cep,
     this.idRoteiroEntrega,
+    this.pesoTotalReal,
+    this.volumeAcessorio,
+    this.volumeChapa,
+    this.volumePerfil,
   });
 
   EnderecoRoteiroEntregaModel.fromJson(Map<String, dynamic> json) {
@@ -55,6 +63,10 @@ class EnderecoRoteiroEntregaModel {
     estado = json['estado'];
     cep = json['cep'];
     idRoteiroEntrega = json['idRoteiroEntrega'];
+    pesoTotalReal = json['pesoTotalReal'];
+    volumeAcessorio = json['volumeAcessorio'];
+    volumeChapa = json['volumeChapa'];
+    volumePerfil = json['volumePerfil'];
   }
 
   Map<String, dynamic> toJson() {

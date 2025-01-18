@@ -88,49 +88,6 @@ class _HomePageState extends State<HomePage> {
               child: ListView(
                 padding: const EdgeInsets.all(8),
                 children: [
-                  // const Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 8),
-                  //   child: Text(
-                  //     'Orçamento',
-                  //     style: TextStyle(
-                  //       color: Colors.white,
-                  //     ),
-                  //   ),
-                  // ),
-                  // ListTile(
-                  //   onTap: () {
-                  //     _advancedDrawerController.hideDrawer();
-                  //   },
-                  //   leading: const Icon(
-                  //     Icons.assignment_add,
-                  //     color: Colors.white,
-                  //   ),
-                  //   title: const Text(
-                  //     'Orçamentos',
-                  //     style: TextStyle(
-                  //       color: Colors.white,
-                  //     ),
-                  //   ),
-                  // ),
-                  // ListTile(
-                  //   onTap: () {
-                  //     _advancedDrawerController.hideDrawer();
-                  //     setState(() => _tela = 0);
-                  //   },
-                  //   leading: Icon(
-                  //     Icons.search_rounded,
-                  //     color:
-                  //         _tela == 0 ? ColorsApp.secondaryColor : Colors.white,
-                  //   ),
-                  //   title: Text(
-                  //     'Consultar Estoque',
-                  //     style: TextStyle(
-                  //       color: _tela == 0
-                  //           ? ColorsApp.secondaryColor
-                  //           : Colors.white,
-                  //     ),
-                  //   ),
-                  // ),
                   ListTile(
                     onTap: () {
                       _advancedDrawerController.hideDrawer();

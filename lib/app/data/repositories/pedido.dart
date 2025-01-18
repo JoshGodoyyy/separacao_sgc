@@ -13,14 +13,25 @@ class Pedido with ChangeNotifier {
   List pedidosLogistica = [];
   String url = '${ApiConfig().url}/Order';
 
-  Future<void> fetchData(int idSituacao, int tipoProduto) async {
+  Future<void> fetchData(
+    int idSituacao,
+    bool visualizarPerfil,
+    bool visualizarAcessorio,
+    bool visualizarVidro,
+    bool visualizarChapa,
+    bool visualizarKit,
+  ) async {
     var response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
           'id': idSituacao,
-          'tipoProduto': tipoProduto,
+          'visualizarPerfil': visualizarPerfil,
+          'visualizarAcessorio': visualizarAcessorio,
+          'visualizarVidro': visualizarVidro,
+          'visualizarChapa': visualizarChapa,
+          'visualizarKit': visualizarKit,
         },
       ),
     );

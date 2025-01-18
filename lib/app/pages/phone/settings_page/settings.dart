@@ -47,6 +47,27 @@ class _SettingsState extends State<Settings> {
                   config.setAccessories(!config.accessories);
                 },
               ),
+              ToggleSwitch(
+                label: 'Vidros',
+                value: config.vidros,
+                onChanged: () {
+                  config.setVidros(!config.vidros);
+                },
+              ),
+              ToggleSwitch(
+                label: 'Chapas',
+                value: config.chapas,
+                onChanged: () {
+                  config.setChapas(!config.chapas);
+                },
+              ),
+              ToggleSwitch(
+                label: 'Kits',
+                value: config.kits,
+                onChanged: () {
+                  config.setKits(!config.kits);
+                },
+              ),
             ],
           ),
         ),

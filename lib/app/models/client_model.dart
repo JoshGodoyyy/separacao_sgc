@@ -23,6 +23,8 @@ class ClienteModel {
   num? volumeAcessorio;
   num? volumeChapa;
   num? volumePerfil;
+  String? observacoesCarregador;
+  String? observacoesMotorista;
 
   ClienteModel(
     this.id,
@@ -48,6 +50,8 @@ class ClienteModel {
     this.volumeAcessorio,
     this.volumeChapa,
     this.volumePerfil,
+    this.observacoesCarregador,
+    this.observacoesMotorista,
   );
 
   ClienteModel.fromJson(Map<String, dynamic> json) {
@@ -74,6 +78,8 @@ class ClienteModel {
     volumeAcessorio = json['volumeAcessorio'];
     volumeChapa = json['volumeChapa'];
     volumePerfil = json['volumePerfil'];
+    observacoesCarregador = json['observacoesCarregador'];
+    observacoesMotorista = json['observacoesMotorista'];
   }
 
   String enderecoCompleto() {

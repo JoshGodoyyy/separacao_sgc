@@ -15,6 +15,8 @@ class AlterarStatusPedido {
   final PedidoBloc _pedido = PedidoBloc();
   final DateFormat _data = DateFormat('yyyy-MM-dd HH:mm:ss');
 
+  Future<void> cancelarSeparacao() async {}
+
   Future<void> enviarSeparacao(
     int idSituacao,
     String status,
