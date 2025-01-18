@@ -27,29 +27,45 @@ class ProdutoBloc {
 
     if (event is GetProdutos) {
       produtos = await _repository.fetchProdutos(
-        event.tipoProduto,
+        event.perfis,
+        event.acessorios,
+        event.chapas,
+        event.vidros,
+        event.kits,
         event.idPedido,
       );
     } else if (event is UpdateSeparacao) {
       produtos = await _repository.updateProduto(
         event.idProduto,
         event.separado,
-        event.tipoProduto,
         event.idPedido,
+        event.perfis,
+        event.acessorios,
+        event.chapas,
+        event.vidros,
+        event.kits,
       );
     } else if (event is UpdateEmbalagem) {
       produtos = await _repository.updateEmbalado(
         event.idProduto,
         event.embalado,
-        event.tipoProduto,
         event.idPedido,
+        event.perfis,
+        event.acessorios,
+        event.chapas,
+        event.vidros,
+        event.kits,
       );
     } else if (event is UpdateConferencia) {
       produtos = await _repository.updateConferido(
         event.idProduto,
         event.conferido,
-        event.tipoProduto,
         event.idPedido,
+        event.perfis,
+        event.acessorios,
+        event.chapas,
+        event.vidros,
+        event.kits,
       );
     }
 

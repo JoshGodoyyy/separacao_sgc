@@ -10,9 +10,12 @@ class ProdutoListItem extends StatelessWidget {
   final String status;
   final ProdutoModel produto;
   final ProdutoBloc bloc;
-  final int tipoProduto;
   final int idPedido;
-
+  final bool perfis;
+  final bool acessorios;
+  final bool chapas;
+  final bool vidros;
+  final bool kits;
   final Function onTap;
   const ProdutoListItem({
     super.key,
@@ -20,8 +23,12 @@ class ProdutoListItem extends StatelessWidget {
     required this.produto,
     required this.bloc,
     required this.onTap,
-    required this.tipoProduto,
     required this.idPedido,
+    required this.perfis,
+    required this.acessorios,
+    required this.chapas,
+    required this.vidros,
+    required this.kits,
   });
 
   Color backColorActionPane() {
@@ -53,8 +60,12 @@ class ProdutoListItem extends StatelessWidget {
                 produto.id.toString(),
               ),
               separado: 1,
-              tipoProduto: tipoProduto,
               idPedido: idPedido,
+              acessorios: acessorios,
+              chapas: chapas,
+              kits: kits,
+              perfis: perfis,
+              vidros: vidros,
             ),
           );
         } else {
@@ -64,8 +75,12 @@ class ProdutoListItem extends StatelessWidget {
                 produto.id.toString(),
               ),
               separado: 0,
-              tipoProduto: tipoProduto,
               idPedido: idPedido,
+              acessorios: acessorios,
+              chapas: chapas,
+              kits: kits,
+              perfis: perfis,
+              vidros: vidros,
             ),
           );
         }
@@ -77,8 +92,12 @@ class ProdutoListItem extends StatelessWidget {
                 produto.id.toString(),
               ),
               embalado: 1,
-              tipoProduto: tipoProduto,
               idPedido: idPedido,
+              acessorios: acessorios,
+              chapas: chapas,
+              kits: kits,
+              perfis: perfis,
+              vidros: vidros,
             ),
           );
         } else {
@@ -88,8 +107,12 @@ class ProdutoListItem extends StatelessWidget {
                 produto.id.toString(),
               ),
               embalado: 0,
-              tipoProduto: tipoProduto,
               idPedido: idPedido,
+              acessorios: acessorios,
+              chapas: chapas,
+              kits: kits,
+              perfis: perfis,
+              vidros: vidros,
             ),
           );
         }
@@ -101,8 +124,12 @@ class ProdutoListItem extends StatelessWidget {
                 produto.id.toString(),
               ),
               conferido: 1,
-              tipoProduto: tipoProduto,
               idPedido: idPedido,
+              acessorios: acessorios,
+              chapas: chapas,
+              kits: kits,
+              perfis: perfis,
+              vidros: vidros,
             ),
           );
         } else {
@@ -112,8 +139,12 @@ class ProdutoListItem extends StatelessWidget {
                 produto.id.toString(),
               ),
               conferido: 0,
-              tipoProduto: tipoProduto,
               idPedido: idPedido,
+              acessorios: acessorios,
+              chapas: chapas,
+              kits: kits,
+              perfis: perfis,
+              vidros: vidros,
             ),
           );
         }

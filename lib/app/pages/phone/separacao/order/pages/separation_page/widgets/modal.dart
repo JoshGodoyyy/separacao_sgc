@@ -8,7 +8,11 @@ Future<dynamic> showModal(
   GrupoBloc bloc,
   GrupoModel item,
   int idPedido,
-  int tipoProduto,
+  bool perfis,
+  bool acessorios,
+  bool chapas,
+  bool vidros,
+  bool kits,
 ) async {
   final pesoController = TextEditingController();
   bool separado = item.separado! == 1 ? true : false;
@@ -101,7 +105,11 @@ Future<dynamic> showModal(
                                   UpdateGrupo(
                                     grupo: grupo,
                                     idPedido: idPedido,
-                                    tipoProduto: tipoProduto,
+                                    acessorios: acessorios,
+                                    chapas: chapas,
+                                    kits: kits,
+                                    perfis: perfis,
+                                    vidros: vidros,
                                   ),
                                 );
                                 Navigator.pop(context);

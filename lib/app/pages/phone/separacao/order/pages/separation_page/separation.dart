@@ -13,7 +13,11 @@ import 'widgets/modal.dart';
 class Separation extends StatefulWidget {
   final BuildContext ancestralContext;
   final PedidoModel pedido;
-  final int tipoProduto;
+  final bool perfis;
+  final bool acessorios;
+  final bool chapas;
+  final bool vidros;
+  final bool kits;
   final TextEditingController volumeAcessorioController;
   final TextEditingController volumeAluminioController;
   final TextEditingController volumeChapasController;
@@ -27,7 +31,11 @@ class Separation extends StatefulWidget {
     super.key,
     required this.ancestralContext,
     required this.pedido,
-    required this.tipoProduto,
+    required this.perfis,
+    required this.acessorios,
+    required this.chapas,
+    required this.vidros,
+    required this.kits,
     required this.volumeAcessorioController,
     required this.volumeAluminioController,
     required this.volumeChapasController,
@@ -58,7 +66,11 @@ class _SeparationState extends State<Separation> {
         idPedido: int.parse(
           widget.pedido.id.toString(),
         ),
-        idTipoProduto: widget.tipoProduto,
+        acessorios: widget.acessorios,
+        chapas: widget.chapas,
+        kits: widget.kits,
+        perfis: widget.perfis,
+        vidros: widget.vidros,
       ),
     );
   }
@@ -115,7 +127,11 @@ class _SeparationState extends State<Separation> {
                           int.parse(
                             widget.pedido.id.toString(),
                           ),
-                          widget.tipoProduto,
+                          widget.perfis,
+                          widget.acessorios,
+                          widget.chapas,
+                          widget.vidros,
+                          widget.kits,
                         );
                       },
                     );

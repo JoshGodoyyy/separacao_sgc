@@ -35,7 +35,11 @@ class _ColunaStatusState extends State<ColunaStatus> {
     _pedidosBloc.inputPedido.add(
       GetPedidosSituacao(
         idSituacao: widget.idStatus,
-        tipoProduto: 0,
+        acessorios: true,
+        chapas: true,
+        kits: true,
+        perfis: true,
+        vidros: true,
       ),
     );
   }

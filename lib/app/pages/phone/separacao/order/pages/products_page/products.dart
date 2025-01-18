@@ -14,14 +14,22 @@ import 'widgets/produto_list_item.dart';
 
 class Products extends StatefulWidget {
   final PedidoModel pedido;
-  final int tipoProduto;
+  final bool perfis;
+  final bool acessorios;
+  final bool chapas;
+  final bool vidros;
+  final bool kits;
   final bool tratamentoEspecial;
   final TextEditingController observacoesSeparacaoController;
 
   const Products({
     super.key,
     required this.pedido,
-    required this.tipoProduto,
+    required this.perfis,
+    required this.acessorios,
+    required this.chapas,
+    required this.vidros,
+    required this.kits,
     required this.tratamentoEspecial,
     required this.observacoesSeparacaoController,
   });
@@ -46,7 +54,11 @@ class _ProductsState extends State<Products> {
   _fetchProdutos() {
     _produtoBloc.inputProdutoController.add(
       GetProdutos(
-        tipoProduto: widget.tipoProduto,
+        perfis: widget.perfis,
+        acessorios: widget.acessorios,
+        chapas: widget.chapas,
+        kits: widget.kits,
+        vidros: widget.vidros,
         idPedido: int.parse(
           widget.pedido.id.toString(),
         ),
@@ -155,7 +167,11 @@ class _ProductsState extends State<Products> {
         context,
         produto,
       ),
-      tipoProduto: widget.tipoProduto,
+      acessorios: widget.acessorios,
+      chapas: widget.chapas,
+      kits: widget.kits,
+      perfis: widget.perfis,
+      vidros: widget.vidros,
       idPedido: int.parse(
         widget.pedido.id.toString(),
       ),

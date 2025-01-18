@@ -7,12 +7,23 @@ import 'package:http/http.dart' as http;
 class Produto {
   String url = '${ApiConfig().url}/Product';
 
-  Future<List<dynamic>> fetchProdutos(int tipoProduto, int idPedido) async {
+  Future<List<dynamic>> fetchProdutos(
+    bool perfis,
+    bool acessorios,
+    bool chapas,
+    bool vidros,
+    bool kits,
+    int idPedido,
+  ) async {
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'tipoProduto': tipoProduto,
+        'visualizarPerfil': perfis,
+        'visualizarAcessorio': acessorios,
+        'visualizarVidro': vidros,
+        'visualizarChapa': chapas,
+        'visualizarKit': kits,
         'idPedido': idPedido,
       }),
     );
@@ -25,14 +36,25 @@ class Produto {
     }
   }
 
-  Future<int> getTotalProdutos(int idPedido, int tipoProduto) async {
+  Future<int> getTotalProdutos(
+    int idPedido,
+    bool perfis,
+    bool acessorios,
+    bool chapas,
+    bool vidros,
+    bool kits,
+  ) async {
     try {
       var response = await http.post(
         Uri.parse('$url/TotalProdutos'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'idPedido': idPedido,
-          'tipoProduto': tipoProduto,
+          'visualizarPerfil': perfis,
+          'visualizarAcessorio': acessorios,
+          'visualizarVidro': vidros,
+          'visualizarChapa': chapas,
+          'visualizarKit': kits,
         }),
       );
 
@@ -49,8 +71,12 @@ class Produto {
   Future<List<dynamic>> updateProduto(
     int idProduto,
     int separado,
-    int tipoProduto,
     int idPedido,
+    bool perfis,
+    bool acessorios,
+    bool chapas,
+    bool vidros,
+    bool kits,
   ) async {
     await http.post(
       Uri.parse('$url/UpdateSeparado'),
@@ -63,14 +89,18 @@ class Produto {
       ),
     );
 
-    return fetchProdutos(tipoProduto, idPedido);
+    return fetchProdutos(perfis, acessorios, chapas, vidros, kits, idPedido);
   }
 
   Future<List<dynamic>> updateEmbalado(
     int idProduto,
     int embalado,
-    int tipoProduto,
     int idPedido,
+    bool perfis,
+    bool acessorios,
+    bool chapas,
+    bool vidros,
+    bool kits,
   ) async {
     await http.post(
       Uri.parse('$url/UpdateEmbalagem'),
@@ -83,14 +113,18 @@ class Produto {
       ),
     );
 
-    return fetchProdutos(tipoProduto, idPedido);
+    return fetchProdutos(perfis, acessorios, chapas, vidros, kits, idPedido);
   }
 
   Future<List<dynamic>> updateConferido(
     int idProduto,
     int conferido,
-    int tipoProduto,
     int idPedido,
+    bool perfis,
+    bool acessorios,
+    bool chapas,
+    bool vidros,
+    bool kits,
   ) async {
     await http.post(
       Uri.parse('$url/UpdateConferido'),
@@ -103,6 +137,6 @@ class Produto {
       ),
     );
 
-    return fetchProdutos(tipoProduto, idPedido);
+    return fetchProdutos(perfis, acessorios, chapas, vidros, kits, idPedido);
   }
 }

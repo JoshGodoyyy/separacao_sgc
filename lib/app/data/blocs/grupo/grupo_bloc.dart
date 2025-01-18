@@ -27,13 +27,21 @@ class GrupoBloc {
     if (event is GetGrupo) {
       grupos = await _repository.fetchGrupos(
         event.idPedido,
-        event.idTipoProduto,
+        event.perfis,
+        event.acessorios,
+        event.chapas,
+        event.vidros,
+        event.kits,
       );
     } else if (event is UpdateGrupo) {
       grupos = await _repository.updateGrupo(
         event.grupo,
         event.idPedido,
-        event.tipoProduto,
+        event.perfis,
+        event.acessorios,
+        event.chapas,
+        event.vidros,
+        event.kits,
       );
     }
 

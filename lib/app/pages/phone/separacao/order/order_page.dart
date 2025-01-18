@@ -50,8 +50,12 @@ class OrderPage extends StatefulWidget {
 class _OrderPageState extends State<OrderPage> {
   final codigoVendedorController = TextEditingController();
 
-  late int tipoProduto;
   late final PedidoBloc _pedidoBloc;
+  late bool _perfis;
+  late bool _acessorios;
+  late bool _vidros;
+  late bool _chapas;
+  late bool _kits;
 
   Timer? timer;
   Duration tempoDecorrido = const Duration();
@@ -88,14 +92,11 @@ class _OrderPageState extends State<OrderPage> {
     _embalagemConfig = Provider.of<EmbalagemConfig>(context, listen: false);
 
     final result = Provider.of<AppConfig>(context, listen: false);
-
-    if (result.accessories && result.profiles) {
-      tipoProduto = 0;
-    } else if (result.profiles) {
-      tipoProduto = 2;
-    } else if (result.accessories) {
-      tipoProduto = 3;
-    }
+    _perfis = result.profiles;
+    _acessorios = result.accessories;
+    _chapas = result.chapas;
+    _vidros = result.vidros;
+    _kits = result.kits;
 
     modificarStatus();
     _fetchPedido();
@@ -286,10 +287,15 @@ class _OrderPageState extends State<OrderPage> {
       }
 
       int totalProdutos = await Produto().getTotalProdutos(
-          int.parse(
-            widget.pedido.id.toString(),
-          ),
-          tipoProduto);
+        int.parse(
+          widget.pedido.id.toString(),
+        ),
+        _perfis,
+        _acessorios,
+        _chapas,
+        _vidros,
+        _kits,
+      );
 
       for (int i = 0; i < volumeTotal; i++) {
         String zpl = '';
@@ -470,14 +476,17 @@ class _OrderPageState extends State<OrderPage> {
             ),
             Products(
               pedido: widget.pedido,
-              tipoProduto: tipoProduto,
+              acessorios: _acessorios,
+              chapas: _chapas,
+              kits: _kits,
+              perfis: _perfis,
+              vidros: _vidros,
               tratamentoEspecial: widget.pedido.tratamentoItens == 'ESP',
               observacoesSeparacaoController: observacoesSeparacaoController,
             ),
             Separation(
               ancestralContext: context,
               pedido: widget.pedido,
-              tipoProduto: tipoProduto,
               volumeAcessorioController: volumeAcessorioController,
               volumeAluminioController: volumeAluminioController,
               volumeChapasController: volumeChapasController,
@@ -486,6 +495,11 @@ class _OrderPageState extends State<OrderPage> {
               setorSeparacaoController: setorSeparacaoController,
               pesoAcessorioController: pesoAcessorioController,
               pesoController: pesoController,
+              acessorios: _acessorios,
+              chapas: _chapas,
+              kits: _kits,
+              perfis: _perfis,
+              vidros: _vidros,
             ),
           ],
         ),
@@ -537,10 +551,14 @@ class _OrderPageState extends State<OrderPage> {
                     double.parse(
                       widget.pedido.valorTotalTeorico.toString(),
                     ),
-                    tipoProduto,
                     int.parse(
                       widget.pedido.id.toString(),
                     ),
+                    _perfis,
+                    _acessorios,
+                    _chapas,
+                    _vidros,
+                    _kits,
                   );
 
                   var historico = HistoricoPedidoModel(
@@ -774,7 +792,11 @@ class _OrderPageState extends State<OrderPage> {
                     int.parse(
                       widget.pedido.id.toString(),
                     ),
-                    tipoProduto,
+                    _perfis,
+                    _acessorios,
+                    _chapas,
+                    _vidros,
+                    _kits,
                     widget.pedido.observacoesSeparacao.toString(),
                   );
 
@@ -939,7 +961,11 @@ class _OrderPageState extends State<OrderPage> {
                                 int.parse(
                                   widget.pedido.id.toString(),
                                 ),
-                                tipoProduto,
+                                _perfis,
+                                _acessorios,
+                                _chapas,
+                                _vidros,
+                                _kits,
                                 widget.pedido.dataEnvioSeparacao.toString(),
                               );
 

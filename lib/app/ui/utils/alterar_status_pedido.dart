@@ -22,7 +22,11 @@ class AlterarStatusPedido {
     String status,
     int autorizado,
     int id,
-    int tipoProduto,
+    bool perfis,
+    bool acessorios,
+    bool chapas,
+    bool vidros,
+    bool kits,
     String dataEnvioSeparacao,
   ) async {
     int sepPerfil = await Pedido().getSeparacao(id, 'sepPerfil');
@@ -48,9 +52,9 @@ class AlterarStatusPedido {
       throw Exception('É necessário autorizar o pedido para esta operação');
     }
 
-    if (tipoProduto == 2) {
+    if (perfis) {
       sepPerfil = 3;
-    } else {
+    } else if (acessorios) {
       sepAcessorio = 3;
     }
 
@@ -76,7 +80,11 @@ class AlterarStatusPedido {
   Future<void> enviarEmbalagem(
     String status,
     int id,
-    int tipoProduto,
+    bool perfis,
+    bool acessorios,
+    bool chapas,
+    bool vidros,
+    bool kits,
     String observacoesSeparacao,
   ) async {
     final nivelUsuario = NivelSenhaModel(
@@ -112,7 +120,11 @@ class AlterarStatusPedido {
         dataRetornoSeparacao: _data.format(DateTime.now()).toString(),
         observacoesSeparacao: observacoesSeparacao,
         id: id,
-        tipoProduto: tipoProduto,
+        acessorios: acessorios,
+        chapas: chapas,
+        kits: kits,
+        perfis: perfis,
+        vidros: vidros,
       ),
     );
   }
@@ -157,8 +169,12 @@ class AlterarStatusPedido {
     int volumeChapa,
     double pesoTotalTeorico,
     double valorTotalTeorico,
-    int tipoProduto,
     int id,
+    bool perfis,
+    bool acessorios,
+    bool chapas,
+    bool vidros,
+    bool kits,
   ) async {
     final nivelUsuario = NivelSenhaModel(
       idUsuario: UserConstants().idUsuario,
@@ -181,13 +197,21 @@ class AlterarStatusPedido {
     await GrupoPedido().apagarGruposInconsistentes(id);
 
     var produtos = await Produto().fetchProdutos(
-      tipoProduto,
+      perfis,
+      acessorios,
+      chapas,
+      vidros,
+      kits,
       id,
     );
 
     var grupos = await Grupo().fetchGrupos(
       id,
-      tipoProduto,
+      perfis,
+      acessorios,
+      chapas,
+      vidros,
+      kits,
     );
 
     await Grupo().atualizarGruposPedidos(
@@ -196,30 +220,28 @@ class AlterarStatusPedido {
     );
 
     produtos = await Produto().fetchProdutos(
-      tipoProduto,
+      perfis,
+      acessorios,
+      chapas,
+      vidros,
+      kits,
       id,
     );
 
     grupos = await Grupo().fetchGrupos(
       id,
-      tipoProduto,
+      perfis,
+      acessorios,
+      chapas,
+      vidros,
+      kits,
     );
 
     int sepPerfil = await Pedido().getSeparacao(id, 'sepPerfil');
     int sepAcessorio = await Pedido().getSeparacao(id, 'sepAcessorio');
 
-    switch (tipoProduto) {
-      case 2:
-        sepPerfil = 5;
-        break;
-      case 3:
-        sepAcessorio = 5;
-        break;
-      default:
-        sepAcessorio = 5;
-        sepPerfil = 5;
-        break;
-    }
+    if (perfis) sepPerfil = 5;
+    if (acessorios) sepAcessorio = 5;
 
     double pesoTotalReal = 0;
     double valorTotalReal = 0;

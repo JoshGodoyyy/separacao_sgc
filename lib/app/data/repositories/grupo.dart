@@ -8,14 +8,25 @@ import '../../config/api_config.dart';
 class Grupo {
   String url = '${ApiConfig().url}/Group';
 
-  Future<List<dynamic>> fetchGrupos(int idPedido, int tipoProduto) async {
+  Future<List<dynamic>> fetchGrupos(
+    int idPedido,
+    bool perfis,
+    bool acessorios,
+    bool chapas,
+    bool vidros,
+    bool kits,
+  ) async {
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
           'idPedido': idPedido,
-          'tipoProduto': tipoProduto,
+          'visualizarPerfil': perfis,
+          'visualizarAcessorio': acessorios,
+          'visualizarVidro': vidros,
+          'visualizarChapa': chapas,
+          'visualizarKit': kits,
         },
       ),
     );
@@ -35,7 +46,11 @@ class Grupo {
   Future<List<dynamic>> updateGrupo(
     GrupoModel grupo,
     int idPedido,
-    int tipoProduto,
+    bool perfis,
+    bool acessorios,
+    bool chapas,
+    bool vidros,
+    bool kits,
   ) async {
     try {
       await http.post(
@@ -60,7 +75,7 @@ class Grupo {
       throw Exception(ex.toString());
     }
 
-    return fetchGrupos(idPedido, tipoProduto);
+    return fetchGrupos(idPedido, perfis, acessorios, chapas, vidros, kits);
   }
 
   Future<void> atualizarGruposPedidos(List grupos, List produtos) async {

@@ -1,11 +1,19 @@
 abstract class ProdutoEvent {}
 
 class GetProdutos extends ProdutoEvent {
-  final int tipoProduto;
   final int idPedido;
+  final bool perfis;
+  final bool acessorios;
+  final bool chapas;
+  final bool vidros;
+  final bool kits;
 
   GetProdutos({
-    required this.tipoProduto,
+    required this.perfis,
+    required this.acessorios,
+    required this.chapas,
+    required this.vidros,
+    required this.kits,
     required this.idPedido,
   });
 }
@@ -13,13 +21,21 @@ class GetProdutos extends ProdutoEvent {
 class UpdateSeparacao extends ProdutoEvent {
   final int idProduto;
   final int separado;
-  final int tipoProduto;
   final int idPedido;
+  final bool perfis;
+  final bool acessorios;
+  final bool chapas;
+  final bool vidros;
+  final bool kits;
 
   UpdateSeparacao({
     required this.idProduto,
     required this.separado,
-    required this.tipoProduto,
+    required this.perfis,
+    required this.acessorios,
+    required this.chapas,
+    required this.vidros,
+    required this.kits,
     required this.idPedido,
   });
 }
@@ -27,13 +43,21 @@ class UpdateSeparacao extends ProdutoEvent {
 class UpdateEmbalagem extends ProdutoEvent {
   final int idProduto;
   final int embalado;
-  final int tipoProduto;
   final int idPedido;
+  final bool perfis;
+  final bool acessorios;
+  final bool chapas;
+  final bool vidros;
+  final bool kits;
 
   UpdateEmbalagem({
     required this.idProduto,
     required this.embalado,
-    required this.tipoProduto,
+    required this.perfis,
+    required this.acessorios,
+    required this.chapas,
+    required this.vidros,
+    required this.kits,
     required this.idPedido,
   });
 }
@@ -41,13 +65,21 @@ class UpdateEmbalagem extends ProdutoEvent {
 class UpdateConferencia extends ProdutoEvent {
   final int idProduto;
   final int conferido;
-  final int tipoProduto;
   final int idPedido;
+  final bool perfis;
+  final bool acessorios;
+  final bool chapas;
+  final bool vidros;
+  final bool kits;
 
   UpdateConferencia({
     required this.idProduto,
     required this.conferido,
-    required this.tipoProduto,
+    required this.perfis,
+    required this.acessorios,
+    required this.chapas,
+    required this.vidros,
+    required this.kits,
     required this.idPedido,
   });
 }

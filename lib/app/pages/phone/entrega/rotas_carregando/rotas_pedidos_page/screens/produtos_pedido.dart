@@ -23,6 +23,11 @@ class ProdutosPedido extends StatefulWidget {
 class _ProdutosPedidoState extends State<ProdutosPedido> {
   late ProdutoBloc produtoBloc;
   late int tipoProduto;
+  late bool _perfis;
+  late bool _acessorios;
+  late bool _chapas;
+  late bool _vidros;
+  late bool _kits;
 
   @override
   void initState() {
@@ -32,13 +37,11 @@ class _ProdutosPedidoState extends State<ProdutosPedido> {
 
     final result = Provider.of<AppConfig>(context, listen: false);
 
-    if (result.accessories && result.profiles) {
-      tipoProduto = 0;
-    } else if (result.profiles) {
-      tipoProduto = 2;
-    } else if (result.accessories) {
-      tipoProduto = 3;
-    }
+    _perfis = result.profiles;
+    _acessorios = result.accessories;
+    _chapas = result.chapas;
+    _vidros = result.vidros;
+    _kits = result.kits;
 
     _fetchData();
   }
@@ -46,7 +49,11 @@ class _ProdutosPedidoState extends State<ProdutosPedido> {
   _fetchData() {
     produtoBloc.inputProdutoController.add(
       GetProdutos(
-        tipoProduto: tipoProduto,
+        acessorios: _acessorios,
+        chapas: _chapas,
+        kits: _kits,
+        perfis: _perfis,
+        vidros: _vidros,
         idPedido: widget.idPedido,
       ),
     );

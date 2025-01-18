@@ -4,9 +4,20 @@ abstract class GrupoEvent {}
 
 class GetGrupo extends GrupoEvent {
   final int idPedido;
-  final int idTipoProduto;
+  final bool perfis;
+  final bool acessorios;
+  final bool chapas;
+  final bool vidros;
+  final bool kits;
 
-  GetGrupo({required this.idPedido, required this.idTipoProduto});
+  GetGrupo({
+    required this.idPedido,
+    required this.perfis,
+    required this.acessorios,
+    required this.chapas,
+    required this.vidros,
+    required this.kits,
+  });
 }
 
 class PostGrupo extends GrupoEvent {
@@ -18,12 +29,20 @@ class PostGrupo extends GrupoEvent {
 class UpdateGrupo extends GrupoEvent {
   final GrupoModel grupo;
   final int idPedido;
-  final int tipoProduto;
+  final bool perfis;
+  final bool acessorios;
+  final bool chapas;
+  final bool vidros;
+  final bool kits;
 
   UpdateGrupo({
     required this.grupo,
     required this.idPedido,
-    required this.tipoProduto,
+    required this.perfis,
+    required this.acessorios,
+    required this.chapas,
+    required this.vidros,
+    required this.kits,
   });
 }
 
