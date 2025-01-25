@@ -29,9 +29,6 @@ class CustomIcon extends StatelessWidget {
         case Icones.sucesso:
           cor = Colors.green;
           break;
-        default:
-          cor = Colors.grey;
-          break;
       }
       return cor;
     }
@@ -71,12 +68,6 @@ class CustomIcon extends StatelessWidget {
         case Icones.pergunta:
           return const Icon(
             Icons.question_mark_rounded,
-            color: Colors.white,
-            size: 100,
-          );
-        default:
-          return const Icon(
-            Icons.info_outline_rounded,
             color: Colors.white,
             size: 100,
           );
