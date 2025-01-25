@@ -5,6 +5,7 @@ import '../../../../data/blocs/foto_pedido/foto_pedido_event.dart';
 import '../../../../data/enums/icones.dart';
 import '../../../../models/foto_pedido_model.dart';
 import '../../../../ui/widgets/custom_dialog.dart';
+import 'visualizar_foto.dart';
 
 class ItemFoto extends StatelessWidget {
   final FotoPedidoModel foto;
@@ -33,34 +34,10 @@ class ItemFoto extends StatelessWidget {
         elevation: 5,
         child: InkWell(
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return CustomDialog(
-                  titulo: foto.descricao ?? '',
-                  conteudo: ClipRRect(
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                    child: Image.memory(
-                      base64Decode(foto.imagem!),
-                      width: MediaQuery.of(context).size.width - 16,
-                    ),
-                  ),
-                  tipo: Icones.info,
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text(
-                        'Ok',
-                        style: TextStyle(fontSize: 18.0),
-                      ),
-                    ),
-                  ],
-                );
-              },
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => VisualizarFoto(foto: foto),
+              ),
             );
           },
           borderRadius: const BorderRadius.all(

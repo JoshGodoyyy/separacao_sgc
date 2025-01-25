@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:sgc/app/data/repositories/foto_pedido.dart';
 import 'package:sgc/app/models/foto_pedido_model.dart';
