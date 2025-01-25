@@ -15,12 +15,14 @@ class UpdateSeparacao extends ProdutoEvent {
   final int separado;
   final int tipoProduto;
   final int idPedido;
+  final int? idUsuarioSeparador;
 
   UpdateSeparacao({
     required this.idProduto,
     required this.separado,
     required this.tipoProduto,
     required this.idPedido,
+    required this.idUsuarioSeparador,
   });
 }
 

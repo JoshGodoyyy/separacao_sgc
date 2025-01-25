@@ -51,12 +51,14 @@ class Produto {
     int separado,
     int tipoProduto,
     int idPedido,
+    int? idUsuarioSeparador,
   ) async {
     await http.post(
       Uri.parse('$url/UpdateSeparado'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(
         {
+          'idUsuarioSeparador': idUsuarioSeparador,
           'id': idProduto,
           'valor': separado,
         },

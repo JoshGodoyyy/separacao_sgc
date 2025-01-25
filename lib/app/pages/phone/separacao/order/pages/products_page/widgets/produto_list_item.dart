@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:sgc/app/config/user.dart';
 import 'package:sgc/app/data/blocs/produto/produto_bloc.dart';
 import 'package:sgc/app/data/blocs/produto/produto_event.dart';
 import 'package:sgc/app/models/colors.dart';
@@ -49,24 +50,24 @@ class ProdutoListItem extends StatelessWidget {
         if (!produto.separado!) {
           return bloc.inputProdutoController.add(
             UpdateSeparacao(
-              idProduto: int.parse(
-                produto.id.toString(),
-              ),
-              separado: 1,
-              tipoProduto: tipoProduto,
-              idPedido: idPedido,
-            ),
+                idProduto: int.parse(
+                  produto.id.toString(),
+                ),
+                separado: 1,
+                tipoProduto: tipoProduto,
+                idPedido: idPedido,
+                idUsuarioSeparador: UserConstants().idUsuario!),
           );
         } else {
           return bloc.inputProdutoController.add(
             UpdateSeparacao(
-              idProduto: int.parse(
-                produto.id.toString(),
-              ),
-              separado: 0,
-              tipoProduto: tipoProduto,
-              idPedido: idPedido,
-            ),
+                idProduto: int.parse(
+                  produto.id.toString(),
+                ),
+                separado: 0,
+                tipoProduto: tipoProduto,
+                idPedido: idPedido,
+                idUsuarioSeparador: null),
           );
         }
       case 'EMBALAGEM':

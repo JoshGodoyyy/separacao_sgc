@@ -36,6 +36,7 @@ class ProdutoBloc {
         event.separado,
         event.tipoProduto,
         event.idPedido,
+        event.idUsuarioSeparador,
       );
     } else if (event is UpdateEmbalagem) {
       produtos = await _repository.updateEmbalado(
