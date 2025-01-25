@@ -35,8 +35,6 @@ class _CameraPageState extends State<CameraPage> {
       ResolutionPreset.max,
     );
 
-    _controller.lockCaptureOrientation(DeviceOrientation.landscapeRight);
-
     _initializeControllerFuture = _controller.initialize();
   }
 
