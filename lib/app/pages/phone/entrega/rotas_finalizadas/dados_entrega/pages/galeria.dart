@@ -6,10 +6,8 @@ import 'package:sgc/app/data/blocs/foto_pedido/foto_pedido_state.dart';
 import 'package:sgc/app/data/enums/situacao_foto.dart';
 import 'package:sgc/app/models/foto_pedido_model.dart';
 import 'package:sgc/app/pages/phone/fotos_page/widgets/visualizar_foto.dart';
-import '../../../../../../data/enums/icones.dart';
 import '../../../../../../models/roteiro_entrega_model.dart';
 import '../../../../../../ui/styles/colors_app.dart';
-import '../../../../../../ui/widgets/custom_dialog.dart';
 import '../../../../../../ui/widgets/error_alert.dart';
 
 class Galeria extends StatefulWidget {

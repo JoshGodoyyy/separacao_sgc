@@ -12,6 +12,7 @@ import 'package:sgc/app/data/enums/situacao_foto.dart';
 import 'package:sgc/app/data/repositories/empresa.dart';
 import 'package:sgc/app/data/repositories/fornecedor.dart';
 import 'package:sgc/app/data/repositories/generica.dart';
+import 'package:sgc/app/data/repositories/grupo.dart';
 import 'package:sgc/app/data/repositories/pedido.dart';
 import 'package:sgc/app/data/repositories/vendedor_dao.dart';
 import 'package:sgc/app/models/fornecedor_model.dart';
@@ -704,6 +705,19 @@ class _OrderPageState extends State<OrderPage> with TickerProviderStateMixin {
                       pedido.volumePerfil == 0 &&
                       pedido.volumeChapa == 0) {
                     throw Exception('Preencher Volumes');
+                  }
+
+                  var grupos = await Grupo().fetchGrupos(
+                    int.parse(pedido.id.toString()),
+                    tipoProduto,
+                  );
+
+                  if (pedido.volumePerfil != null || pedido.volumePerfil == 0) {
+                    for (var grupo in grupos) {
+                      if (grupo.pesoReal == 0 || grupo.pesoReal == null) {
+                        throw Exception('Preencher pesos dos Perfis');
+                      }
+                    }
                   }
 
                   await AlterarStatusPedido().finalizarSeparacao(
