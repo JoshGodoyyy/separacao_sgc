@@ -5,8 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:sgc/app/data/repositories/foto_pedido.dart';
 import 'package:sgc/app/models/foto_pedido_model.dart';
 import 'package:sgc/app/pages/phone/fotos_page/widgets/modal_foto.dart';
+import 'package:sgc/app/ui/widgets/custom_dialog.dart';
 import 'dart:io';
 import 'package:sgc/app/ui/widgets/error_alert.dart';
+
+import '../../../data/enums/icones.dart';
 
 class CameraPage extends StatefulWidget {
   final CameraDescription camera;
@@ -184,6 +187,22 @@ class _DisplayPictureState extends State<DisplayPicture> {
           WidgetsBinding.instance.addPostFrameCallback(
             (timeStamp) {
               Navigator.pop(context);
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return CustomDialog(
+                    titulo: 'SGC Mobile',
+                    conteudo: Text('Foto salva com sucesso'),
+                    tipo: Icones.info,
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Ok'),
+                      ),
+                    ],
+                  );
+                },
+              );
             },
           );
         },
