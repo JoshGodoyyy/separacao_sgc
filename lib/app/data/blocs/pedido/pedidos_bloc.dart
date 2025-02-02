@@ -28,13 +28,21 @@ class PedidosBloc {
     if (event is GetPedidosSituacao) {
       pedidos = await _repository.fetchOrdersBySituation(
         idSituacao: event.idSituacao,
-        tipoProduto: event.tipoProduto,
+        acessorios: event.acessorios,
+        chapas: event.chapas,
+        kits: event.kits,
+        perfis: event.perfis,
+        vidros: event.vidros,
       );
     } else if (event is SearchPedido) {
       pedidos = await _repository.fetchOrdersBySituation(
         idSituacao: event.idSituacao,
         idPedido: event.idPedido,
-        tipoProduto: event.tipoProduto,
+        acessorios: event.acessorios,
+        chapas: event.chapas,
+        kits: event.kits,
+        perfis: event.perfis,
+        vidros: event.vidros,
       );
     }
 

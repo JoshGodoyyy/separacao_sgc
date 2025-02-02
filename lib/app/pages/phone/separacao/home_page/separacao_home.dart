@@ -32,25 +32,20 @@ class _HomeState extends State<SeparacaoHome> {
     var orders = Provider.of<Pedido>(context, listen: false);
     final config = Provider.of<AppConfig>(context, listen: false);
 
-    int tipoProduto = 0;
-
-    if (config.profiles) {
-      if (config.accessories) {
-        tipoProduto = 0;
-      } else {
-        tipoProduto = 2;
-      }
-    } else {
-      tipoProduto = 3;
-    }
+    bool perfis = config.profiles;
+    bool acessorios = config.accessories;
+    bool vidros = config.vidros;
+    bool chapas = config.chapas;
+    bool kits = config.kits;
 
     setState(() => carregando = true);
-    await orders.fetchData(2, tipoProduto);
-    await orders.fetchData(3, tipoProduto);
-    await orders.fetchData(5, tipoProduto);
-    await orders.fetchData(10, tipoProduto);
-    await orders.fetchData(14, tipoProduto);
-    await orders.fetchData(15, tipoProduto);
+
+    await orders.fetchData(2, perfis, acessorios, vidros, chapas, kits);
+    await orders.fetchData(3, perfis, acessorios, vidros, chapas, kits);
+    await orders.fetchData(5, perfis, acessorios, vidros, chapas, kits);
+    await orders.fetchData(10, perfis, acessorios, vidros, chapas, kits);
+    await orders.fetchData(14, perfis, acessorios, vidros, chapas, kits);
+    await orders.fetchData(15, perfis, acessorios, vidros, chapas, kits);
 
     if (mounted) {
       setState(() => carregando = false);

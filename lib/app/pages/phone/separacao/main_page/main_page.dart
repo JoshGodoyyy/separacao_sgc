@@ -31,28 +31,30 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  late bool perfis;
+  late bool acessorios;
+  late bool vidros;
+  late bool chapas;
+  late bool kits;
+
   final searchController = TextEditingController();
   late final PedidosBloc _pedidosBloc;
   List<PedidoModel> pedidos = [];
   late Timer timer;
   String search = '';
-  int _tipoProduto = 0;
 
   @override
   void initState() {
     super.initState();
     final config = Provider.of<AppConfig>(context, listen: false);
-    _pedidosBloc = PedidosBloc();
 
-    if (config.profiles) {
-      if (config.accessories) {
-        _tipoProduto = 0;
-      } else {
-        _tipoProduto = 2;
-      }
-    } else {
-      _tipoProduto = 3;
-    }
+    perfis = config.profiles;
+    acessorios = config.accessories;
+    vidros = config.vidros;
+    chapas = config.chapas;
+    kits = config.kits;
+
+    _pedidosBloc = PedidosBloc();
 
     fetchData();
 
@@ -67,14 +69,24 @@ class _MainPageState extends State<MainPage> {
     if (search == '') {
       _pedidosBloc.inputPedido.add(
         GetPedidosSituacao(
-            idSituacao: widget.status, tipoProduto: _tipoProduto),
+          idSituacao: widget.status,
+          perfis: perfis,
+          acessorios: acessorios,
+          chapas: chapas,
+          kits: kits,
+          vidros: vidros,
+        ),
       );
     } else {
       _pedidosBloc.inputPedido.add(
         SearchPedido(
           idSituacao: widget.status,
           idPedido: int.parse(search),
-          tipoProduto: _tipoProduto,
+          perfis: perfis,
+          acessorios: acessorios,
+          chapas: chapas,
+          kits: kits,
+          vidros: vidros,
         ),
       );
     }
@@ -200,7 +212,11 @@ class _MainPageState extends State<MainPage> {
                 _pedidosBloc.inputPedido.add(
                   GetPedidosSituacao(
                     idSituacao: widget.status,
-                    tipoProduto: _tipoProduto,
+                    perfis: perfis,
+                    acessorios: acessorios,
+                    chapas: chapas,
+                    kits: kits,
+                    vidros: vidros,
                   ),
                 );
               },
@@ -246,7 +262,11 @@ class _MainPageState extends State<MainPage> {
                             (value) => _pedidosBloc.inputPedido.add(
                               GetPedidosSituacao(
                                 idSituacao: widget.status,
-                                tipoProduto: _tipoProduto,
+                                perfis: perfis,
+                                acessorios: acessorios,
+                                chapas: chapas,
+                                kits: kits,
+                                vidros: vidros,
                               ),
                             ),
                           );
@@ -279,7 +299,11 @@ class _MainPageState extends State<MainPage> {
                             (value) => _pedidosBloc.inputPedido.add(
                               GetPedidosSituacao(
                                 idSituacao: widget.status,
-                                tipoProduto: _tipoProduto,
+                                perfis: perfis,
+                                acessorios: acessorios,
+                                chapas: chapas,
+                                kits: kits,
+                                vidros: vidros,
                               ),
                             ),
                           );
@@ -318,7 +342,11 @@ class _MainPageState extends State<MainPage> {
                             (value) => _pedidosBloc.inputPedido.add(
                               GetPedidosSituacao(
                                 idSituacao: widget.status,
-                                tipoProduto: _tipoProduto,
+                                perfis: perfis,
+                                acessorios: acessorios,
+                                chapas: chapas,
+                                kits: kits,
+                                vidros: vidros,
                               ),
                             ),
                           );
@@ -351,7 +379,11 @@ class _MainPageState extends State<MainPage> {
                             (value) => _pedidosBloc.inputPedido.add(
                               GetPedidosSituacao(
                                 idSituacao: widget.status,
-                                tipoProduto: _tipoProduto,
+                                perfis: perfis,
+                                acessorios: acessorios,
+                                chapas: chapas,
+                                kits: kits,
+                                vidros: vidros,
                               ),
                             ),
                           );
@@ -393,7 +425,11 @@ class _MainPageState extends State<MainPage> {
                         (value) => _pedidosBloc.inputPedido.add(
                           GetPedidosSituacao(
                             idSituacao: widget.status,
-                            tipoProduto: _tipoProduto,
+                            perfis: perfis,
+                            acessorios: acessorios,
+                            chapas: chapas,
+                            kits: kits,
+                            vidros: vidros,
                           ),
                         ),
                       );
@@ -423,7 +459,11 @@ class _MainPageState extends State<MainPage> {
                         (value) => _pedidosBloc.inputPedido.add(
                           GetPedidosSituacao(
                             idSituacao: widget.status,
-                            tipoProduto: _tipoProduto,
+                            perfis: perfis,
+                            acessorios: acessorios,
+                            chapas: chapas,
+                            kits: kits,
+                            vidros: vidros,
                           ),
                         ),
                       );

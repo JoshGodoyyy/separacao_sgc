@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:sgc/app/data/blocs/pedido/pedido_event.dart';
 import 'package:sgc/app/data/blocs/pedido/pedidos_state.dart';
 import 'package:sgc/app/pages/tablet/home_page/widgets/item_status.dart';
+import '../../../../config/app_config.dart';
 import '../../../../data/blocs/pedido/pedidos_bloc.dart';
 
 class ColunaStatus extends StatefulWidget {
@@ -23,10 +25,22 @@ class ColunaStatus extends StatefulWidget {
 
 class _ColunaStatusState extends State<ColunaStatus> {
   late final PedidosBloc _pedidosBloc;
+  late bool perfis;
+  late bool acessorios;
+  late bool vidros;
+  late bool chapas;
+  late bool kits;
 
   @override
   void initState() {
     super.initState();
+    final config = Provider.of<AppConfig>(context, listen: false);
+
+    perfis = config.profiles;
+    acessorios = config.accessories;
+    vidros = config.vidros;
+    chapas = config.chapas;
+    kits = config.kits;
     _pedidosBloc = PedidosBloc();
     _carregarDados();
   }
@@ -35,7 +49,11 @@ class _ColunaStatusState extends State<ColunaStatus> {
     _pedidosBloc.inputPedido.add(
       GetPedidosSituacao(
         idSituacao: widget.idStatus,
-        tipoProduto: 0,
+        perfis: perfis,
+        acessorios: acessorios,
+        chapas: chapas,
+        kits: kits,
+        vidros: vidros,
       ),
     );
   }

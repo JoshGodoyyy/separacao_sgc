@@ -2,23 +2,39 @@ abstract class PedidoEvent {}
 
 class GetPedidosSituacao extends PedidoEvent {
   final int idSituacao;
-  final int tipoProduto;
+  final bool perfis;
+  final bool acessorios;
+  final bool chapas;
+  final bool vidros;
+  final bool kits;
 
   GetPedidosSituacao({
     required this.idSituacao,
-    required this.tipoProduto,
+    required this.perfis,
+    required this.acessorios,
+    required this.chapas,
+    required this.vidros,
+    required this.kits,
   });
 }
 
 class SearchPedido extends PedidoEvent {
   final int idSituacao;
   final int idPedido;
-  final int tipoProduto;
+  final bool perfis;
+  final bool acessorios;
+  final bool chapas;
+  final bool vidros;
+  final bool kits;
 
   SearchPedido({
     required this.idSituacao,
     required this.idPedido,
-    required this.tipoProduto,
+    required this.perfis,
+    required this.acessorios,
+    required this.chapas,
+    required this.vidros,
+    required this.kits,
   });
 }
 
