@@ -43,7 +43,14 @@ class _GeneralInfoState extends State<GeneralInfo> {
   final setorEntregaController = TextEditingController();
   final nfeVendaController = TextEditingController();
   final nfeRemessaController = TextEditingController();
+
+  final fornecedorController = TextEditingController();
+  final enderecoFornecedorContrller = TextEditingController();
+
   String titulo = '';
+
+  PedidoModel _pedido = PedidoModel();
+  FornecedorModel _fornecedor = FornecedorModel();
 
   @override
   void initState() {
@@ -57,23 +64,38 @@ class _GeneralInfoState extends State<GeneralInfo> {
   DateFormat data = DateFormat('dd/MM/yyyy HH:mm');
 
   _populateFields() async {
-    final pedido = await Pedido().fetchOrdersByIdOrder(
+    _pedido = await Pedido().fetchOrdersByIdOrder(
       int.parse(
         widget.idPedido.toString(),
       ),
     );
 
+    if (_pedido.transpEntregar == 1) {
+      _fornecedor = await Fornecedor().fetchFornecedor(
+        int.parse(
+          _pedido.idTranspNFe.toString(),
+        ),
+      );
+
+      fornecedorController.text = _fornecedor.fantasia ?? '';
+
+      var endereco =
+          '${_fornecedor.logradouro} ${_fornecedor.nomeRua}, ${_fornecedor.numero} - ${_fornecedor.bairro} - ${_fornecedor.cidade} - ${_fornecedor.estado}. ${_fornecedor.cep}';
+
+      enderecoFornecedorContrller.text = endereco;
+    }
+
     final String usuarioCriacao = widget.usuarioCriador;
 
     final vendedor = await VendedorDAO().fetchVendedor(
       int.parse(
-        pedido.idVendedor.toString(),
+        _pedido.idVendedor.toString(),
       ),
     );
 
     final tipoEntrega = await TipoEntregaDAO().fetchTipoEntrega(
       int.parse(
-        pedido.idTipoEntrega.toString(),
+        _pedido.idTipoEntrega.toString(),
       ),
     );
 
@@ -81,27 +103,27 @@ class _GeneralInfoState extends State<GeneralInfo> {
 
     dataCriacaoController.text = data.format(
       DateTime.parse(
-        pedido.dataCriacao.toString(),
+        _pedido.dataCriacao.toString(),
       ),
     );
 
-    idClienteController.text = pedido.idCliente.toString();
-    razaoSocialController.text = pedido.razaoSocial.toString();
-    idVendedorController.text = pedido.idVendedor.toString();
+    idClienteController.text = _pedido.idCliente.toString();
+    razaoSocialController.text = _pedido.razaoSocial.toString();
+    idVendedorController.text = _pedido.idVendedor.toString();
     vendedorController.text = vendedor.nome.toString();
 
     dataHoraEntregueController.text = data.format(
       DateTime.parse(
-        pedido.dataEntrega.toString(),
+        _pedido.dataEntrega.toString(),
       ),
     );
 
     tipoEntregaController.text = tipoEntrega.descricao.toString();
-    setorEntregaController.text = pedido.setorEntrega.toString();
-    nfeVendaController.text = pedido.nnFeVenda.toString();
-    nfeRemessaController.text = pedido.nnFeRemessa.toString();
+    setorEntregaController.text = _pedido.setorEntrega.toString();
+    nfeVendaController.text = _pedido.nnFeVenda.toString();
+    nfeRemessaController.text = _pedido.nnFeRemessa.toString();
 
-    _verificarEndereco(pedido);
+    _verificarEndereco(_pedido);
   }
 
   _verificarEndereco(PedidoModel pedido) async {
@@ -355,6 +377,43 @@ class _GeneralInfoState extends State<GeneralInfo> {
               ItemField(
                 label: 'Vendedor:',
                 controller: vendedorController,
+              ),
+              Visibility(
+                visible: _pedido.transpEntregar! == 1,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            color: Theme.of(context).dividerColor,
+                            height: 0.5,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Text('Entregar na Transportadora'),
+                        ),
+                        Expanded(
+                          child: Container(
+                            color: Theme.of(context).dividerColor,
+                            height: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                    ItemField(
+                      label: 'Transportadora:',
+                      controller: fornecedorController,
+                    ),
+                    ItemField(
+                      label: 'Endereço:',
+                      controller: enderecoFornecedorContrller,
+                    ),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
